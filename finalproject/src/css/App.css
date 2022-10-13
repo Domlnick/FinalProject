@@ -1,0 +1,97 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navbar-brand {
+  padding-left : 5%;
+}
+
+.collapse {
+  padding-right : 3%;
+}
+
+.upload_div {
+  margin-top : 5%;
+  margin-left : 10%;
+
+  width: 80%;
+  height:  575px;
+  
+  background: #E8EDED;
+  border-radius: 80px;
+}
+
+.ad_banner {
+  margin-top: 3.5%;
+}
+.result-row {
+  width: 100%;
+  display: flex;
+}
+.left-top-image{
+  margin-top: 10%;
+  margin-left : 10%;
+
+  width: 80%;
+
+  background: #E8EDED;
+  border-radius: 50px;
+}
+
+.left-bottom-text {
+  margin-top : 7%;
+  margin-left : 10%;
+
+  width : 80%;
+  height: 200px;
+
+  background: #E8EDED;
+  border-radius: 50px;
+}
+
+.right-result{
+  margin-top: 3%;
+  margin-left: 3%;
+  float : right;
+
+  width: 60%;
+  height: max-content;
+
+  background: #E8EDED;
+  border-radius: 80px;
+}
