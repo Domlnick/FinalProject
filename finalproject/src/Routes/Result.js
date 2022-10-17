@@ -1,65 +1,63 @@
 import React from 'react';
+import { useDropzone } from 'react-dropzone';
 
 function Result() {
-    const fileInput = React.useRef();
+    const { open } = useDropzone({
+        // Disable click and keydown behavior
+        noClick: true,
+        noKeyboard: true
+    });
 
-    const handleButtonClick = e => {
-        fileInput.current.click();
-    };
-
-    return(
+    return (
         <>
             <div className="result-row">
                 <div className='left-result'>
                     <div className='left-top-image'>
-                    <label for = "upload-file" style={{
-                        float : "right",
-                        backgroundColor:"#FF6600",
-                        width : "25px",
-                        borderRadius: "100px",
-                        color: "white",
-                        cursor: "pointer"
-                    }}>?<input type="file" id="upload-file" multiple="multiple" 
-                            style={{ display : "none" }}/>
-                    </label>
-                    <br/>
-                    <img src = {process.env.PUBLIC_URL + "/image_src/sample.png"}
-                        style = {{
-                            marginTop : "10%",
-                            marginBottom : "15%",
-                            width : "75%",
-                            height : "80%",
-                            borderRadius : "40px",
-                        }}/>
+                        {/* 업로드 버튼 코드 수정 시작*/}
+                        <button type="button" onClick={open}
+                            style={{
+                                marginLeft: "19.8%",
+                                marginTop: "-0.828%",
+                                background: "none",
+                                border: "none",
+                                position: "absolute"
+                            }}>
+                            <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
+                                style={{
+                                    width: "50%"
+                                }} />
+                        </button>
+                        {/* 업로드 버튼 코드 수정 끝*/}
+
+                        <img src={process.env.PUBLIC_URL + "/image_src/sample.png"}
+                            style={{
+                                marginTop: "10%",
+                                marginBottom: "15%",
+                                width: "75%",
+                                height: "80%",
+                                borderRadius: "40px",
+                            }} />
                     </div>
 
                     <div className="left-bottom-text">
-                        <br/><br/><br/><br/>첨부 이미지 모델 스펙 출력 영역
+                        <br /><br /><br /><br />첨부 이미지 모델 스펙 출력 영역
                     </div>
                 </div>
 
                 <div className="right-result" style={{
 
                 }}>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br />
                     결과 이미지 출력 영역
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </div>
             </div>
-            
-            
+
+
         </>
-        
+
     );
 }
 

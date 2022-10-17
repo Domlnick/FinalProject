@@ -6,7 +6,7 @@ function Header() {
     return (
         <Nav className="navbar navbar-expand-sm bg-black navbar-dark">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">브랜드명</Link>
+                <Link className="navbar-brand" to="/">LYKYL Shop</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span className="navbar-toggler-icon"></span>
                 </button>

@@ -1,10 +1,12 @@
 import './css/App.css';
 import './css/User.css';
+import './css/Searching.css'
 import { UploadArea, Ad_banner } from './Routes/Main.js';
 import Result from './Routes/Result.js';
 import { Header } from './Components/Header.js';
 import { Routes, Route } from "react-router-dom";
-import { Login, Register, FindId, FindPw, ResetPw } from './Routes/User.js';
+import { Login, Register, FindId, FindPw, ResetPw, ShowId } from './Routes/User.js';
+import Searching from './Routes/Searching';
 
 // 주석 용도 내용 전달
 // 기능 설명
@@ -33,7 +35,7 @@ function App() {
 
         <Route path="/searching" element={
           <>
-            <br /><br />진행상황 페이지입니다.
+            <Searching />
           </>
         } />
         <Route path="/result" element={
@@ -72,8 +74,10 @@ function App() {
           </>
         } />
 
-        <Route path="*" element={
-          <div> 404 Error : 없는 페이지 입니다.</div>
+        <Route path="/showid" element={
+          <>
+            <ShowId />
+          </>
         } />
       </Routes>
 
