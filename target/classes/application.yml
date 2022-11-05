@@ -11,8 +11,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
-    username: admin
-    password: rladbdbsDL!
+    username: 
+    password:
     
 #  mvc:
 #    view:

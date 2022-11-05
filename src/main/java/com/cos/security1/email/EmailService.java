@@ -36,9 +36,9 @@ public class EmailService {
         
         String registerText = "";
         
-        if(authType == "register") {
+        if(authType == "register") { 
             message.addRecipients(Message.RecipientType.TO, user.getUserEmail());
-            message.setFrom(new InternetAddress("네이버 이메"));
+            message.setFrom(new InternetAddress("black_devils@naver.com"));
             message.setSubject("[LYKYL] "+ user.getUserName() + "님 가입을 환영합니다.");
             
             registerText += "<h2>안녕하세요. " +user.getUserName() + "님!</h2>";
@@ -61,7 +61,7 @@ public class EmailService {
         }else if (authType == "findid" || authType == "findpw") {
             message.addRecipients(Message.RecipientType.TO, user.getUserEmail());
             message.setSubject("LYKYL 인증번호 전송 메일");
-            message.setFrom(new InternetAddress("네이버이메"));
+            message.setFrom(new InternetAddress("black_devils@naver.com"));
             
             // 인증코드 이메일 양식 작성안함
             registerText += "<h3>" + user.getUserName() + "님 인증번호를 확인해주세요. <h3/>";

@@ -1,10 +1,14 @@
 package com.cos.security1.contoller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -13,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,23 +25,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.config.auth.PrincipalDetailsService;
 import com.cos.security1.email.EmailService;
+import com.cos.security1.jwt.config.JwtProperties;
+import com.cos.security1.jwt.config.JwtRefreshTokenService;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.shaded.json.parser.ParseException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class IndexController {
 
     @Autowired
@@ -46,7 +52,10 @@ public class IndexController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    PrincipalDetailsService principalDetailService;
+    private PrincipalDetailsService principalDetailService;
+    
+    @Autowired
+    private JwtRefreshTokenService jwtRefreshTokenService;
 
     private final EmailService emailService;
 
@@ -125,9 +134,7 @@ public class IndexController {
     @PostMapping("/join")
     public @ResponseBody Map<String, Boolean> joinUser(@RequestBody User user) throws Exception {
         
-//        System.out.println(user.getEmail());
-//        System.out.println(user.getName());
-//        System.out.println(user.getUserId());
+        System.out.println(user.getUserId());
         User newUser = user;
         Map<String, Boolean> result = new HashMap<>();
         
@@ -152,7 +159,7 @@ public class IndexController {
     }
     
     @GetMapping("/sendcodeid")
-    public @ResponseBody Map<String, String> sendCodeToUserMailForUserId(HttpServletRequest httpServletRequest, User user) throws Exception{
+    public Map<String, String> sendCodeToUserMailForUserId(HttpServletRequest httpServletRequest, User user) throws Exception{
         String type = "findid";
         Map<String, String> result = new HashMap<>();
         User newUser = userRepository.findByUserEmail(user.getUserEmail());
@@ -165,7 +172,7 @@ public class IndexController {
     }
     
     @GetMapping("/sendcodepw")
-    public @ResponseBody Map<String, String> sendCodeToUserMailForUserPw(HttpServletRequest httpServletRequest, User user) throws Exception{
+    public Map<String, String> sendCodeToUserMailForUserPw(HttpServletRequest httpServletRequest, User user) throws Exception{
         String type = "findpw";
         Map<String, String> result = new HashMap<>();
         int memberCnt = userRepository.countUserByUserIdAndUserNameAndUserEmail(user.getUserId(), user.getUserName(), user.getUserEmail());
@@ -185,7 +192,7 @@ public class IndexController {
     }
     
     @GetMapping("/checkexistemail")
-    public @ResponseBody Map<String, Boolean> isExistEmail(HttpServletRequest httpServletRequest, User user) throws Exception {
+    public @ResponseBody Map<String, Boolean> isExistEmail(User user) throws Exception {
         
         Map<String, Boolean> result = new HashMap<>();
         
@@ -203,7 +210,7 @@ public class IndexController {
     }
     
     @GetMapping("/checkexistid")
-    public @ResponseBody Map<String, Boolean> isExistid(@RequestBody User user) throws Exception {
+    public @ResponseBody Map<String, Boolean> isExistid(User user) throws Exception {
         
         Map<String, Boolean> result = new HashMap<>();
         
@@ -221,23 +228,18 @@ public class IndexController {
     }
     
 
-    @PostMapping("/upload")
-    public Map<String, String> uploadImage(@RequestBody String file) throws ParseException {
-        Map<String, String> result = new HashMap<>();
-        
-        
-//        JSONObject jsonObject = new JSONObject(file);
-        
-//        System.out.println(stringFile);
-        
-//        result.put("file", file);
-        
-        
-        
-        System.out.println(file);
-        System.out.println("clear");
-        
-        return result;
+//	@PostMapping("/upload")
+    @RequestMapping(value = "/upload", headers = "content-type = application/json", method = RequestMethod.POST)
+    public @ResponseBody MultipartFile imageUpload(@RequestPart(value = "file", required = true) MultipartFile file)
+            throws IOException {
+
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getContentType());
+        System.out.println(file.getSize());
+//    System.out.println(“받은 파일: ” + fileload.getOriginalFilename());
+//    System.out.println(“받은 파일: ” +fileload.getContentType());
+
+        return file;
     }
 
     @Secured("ROLE_ADMIN") // 특정 권한을 가진 유저만 해당경로로 접근 가능. SecurityConfig에서 해당 Class를
@@ -258,7 +260,7 @@ public class IndexController {
 
     // JSON 타입으로 변환 후 return
     @GetMapping("/findUserId")
-    public @ResponseBody boolean findUserId(@RequestBody User user) {
+    public @ResponseBody boolean findUserId(User user) {
 
         boolean findUsername = principalDetailService.findUserId(user);
 
@@ -267,7 +269,7 @@ public class IndexController {
 
     // JSON 타입으로 변환 후 return
     @GetMapping("/findEmail")
-    public @ResponseBody boolean findEmail(@RequestBody User user) {
+    public @ResponseBody boolean findEmail(User user) {
 
         boolean findEmail = principalDetailService.findUserEmail(user);
 
@@ -325,4 +327,39 @@ public class IndexController {
         return result;
     }
 
+    @GetMapping("/refresh")
+    public @ResponseBody Map<String, String> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        Map<String, String> result = new HashMap<>();
+        
+        String authorizationHeader = request.getHeader(JwtProperties.HEADER_STRING);
+        System.out.println("$$$$$$$$$$$");
+        System.out.println(authorizationHeader);
+
+        if(authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
+            try {
+                Map<String, String> refreshTokenRequest = jwtRefreshTokenService.refresh(authorizationHeader.substring("Bearer.".length()));
+                for (String mapKey:refreshTokenRequest.keySet()) {
+                    System.out.println("Key:"+mapKey+", Value:"+refreshTokenRequest.get(mapKey));
+                    
+//                    response.addHeader(mapKey, refreshTokenRequest.get(mapKey));
+                    Cookie cookie = new Cookie(mapKey, refreshTokenRequest.get(mapKey));
+                    cookie.setDomain("localhost");
+                    cookie.setPath("/");
+                    // 시간지정
+                    cookie.setMaxAge(JwtProperties.RT_EXPIRATION_TIME / 1000);
+                    cookie.setSecure(true);
+                    response.addCookie(cookie);
+                    System.out.println("******");
+                }
+                result.put("result", "토큰 재발급 완료.");
+            }catch(TokenExpiredException e) {
+                result.put("result", "만료된 토큰입니다. 다시 로그인 하세요.(refresh 토큰까지 만료됨)");
+            }
+            
+        }else {
+            result.put("result", "header 정보를 확인하세요.");
+        }
+        return result;
+    }
+    
 }
