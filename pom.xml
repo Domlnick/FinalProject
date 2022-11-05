@@ -12,6 +12,7 @@
 	<groupId>playdata</groupId>
 	<artifactId>security1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>security1</name>
 	<description>Security Basic</description>
 	<properties>
