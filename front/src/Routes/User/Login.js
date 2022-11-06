@@ -80,22 +80,26 @@ function Login() {
                             <Link to='/FindPw'>비밀번호를 잊어버렸어요.</Link>
                         </div>
                         <div>
-                            <button type="submit" className="login-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                goToList();
+                            <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
                                 // 요청상태를 state로 관리하도록 구현해야함.
-                                axios.get("/login", {
-                                    params: {
-                                        userId: userId,
-                                        password: password
+                                axios.post("http://localhost:8080/login", {
+                                    userId: userId,
+                                    password: password
+                                }).then(function (respons) {
+                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
+                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
+                                    // 리프레쉬토큰도 DB에 저장해놔야함.
+                                    console.log(respons);
+                                    console.log(respons.data.result);
+                                    if (respons.data.result == 'false') {
+                                        alert(respons.data.message);
+                                    } else {
+                                        goToList();
                                     }
+                                }).catch(function (error) {
+                                    console.error(error);
+                                    console.log('에러가 발생되었습니다.')
                                 })
-                                    .then(function (respons) {
-                                        // respons
-                                    }).catch(function (error) {
-                                        // 오류발생시 실행
-                                    }).then(function () {
-                                        // 항상 실행
-                                    })
                             }}>Login</button>
                         </div>
                         <div className="create-account">
@@ -143,8 +147,26 @@ function Login() {
                             <Link to='/FindPw'>비밀번호를 잊어버렸어요.</Link>
                         </div>
                         <div>
-                            <button type="submit" className="login-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                goToList();
+                            <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
+                                // 요청상태를 state로 관리하도록 구현해야함.
+                                axios.post("http://localhost:8080/login", {
+                                    userId: userId,
+                                    password: password
+                                }).then(function (respons) {
+                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
+                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
+                                    // 리프레쉬토큰도 DB에 저장해놔야함.
+                                    console.log(respons);
+                                    console.log(respons.data.result);
+                                    if (respons.data.result == 'false') {
+                                        alert(respons.data.message);
+                                    } else {
+                                        goToList();
+                                    }
+                                }).catch(function (error) {
+                                    console.error(error);
+                                    console.log('에러가 발생되었습니다.')
+                                })
                             }}>Login</button>
                         </div>
                         <div className="create-account">
@@ -185,8 +207,26 @@ function Login() {
                             <Link to='/FindPw'>비밀번호를 잊어버렸어요.</Link>
                         </div>
                         <div>
-                            <button type="submit" className="login-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                goToList();
+                            <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
+                                // 요청상태를 state로 관리하도록 구현해야함.
+                                axios.post("http://localhost:8080/login", {
+                                    userId: userId,
+                                    password: password
+                                }).then(function (respons) {
+                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
+                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
+                                    // 리프레쉬토큰도 DB에 저장해놔야함.
+                                    console.log(respons);
+                                    console.log(respons.data.result);
+                                    if (respons.data.result == 'false') {
+                                        alert(respons.data.message);
+                                    } else {
+                                        goToList();
+                                    }
+                                }).catch(function (error) {
+                                    console.error(error);
+                                    console.log('에러가 발생되었습니다.')
+                                })
                             }}>Login</button>
                         </div>
                         <div className="create-account">

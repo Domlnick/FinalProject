@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "../../Components/Header";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
@@ -45,6 +45,36 @@ function Register() {
     const [userIdErrorBorderColor, setUserIdErrorBorderColor] = useState('#494949');
     const [pwErrorBorderColor, setPwErrorBorderColor] = useState('#494949');
     const [rePwErrorBorderColor, setRePwErrorBorderColor] = useState('#494949');
+
+    // 중복체크 버튼 style
+    const duplicateCheckButtonStyleTrue = {
+        position: "absolute",
+        width: "50px",
+        height: "40px",
+        fontSize: "4px",
+        border: "1px solid #494949",
+        borderRadius: "8px",
+        boxSizing: "border-box",
+        backgroundColor: "#000",
+        color: "#fff",
+        opacity: "1"
+    };
+
+    const duplicateCheckButtonStyleFalse = {
+        position: "absolute",
+        width: "50px",
+        height: "40px",
+        fontSize: "4px",
+        border: "1px solid #494949",
+        borderRadius: "8px",
+        boxSizing: "border-box",
+        backgroundColor: "#000",
+        color: "#fff",
+        opacity: "0.5"
+    };
+
+    const duplicateCheckButtonDisableTrue = true;
+    const duplicateCheckButtonDisableFalse = false;
 
     // 이름 적합성 검사
     const isValidName = userName.length >= 2 && userName.length < 5;
@@ -200,7 +230,7 @@ function Register() {
                                     setUserEmail(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={isValidEmail ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={isValidEmail ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistemail', {
                                             params: {
@@ -227,7 +257,7 @@ function Register() {
                                     setUserId(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={userId.length >= 1 && isValidId ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={userId.length >= 1 && isValidId ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistid', {
                                             params: {
@@ -261,7 +291,7 @@ function Register() {
                                 rePwErrorHandler();
                             }} />
                             <div>
-                                <button className="register-button" disable={disable} style={{ opacity: opacity }}
+                                <button className="register-button" disabled={disable} style={{ opacity: opacity }}
                                     onClick={() => {
                                         axios.post('http://localhost:8080/join', {
                                             userName: userName,
@@ -269,9 +299,14 @@ function Register() {
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log('회원가입이 완료되었습니다.');
+                                            console.log(response);
+                                            if (response.data.result == false) {
+                                                alert('회원가입이 완료되었습니다.');
+                                                goToLogin();
+                                            }
                                         }).catch(function (error) {
-                                            console.log('에러가 발생되었습니다.')
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>
@@ -279,7 +314,7 @@ function Register() {
                         </form>
                     </div>
                 </div>
-            </Desktop>
+            </Desktop >
 
             <Tablet>
                 <Header />
@@ -306,7 +341,7 @@ function Register() {
                                     setUserEmail(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={isValidEmail ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={isValidEmail ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistemail', {
                                             params: {
@@ -333,7 +368,7 @@ function Register() {
                                     setUserId(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={userId.length >= 1 && isValidId ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={userId.length >= 1 && isValidId ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistid', {
                                             params: {
@@ -367,7 +402,7 @@ function Register() {
                                 rePwErrorHandler();
                             }} />
                             <div>
-                                <button className="register-button" disable={disable} style={{ opacity: opacity }}
+                                <button className="register-button" disabled={disable} style={{ opacity: opacity }}
                                     onClick={() => {
                                         axios.post('http://localhost:8080/join', {
                                             userName: userName,
@@ -375,9 +410,14 @@ function Register() {
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log('회원가입이 완료되었습니다.');
+                                            console.log(response);
+                                            if (response.data.result == false) {
+                                                alert('회원가입이 완료되었습니다.');
+                                                goToLogin();
+                                            }
                                         }).catch(function (error) {
-                                            console.log('에러가 발생되었습니다.')
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>
@@ -405,7 +445,7 @@ function Register() {
                                     setUserEmail(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={isValidEmail ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={isValidEmail ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistemail', {
                                             params: {
@@ -432,7 +472,7 @@ function Register() {
                                     setUserId(handleInput(event));
                                     handleDisable();
                                 }} />
-                                <button style={{ position: "absolute", width: "50px", height: "40px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                <button disabled={userId.length >= 1 && isValidId ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={userId.length >= 1 && isValidId ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
                                         axios.get('http://localhost:8080/checkexistid', {
                                             params: {
@@ -466,7 +506,7 @@ function Register() {
                                 rePwErrorHandler();
                             }} />
                             <div>
-                                <button className="register-button" disable={disable} style={{ opacity: opacity }}
+                                <button className="register-button" disabled={disable} style={{ opacity: opacity }}
                                     onClick={() => {
                                         axios.post('http://localhost:8080/join', {
                                             userName: userName,
@@ -474,9 +514,14 @@ function Register() {
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log('회원가입이 완료되었습니다.');
+                                            console.log(response);
+                                            if (response.data.result == false) {
+                                                alert('회원가입이 완료되었습니다.');
+                                                goToLogin();
+                                            }
                                         }).catch(function (error) {
-                                            console.log('에러가 발생되었습니다.')
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>
