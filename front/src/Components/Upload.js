@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-//sdafadsfasd
+
 const dragActiveStyle ={
     color:"white",
     fontSize:"2em",
