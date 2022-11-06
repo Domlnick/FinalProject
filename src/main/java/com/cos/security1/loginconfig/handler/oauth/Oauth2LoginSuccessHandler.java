@@ -79,24 +79,24 @@ public class Oauth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String result = objectMapper.writeValueAsString(map);
         
 //        response.sendRedirect("/");
-//        response.addHeader(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
-//        response.addHeader(JwtProperties.RT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
+        response.addHeader(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
+        response.addHeader(JwtProperties.RT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
 //        getRedirectStrategy().sendRedirect(request, response, targetUrl);
         
-        Cookie cookie1 = new Cookie(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
-        cookie1.setDomain("localhost");
-        cookie1.setPath("/");
-        cookie1.setMaxAge(JwtProperties.AT_EXPIRATION_TIME / 1000);
-        cookie1.setSecure(true);
-        
-        Cookie cookie2 = new Cookie(JwtProperties.RT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
-        cookie2.setDomain("localhost");
-        cookie2.setPath("/");
-        cookie2.setMaxAge(JwtProperties.RT_EXPIRATION_TIME / 1000);
-        cookie2.setSecure(true);
-        
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
+//        Cookie cookie1 = new Cookie(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
+////        cookie1.setDomain("localhost");
+//        cookie1.setPath("/");
+//        cookie1.setMaxAge(JwtProperties.AT_EXPIRATION_TIME / 1000);
+//        cookie1.setSecure(true);
+//        
+//        Cookie cookie2 = new Cookie(JwtProperties.RT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
+////        cookie2.setDomain("localhost");
+//        cookie2.setPath("/");
+//        cookie2.setMaxAge(JwtProperties.RT_EXPIRATION_TIME / 1000);
+//        cookie2.setSecure(true);
+//        
+//        response.addCookie(cookie1);
+//        response.addCookie(cookie2);
         response.getWriter().write(result);
         
     }
