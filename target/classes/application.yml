@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /
     encoding:
@@ -10,12 +10,12 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
-#    username: SCOTT
-#    password: Qwer123$
-    username: admin
-    password: rladbdbsDL!
+#    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+    username: SCOTT
+    password: Qwer123$
+#    username:
+#    password:
     
 #  mvc:
 #    view:
@@ -24,13 +24,11 @@ spring:
 
   jpa:
     hibernate:
+      database-platform: org.hibernate.dialect.MySQL8Dialect
       ddl-auto: create #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-#    database: mysql
-#    database-platform: org.hibernate.dialect.MySQL8Dialect
-   
     
   security:
     oauth2:

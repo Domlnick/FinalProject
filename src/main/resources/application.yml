@@ -10,19 +10,19 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
-#    username: SCOTT
-#    password: Qwer123$
-    username:
-    password:
+#    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+    username: SCOTT
+    password: Qwer123$
+#    username:
+#    password:
     
 #  mvc:
 #    view:
 #      prefix: /templates/
 #      suffix: .html
 
- jpa:
+  jpa:
     hibernate:
       database-platform: org.hibernate.dialect.MySQL8Dialect
       ddl-auto: create #create update none
