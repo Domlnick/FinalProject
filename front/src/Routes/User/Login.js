@@ -9,8 +9,6 @@ const Desktop = ({ children }) => {
     return isDesktop ? children : null
 };
 
-// 아무거나
-
 const Tablet = ({ children }) => {
     const isTablet = useMediaQuery({ minWidth: 706, maxWidth: 1024 })
     return isTablet ? children : null
