@@ -3,8 +3,6 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
-//ㅁㄴㅇㄹㅇㅁㄴㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴ
 const dragActiveStyle ={
     color:"white",
     fontSize:"2em",
