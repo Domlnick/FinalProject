@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>security_react_test4</name>
+	<name>security_react_test</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -39,7 +39,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1666351178740</id>
+			<id>0</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

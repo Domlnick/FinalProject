@@ -20,15 +20,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
 import com.cos.security1.config.auth.PrincipalDetailsService;
 import com.cos.security1.config.oauth.PrincipalOauth2UserService;
+import com.cos.security1.jwt.config.JwtAuthorizationFilter;
+import com.cos.security1.jwt.config.JwtProperties;
 import com.cos.security1.loginconfig.handler.JsonLoginFailureHandler;
 import com.cos.security1.loginconfig.handler.JsonLoginSuccessHandler;
 import com.cos.security1.loginconfig.handler.oauth.Oauth2LoginFailureHandler;
 import com.cos.security1.loginconfig.handler.oauth.Oauth2LoginSuccessHandler;
 import com.cos.security1.loginconfig.jsonloginfilter.JsonUsernamePasswordAuthenticationFilter;
 import com.cos.security1.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableWebSecurity	// spring security 필터가 spring filterChain에 등록이 됨.
@@ -64,6 +66,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	private OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -128,6 +133,7 @@ public class SecurityConfig {
 				.clearAuthentication(true)  // 인증 정보 삭제.
 				.invalidateHttpSession(true)    // 세션 무효화.
 				.deleteCookies("JSESSIONID")
+				.deleteCookies(JwtProperties.AT_HEADER_STRING)
 				.and()
 				.authorizeRequests(authorize -> authorize
 						.antMatchers("/user/**")
@@ -180,7 +186,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository, objectMapper));
         }
     }
     

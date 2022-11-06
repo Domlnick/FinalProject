@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Service	// IoC로 등록
 public class PrincipalDetailsService implements UserDetailsService{
 
-	@Autowired
 	private final UserRepository userRepository;
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -166,7 +165,7 @@ public class PrincipalDetailsService implements UserDetailsService{
         return result;
     }
     
-    // 로그인시 비밀번호 모를 때 비밀번호 update method 만드는중.
+    // 로그인시 비밀번호 모를 때 비밀번호 update method
     @Transactional
     public String updateUnloginedUserPassword(User user) {
         
