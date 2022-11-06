@@ -9,6 +9,8 @@ const Desktop = ({ children }) => {
     return isDesktop ? children : null
 };
 
+// adsfadfasdfasdfasfsfdsfadsfadsfasfasfsdafasfsafasfasdfasdfasdfasd
+
 const Tablet = ({ children }) => {
     const isTablet = useMediaQuery({ minWidth: 706, maxWidth: 1024 })
     return isTablet ? children : null
@@ -26,10 +28,6 @@ function Login() {
     const [password, setPassword] = useState('');
     const [disable, setDisable] = useState(true);
     const [opacity, setOpacity] = useState(0.5);
-
-    const [users, setUsers] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
     const goToList = () => {
