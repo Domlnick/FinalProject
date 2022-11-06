@@ -332,8 +332,7 @@ public class IndexController {
         Map<String, String> result = new HashMap<>();
         
         String authorizationHeader = request.getHeader(JwtProperties.HEADER_STRING);
-        System.out.println("$$$$$$$$$$$");
-        System.out.println(authorizationHeader);
+//        System.out.println(authorizationHeader);
 
         if(authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
             try {
@@ -341,15 +340,16 @@ public class IndexController {
                 for (String mapKey:refreshTokenRequest.keySet()) {
                     System.out.println("Key:"+mapKey+", Value:"+refreshTokenRequest.get(mapKey));
                     
-//                    response.addHeader(mapKey, refreshTokenRequest.get(mapKey));
-                    Cookie cookie = new Cookie(mapKey, refreshTokenRequest.get(mapKey));
-                    cookie.setDomain("localhost");
-                    cookie.setPath("/");
-                    // 시간지정
-                    cookie.setMaxAge(JwtProperties.RT_EXPIRATION_TIME / 1000);
-                    cookie.setSecure(true);
-                    response.addCookie(cookie);
-                    System.out.println("******");
+                    response.addHeader(mapKey, refreshTokenRequest.get(mapKey));
+                    
+//                    Cookie cookie = new Cookie(mapKey, refreshTokenRequest.get(mapKey));
+//                    cookie.setDomain("localhost");
+//                    cookie.setPath("/");
+//                    // 시간지정
+//                    cookie.setMaxAge(JwtProperties.RT_EXPIRATION_TIME / 1000);
+//                    cookie.setSecure(true);
+//                    response.addCookie(cookie);
+//                    System.out.println("******");
                 }
                 result.put("result", "토큰 재발급 완료.");
             }catch(TokenExpiredException e) {
