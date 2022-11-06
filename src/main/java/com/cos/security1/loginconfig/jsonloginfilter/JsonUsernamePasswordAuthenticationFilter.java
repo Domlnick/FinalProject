@@ -18,8 +18,8 @@ import org.springframework.util.MimeTypeUtils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cos.jwt.config.jwt.JwtProperties;
 import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.jwt.config.JwtProperties;
 import com.cos.security1.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
