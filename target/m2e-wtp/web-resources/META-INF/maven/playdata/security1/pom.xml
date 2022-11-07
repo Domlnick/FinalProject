@@ -82,10 +82,13 @@
 		</dependency>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		<dependency>
        			<groupId>org.springframework.boot</groupId>
         		<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
