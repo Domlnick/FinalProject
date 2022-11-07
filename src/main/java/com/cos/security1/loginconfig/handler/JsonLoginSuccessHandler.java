@@ -83,9 +83,9 @@ public class JsonLoginSuccessHandler implements AuthenticationSuccessHandler{
         boolean rtResult = jwtRefreshTokenService.updateRefreshToken(userEntity.getUserId(), refreshToken);
         System.out.println("rtResult : " + rtResult );
         
-//        response.sendRedirect("/");
         response.addHeader(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
         response.addHeader(JwtProperties.RT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
+//        response.sendRedirect("/");
         
 //        Cookie cookie1 = new Cookie(JwtProperties.AT_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
 ////        cookie1.setDomain("localhost:3000");
