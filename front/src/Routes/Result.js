@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMediaQuery } from 'react-responsive';
-import Paging from '../Components/Pagination.js';
 import '../css/Paging.css';
 import axios from 'axios';
+import Pagination from 'react-js-pagination';
+import { Link } from 'react-router-dom';
 
 const modelSizeValue = {
     marginLeft: "7em",
@@ -15,24 +16,24 @@ const modelSpecTable = {
     color: "#F59324",
     fontSize: "0.9em"
 }
-const catBtnAtciveStyleDesktop = {
-    height: "4em",
-    margin: "2.3vh 1vw 0 1vw",
+// const catBtnAtciveStyleDesktop = {
+//     height: "4em",
+//     margin: "2.3vh 1vw 0 1vw",
 
-    // background: "#B5D5E2",
-    background: "#FFFFFF",
-    color: "white",
-    cursor: "pointer",
+//     // background: "#B5D5E2",
+//     background: "#FFFFFF",
+//     color: "white",
+//     cursor: "pointer",
 
-    fontWeight: "bold",
+//     fontWeight: "bold",
 
-    letterSpacing: "1px",
+//     letterSpacing: "1px",
 
-    boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
+//     boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
 
-    border: "none",
-    borderRadius: "1.8em"
-}
+//     border: "none",
+//     borderRadius: "1.8em"
+// }
 const catBtnAtciveStyleTablet = {
     width: "5.3vw",
     height: "4vh",
@@ -53,214 +54,85 @@ const catBtnAtciveStyleTablet = {
     borderRadius: "1.8em"
 }
 
-const Sample = ({ card, type, sampleArr}) => {
-    if(type === 'Desktop'){
-        if (card == "원피스") {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg" } key={i}
-                                    className="result-img-desktop" />
-                            );
-
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '하의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-desktop" key={i}/>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '상의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-desktop" key={i}/>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '후드') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-desktop" />
-                                );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == "청바지") {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-desktop" />
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        }
-    }else if(type === 'Tablet'){
-        if (card == "원피스") {
-        return (
-            <>
-                <div>
-                    {sampleArr.map((a, i) => {
-                        return (
-                            <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"} key={i}
-                                className="result-img-tablet" />
-                        );
-                    })}
-                </div>
-            </>
-        );
-        } else if (card == '하의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-tablet" key={i}/>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '상의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-tablet" key={i}/>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '후드') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-tablet" />
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == "청바지") {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-tablet" />
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        }
-    }else if(type === 'Mobile'){
-        if (card == "원피스") {
-        return (
-            <>
-                <div>
-                    {sampleArr.map((a, i) => {
-                        return (
-                            <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"} key={i}
-                                className="result-img-mobile" />
-                        );                       
-                    })}
-                </div>
-            </>
-        );
-        } else if (card == '하의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-mobile" key={i} />
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '상의') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-mobile" key={i}/>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == '후드') {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-mobile" />
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        } else if (card == "청바지") {
-            return (
-                <>
-                    <div>
-                        {sampleArr.map((a, i) => {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
-                                    className="result-img-mobile" />
-                                );
-                        })}
-                    </div>
-                </>
-            );
-        }
-    }
+const imagesList = (card)  => {
+    const post = new Array();
     
+    if (card === "원피스") {
+        for(let i =0; i < 30; i++){
+            let data = new Object();
+            
+            data.number = i;
+            data.src = `/image_src/test_image120/women_onepiece_${i+1}.jpg`;
+            data.className = "result-img-"
+
+            post.push(data);
+        }
+
+        return post;
+    } else if (card === '하의') {
+        for(let i =0; i < 30; i++){
+            let data = new Object();
+
+            data.number = i;
+            data.src = `/image_src/upload_sample${i%3}.jpg`;
+            data.className = "result-img-"
+            
+            post.push(data);
+        }
+
+        return post;
+    } else if (card === '상의') {
+        for(let i =0; i < 30; i++){
+            let data = new Object();
+
+            data.number = i;
+            data.src = `/image_src/result_sample${i%3}.jpg`;
+            data.className = `result-img-`;
+            
+            post.push(data);
+        }
+
+        return post;
+    } else if (card === '후드') {
+        for(let i =0; i < 30; i++){
+            let data = new Object();
+
+            data.number = i;
+            data.src = `/image_src/test_image120/men_hoodie_${i+1}.jpg`;
+            data.className = "result-img-"
+            
+            post.push(data);
+        }
+
+        return post;
+    } else if (card === "청바지") {
+        for(let i =0; i < 30; i++){
+            let data = new Object();
+
+            data.number = i;
+            data.src = `/image_src/test_image120/men_jeans_${i+1}.jpg`;
+            data.className = `result-img-`
+            
+            post.push(data);
+        }
+
+        return post;
+    }
+
+    return post;
 }
-function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
+
+function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handlePost, handleCurrentPage}) {
 
     if(type === "Desktop"){
         return (
             <>
                 <button
-                    className={`cat_btn_Desktop ${catActive ? catBtnActiveStyle : null}`}
-                    onClick={() => { handleSetCat(name) 
+                    className="cat-btn-desktop"
+                    onClick={() => { 
+                        handleSetCat(name);
+                        handlePost(imagesList(name));
+                        handleCurrentPage(1);
                 }}>
                     {name}
                 </button>
@@ -270,8 +142,11 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
         return (
             <>
                 <button
-                    className={`cat_btn_tablet ${catActive ? catBtnActiveStyle : null}`}
-                    onClick={() => { handleSetCat(name) 
+                    className={`cat-btn-tablet ${catActive ? catBtnActiveStyle : null}`}
+                    onClick={() => { 
+                        handleSetCat(name);
+                        handlePost(imagesList(name));
+                        handleCurrentPage(1);
                 }}>
                     {name}
                 </button>
@@ -281,8 +156,11 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
         return (
             <>
                 <button
-                    className={`cat_btn_mobile ${catActive ? catBtnActiveStyle : null}`}
-                    onClick={() => { handleSetCat(name) 
+                    className={`cat-btn-mobile ${catActive ? catBtnActiveStyle : null}`}
+                    onClick={() => { 
+                        handleSetCat(name);
+                        handlePost(imagesList(name));
+                        handleCurrentPage(1);
                 }}>
                     {name}
                 </button>
@@ -293,7 +171,6 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
 }
 
 function Result() {
-
     const Desktop = ({ children }) => {
         const isDesktop = useMediaQuery({ minWidth: 1025 })
         return isDesktop ? children : null
@@ -305,6 +182,8 @@ function Result() {
     const Mobile = ({ children }) => {
         const isMobile = useMediaQuery({ maxWidth: 819 })
         return isMobile ? children : null
+
+
     }
 
     // 이후 코어쪽으로부터 카테고리 받아서 배열에 담기
@@ -361,38 +240,64 @@ function Result() {
     const [activeCat, setActiveCat] = useState(categories);
     const [data, setData] = useState(categories);
 
-    useEffect(() => {
-        setActiveCat(categories[0]);
-    }, [])
-
     // useState() 렌더링으로는 바로 적용이 안됨
     // useEffect()에서 렌더링 후 바로 업데이트 하기 위한 함수를 설정	
     useEffect(() => {
-        console.log("data길이:" + data.length)
         setData(categories.filter((v) => v === activeCat));
     }, [activeCat]);
-
-    const sampleArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    
     /* 페이지네이션 미완성 */
-    const [items, setItems] = useState(sampleArr);
-    const [count, setCount] = React.useState(0); //아이템 총 개수
-    const [currentPage, setCurrentPage] = React.useState(1); //현재페이지
-    const [postPerPage] = React.useState(5); //페이지당 아이템 개수
-
-    const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
-    const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
-    const [currentPosts, setCurrentPosts] = React.useState(0);
+    //Desktop
+    const [postDt, setPostDt] = useState([]);
+    const [countDt, setCountDt] = useState(0); //아이템 총 개수
+    const [currentPageDt, setCurrentPageDt] = useState(1); //현재페이지
+    const [postPerPageDt] = useState(15); //페이지당 아이템 개수
+    
+    const [indexOfLastPostDt, setIndexOfLastPostDt] = useState(0);
+    const [indexOfFirstPostDt, setIndexOfFirstPostDt] = useState(0);
+    const [currentPostsDt, setCurrentPostsDt] = useState(0);
     
     useEffect(() => {
-        setCount(items.length);
-        setIndexOfLastPost(currentPage * postPerPage);
-        setIndexOfFirstPost(indexOfLastPost - postPerPage);
-        setCurrentPosts(items.slice(indexOfFirstPost, indexOfLastPost));
-        console.log(items.length);
-    }, [currentPage, indexOfFirstPost, indexOfLastPost, items, postPerPage]);
+        setActiveCat(categories[0]);
+        setPostDt(imagesList(categories[0]));
+    }, []);
 
-    const setPage = (e) => {
-        setCurrentPage(e);
+
+    useEffect(() => {
+        setCountDt(postDt.length);
+        setIndexOfLastPostDt(currentPageDt * postPerPageDt);
+        setIndexOfFirstPostDt(indexOfLastPostDt - postPerPageDt);
+        setCurrentPostsDt(postDt.slice(indexOfFirstPostDt, indexOfLastPostDt));
+    }, [currentPageDt, indexOfFirstPostDt, indexOfLastPostDt, postDt]);
+
+    const setPageDt = (e) => {
+        setCurrentPageDt(e);
+    }
+
+    //Tablet & Mobile
+    const [postTM, setPostTM] = useState([]);
+    const [countTM, setCountTM] = useState(0); //아이템 총 개수
+    const [currentPageTM, setCurrentPageTM] = useState(1); //현재페이지
+    const [postPerPageTM] = useState(10); //페이지당 아이템 개수
+    
+    const [indexOfLastPostTM, setIndexOfLastPostTM] = useState(0);
+    const [indexOfFirstPostTM, setIndexOfFirstPostTM] = useState(0);
+    const [currentPostsTM, setCurrentPostsTM] = useState(0);
+    
+    useEffect(() => {
+        setActiveCat(categories[0]);
+        setPostTM(imagesList(categories[0]));
+    }, []);
+
+    useEffect(() => {
+        setCountTM(postTM.length);
+        setIndexOfLastPostTM(currentPageTM * postPerPageTM);
+        setIndexOfFirstPostTM(indexOfLastPostTM - postPerPageTM);
+        setCurrentPostsTM(postTM.slice(indexOfFirstPostTM, indexOfLastPostTM));
+    }, [currentPageTM, indexOfFirstPostTM, indexOfLastPostTM, postTM]);
+
+    const setPageTM = (e) => {
+        setCurrentPageTM(e);
     }
 
     return (
@@ -422,12 +327,14 @@ function Result() {
                                 } else {
                                     return (
                                         <>
-                                            <Catbtn name={idx}
-                                                type = "Desktop"
-                                                catActive={activeCat === { idx } ? true : false}
+                                            <Catbtn 
+                                                name={idx}
+                                                type="Desktop"
                                                 handleSetCat={setActiveCat}
-                                                catBtnActiveStyle = {catBtnAtciveStyleDesktop}
-                                                key={idx}
+                                                handlePost={setPostDt}
+                                                handleCurrentPage={setCurrentPageDt}
+                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
+                                                key={i}
                                             />
                                         </>
                                     );
@@ -439,24 +346,38 @@ function Result() {
                                 margin: "2.2em 0 0 1em",
                                 // width: "7em",
                                 height: "2em",
-                                fontSize: "1.6em",
+                                // fontSize: "1.6em",
                                 fontWeight: "bold",
                                 textAlign: "center",
                                 background: "none",
                                 border: "none"
                             }}>
-                                {activeCat == "All" ? null : data}
+                                {/* {activeCat == "All" ? null : data} */}
                             </div>
-                            {typeof (activeCat) == "Object" ? null : <Sample card={"All"} />}
-                            {data.map((g, i) => {
-                                // if (i == data.length) setResultCnt(i);
-                                return (
-                                    <div>
-                                        <Sample card={g} key={i} type="Desktop" sampleArr={items}/>
-                                    </div>
-                                );
-                            })}
-                            <Paging />
+                            {
+                                currentPostsDt && postDt.length > 0 ?
+                                <div>
+                                {currentPostsDt.map((idx, i) => (
+                                    <>
+                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}desktop`} />
+                                    </>
+                                    ))
+                                }
+                                </div> :
+                                <div>
+                                    <h3>이미지를 분석할 수 없습니다.</h3>
+                                    <Link to="/main">다시 찾으러가기</Link>
+                                </div>
+                            }
+                            <Pagination
+                                activePage={currentPageDt}
+                                itemsCountPerPage={postPerPageDt}
+                                totalItemsCount={countDt}
+                                pageRangeDisplayed={countDt/6}
+                                prevPageText={"‹"}
+                                nextPageText={"›"}
+                                onChange={setPageDt}
+                            />
                         </div>
                     </div>
                 </div>
@@ -526,9 +447,12 @@ function Result() {
                                 } else {
                                     return (
                                         <>
-                                            <Catbtn name={idx}
+                                            <Catbtn 
+                                                name={idx}
                                                 type="Tablet"
                                                 handleSetCat={setActiveCat}
+                                                handlePost={setPostTM}
+                                                handleCurrentPage={setCurrentPageTM}
                                                 catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
@@ -549,17 +473,30 @@ function Result() {
                             }}>
                                 {activeCat === "All" ? null : data}
                             </div>
-                            {typeof (activeCat) === "Object" ? null : <Sample card={"All"} />}
-                            {data.map((g, i) => {
-                                // if (i === data.length) setResultCnt(i);
-                                return (
-                                    <div>
-                                        <Sample card={g} key={i} type="Tablet" sampleArr={items} />
-                                    </div>
-                                );
-                            })}
-                            <Paging />
-
+                            {
+                                currentPostsTM && postTM.length > 0 ?
+                                <div>
+                                {currentPostsTM.map((idx, i) => (
+                                    <>
+                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}tablet`} />
+                                    </>
+                                    ))
+                                }
+                                </div> :
+                                <div>
+                                    <h3>이미지를 분석할 수 없습니다.</h3>
+                                    <Link to="/main">다시 찾으러가기</Link>
+                                </div>
+                            }
+                            <Pagination
+                                activePage={currentPageTM}
+                                itemsCountPerPage={postPerPageTM}
+                                totalItemsCount={countTM}
+                                pageRangeDisplayed={countTM/6}
+                                prevPageText={"‹"}
+                                nextPageText={"›"}
+                                onChange={setPageTM}
+                            />
                         </div>
                     </div>
                 </>
@@ -627,6 +564,8 @@ function Result() {
                                                 name={idx}
                                                 type="Mobile"
                                                 handleSetCat={setActiveCat}
+                                                handlePost={setPostTM}
+                                                handleCurrentPage={setCurrentPageTM}
                                                 catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
@@ -647,25 +586,30 @@ function Result() {
                             }}>
                                 {activeCat === "All" ? null : data}
                             </div>
-                            {typeof (activeCat) === "Object" ? null : <Sample card={"All"} />}
-                            {data.map((g, i) => {
-                                if (i === data.length) {
-                                    // setResultCnt(i);
-                                }
-                                    <Sample card={g} key={i} type="Mobile" sampleArr={items}/>
-                            })}
                             {
-                                currentPosts && items.length > 0 ?
-                                (data.map((idx, i) => (
-                                    <div>
-                                        <Sample card ={idx} key = {i} type = "Mobile" />
-                                    </div>
+                                currentPostsTM && postTM.length > 0 ?
+                                <div>
+                                {currentPostsTM.map((idx, i) => (
+                                    <>
+                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}mobile`} />
+                                    </>
                                     ))
-                                ) :
-                                <div>게시물이 없습니다.</div>
+                                }
+                                </div> :
+                                <div>
+                                    <h3>이미지를 분석할 수 없습니다.</h3>
+                                    <Link to="/main">다시 찾으러가기</Link>
+                                </div>
                             }
-                            <Paging page={currentPage} count={count} setPage = {setPage} />
-
+                            <Pagination
+                                activePage={currentPageTM}
+                                itemsCountPerPage={postPerPageTM}
+                                totalItemsCount={countTM}
+                                pageRangeDisplayed={countTM/6}
+                                prevPageText={"‹"}
+                                nextPageText={"›"}
+                                onChange={setPageTM}
+                            />
                         </div>
                     </div>
                 </>

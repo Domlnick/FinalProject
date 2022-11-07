@@ -44,7 +44,7 @@
 }
 
 /* Desktop CSS*/
-.cat_btn_Desktop {
+.cat-btn-desktop {
   width: 5em;
   height: 2.3em;
   margin: 1.3em 1em 0 1em;
@@ -59,15 +59,19 @@
   letter-spacing: 0.1em;
 
   box-shadow: -1px 3px 3px 0 rgba(80, 80, 80, 0.698);
-
+  opacity: 0.7;
   border: none;
   border-radius: 5px;
 }
-.cat_btn_Desktop:hover{
-  width: 5.5em;
+.cat-btn-desktop:hover{
   background: aquamarine;
   opacity: 0.8;
-  transition: all 0.5s ease;
+  /* transition: all 0.5s ease; */
+}
+.cat-btn-desktop:focus{
+  background: blue;
+  opacity: 1;
+  /* transition: all 0.5s ease; */
 }
 
 .ad-banner-desktop {
@@ -81,14 +85,14 @@
 }
 
 .left-result-desktop{
-  flex: 1;
+  flex: 3;
   border-right: 1px solid;
 }
 
 .left-top-image-desktop {
   margin-top: 1.2em;
   width: 20em; 
-  height: 33em;
+  height: 30em;
   
   overflow: hidden;
 
@@ -119,9 +123,8 @@
 
 .right-result-desktop{
   margin: 2vh 3.5vw 0 3.5vw;
-  flex:2;
-  width: 62vw;
-  height: 90.9vh;
+  flex:7;
+  height: 51em;
   overflow-x: hidden;
   background: #E8EDED;
   border-radius: 2.4vw;
@@ -157,9 +160,9 @@
 }
 
 .result-img-desktop {
-  width: 13.4em;
+  width: 13.9em;
   height: 20em;
-  margin: 2em 2em 1em 2em;
+  margin: 2em 0em 1em 3.4em;
   border-radius: 1.6em;
   box-shadow: -3px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }
@@ -209,7 +212,7 @@
   border: 6px solid rgba(0, 0, 0, 0.2);
 }
 
-.cat_btn_tablet {
+.cat-btn-tablet {
   width: 5em;
   height: 2.3em;
   margin: 1.3em 1em 0 1em;
@@ -228,10 +231,10 @@
   border: none;
   border-radius: 5px;
 }
-.cat_btn_tablet:hover{
-  width: 5.8em;
+.cat-btn-tablet:hover{
   background: aquamarine;
   opacity: 0.8;
+  transition: all 0.5s ease;
 }
 
 .result-img-tablet {
@@ -242,7 +245,7 @@
   box-shadow: -3px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }
 
-.cat_btn_mobile {
+.cat-btn-mobile {
   width: 4.4em;
   height: 2.3em;
   margin: 1.5em 1em 0 1em;
@@ -261,16 +264,17 @@
   border: none;
   border-radius: 5px;
 }
-.cat_btn_moblie:hover{
-  width: 5.8em;
-  background: aquamarine;
-  opacity: 0.8;
-}
 
 .result-img-mobile {
-  width: 8em;
-  height: 12em;
-  margin: 1.5em 2em 2em 2em;
+  width: 11em;
+  height: 14em;
+  margin: 1em 1.1em 2em 1.1em;
   border-radius: 0.5em;
   box-shadow: -3px 5px 5px 0 rgba(80, 80, 80, 0.698);
+}
+
+.cat-btn-mobile:hover{
+  background: aquamarine;
+  opacity: 0.8;
+  transition: all 0.5s ease;
 }

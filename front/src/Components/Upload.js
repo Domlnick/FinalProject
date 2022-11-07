@@ -55,29 +55,27 @@ function DragAndDrop() {
         reader.onload = () => {
             setImgBase64(reader.result);
         }
-        
-        // 이미지 Base64 String 비동기 전송
-        axios.post('http://localhost:8080/upload', {
-            file : imgBase64
-        })
-        .then((res) => {
-            cntForNoLogined++;
-            if(cntForNoLogined != 4){
-                imageToAI();
-            }else if(cntForNoLogined === 4) {
-                alert("비회원일 경우, 하루 3회 이용 제한됩니다.");
-            }
-        })
-        .catch((e) => {
-            console.error(e);
-        })
-
-
     }, []);
-
+    
     useEffect(() => {
         if(imgBase64 != null){
             sessionStorage.setItem("uploadedImg", imgBase64);
+            
+            // 이미지 Base64 String 비동기 전송
+            axios.post('http://localhost:5000/upload', {
+                file : imgBase64
+            })
+            .then((res) => {
+                cntForNoLogined++;
+                if(cntForNoLogined != 4){
+                    imageToAI();
+                }else if(cntForNoLogined === 4) {
+                    alert("비회원일 경우, 하루 3회 이용 제한됩니다.");
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+            })
         }
     }, [imgBase64]) 
 
