@@ -1,47 +1,70 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMediaQuery } from 'react-responsive';
-import Pagination from "react-js-pagination";
+import Paging from '../Components/Pagination.js';
 import '../css/Paging.css';
 import axios from 'axios';
 
 const modelSizeValue = {
-    marginLeft: "7vw",
+    marginLeft: "7em",
     float: "right"
 }
 
 const modelSpecTable = {
-    marginLeft: "3vw",
-    // marginTop: "",
-    minHeight: "5vh",
+    margin: "1em auto",
     color: "#F59324",
-    fontSize: "2.2vw"
+    fontSize: "0.9em"
+}
+const catBtnAtciveStyleDesktop = {
+    height: "4em",
+    margin: "2.3vh 1vw 0 1vw",
+
+    // background: "#B5D5E2",
+    background: "#FFFFFF",
+    color: "white",
+    cursor: "pointer",
+
+    fontWeight: "bold",
+
+    letterSpacing: "1px",
+
+    boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
+
+    border: "none",
+    borderRadius: "1.8em"
+}
+const catBtnAtciveStyleTablet = {
+    width: "5.3vw",
+    height: "4vh",
+    margin: "2.3vh 1vw 0 1vw",
+
+    background: "#B5D5E2",
+    color: "white",
+    cursor: "pointer",
+
+    fontSize: "1.2vw",
+    fontWeight: "bold",
+
+    letterSpacing: "1px",
+
+    boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
+
+    border: "none",
+    borderRadius: "1.8em"
 }
 
-const Sample = ({ card, type }) => {
-    const sampleArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const Sample = ({ card, type, sampleArr}) => {
     if(type === 'Desktop'){
         if (card == "원피스") {
             return (
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                        className="result-img-fr-desktop" />
-                                );
-                            } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                        className="result-img-lr-desktop" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                        className="result-img-desktop" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg" } key={i}
+                                    className="result-img-desktop" />
+                            );
+
                         })}
                     </div>
                 </>
@@ -51,20 +74,9 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"}
-                                    className="result-img-fr-desktop" />
-                                );
-                            } else if (i == sampleArr.length - 1) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-lr-desktop" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-desktop" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-desktop" key={i}/>
+                            );
                         })}
                     </div>
                 </>
@@ -74,20 +86,9 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"}
-                                        className="result-img-fr-desktop" />
-                                );
-                            } else if (i == sampleArr.length - 1) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-lr-desktop" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-desktop" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-desktop" key={i}/>
+                            );
                         })}
                     </div>
                 </>
@@ -97,22 +98,10 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-fr-desktop" key={i} />
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-desktop" />
                                 );
-                            } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-lr-desktop" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-desktop" />
-                                );
-                            }
                         })}
                     </div>
                 </>
@@ -122,49 +111,25 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-fr-desktop" />
-                                );
-                            } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-lr-desktop" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-desktop" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-desktop" />
+                            );
                         })}
                     </div>
                 </>
             );
         }
-    }else {
+    }else if(type === 'Tablet'){
         if (card == "원피스") {
         return (
             <>
                 <div>
                     {sampleArr.map((a, i) => {
-                        if (i < 3) {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                    className="result-img-fr-tablet" />
-                            );
-                        } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                    className="result-img-lr-tablet" />
-                            );
-                        } else {
-                            return (
-                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"}
-                                    className="result-img-tablet" />
-                            );
-                        }
+                        return (
+                            <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"} key={i}
+                                className="result-img-tablet" />
+                        );
                     })}
                 </div>
             </>
@@ -174,20 +139,9 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"}
-                                        className="result-img-fr-tablet" />
-                                );
-                            } else if (i == sampleArr.length - 1) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-lr-tablet" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-tablet" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-tablet" key={i}/>
+                            );
                         })}
                     </div>
                 </>
@@ -197,20 +151,9 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"}
-                                        className="result-img-fr-tablet" />
-                                );
-                            } else if (i == sampleArr.length - 1) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-lr-tablet" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-tablet" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-tablet" key={i}/>
+                            );
                         })}
                     </div>
                 </>
@@ -220,22 +163,10 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-fr-tablet" key={i} />
-                                );
-                            } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-lr-tablet" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"}
-                                        className="result-img-tablet" />
-                                );
-                            }
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-tablet" />
+                            );
                         })}
                     </div>
                 </>
@@ -245,22 +176,75 @@ const Sample = ({ card, type }) => {
                 <>
                     <div>
                         {sampleArr.map((a, i) => {
-                            if (i < 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-fr-tablet" />
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-tablet" />
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        }
+    }else if(type === 'Mobile'){
+        if (card == "원피스") {
+        return (
+            <>
+                <div>
+                    {sampleArr.map((a, i) => {
+                        return (
+                            <img src={process.env.PUBLIC_URL + "/image_src/test_image120/women_onepiece_" + (i + 1) + ".jpg"} key={i}
+                                className="result-img-mobile" />
+                        );                       
+                    })}
+                </div>
+            </>
+        );
+        } else if (card == '하의') {
+            return (
+                <>
+                    <div>
+                        {sampleArr.map((a, i) => {
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/upload_sample" + (i % 3) + ".jpg"} className="result-img-mobile" key={i} />
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        } else if (card == '상의') {
+            return (
+                <>
+                    <div>
+                        {sampleArr.map((a, i) => {
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/result_sample" + (i % 3) + ".jpg"} className="result-img-mobile" key={i}/>
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        } else if (card == '후드') {
+            return (
+                <>
+                    <div>
+                        {sampleArr.map((a, i) => {
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_hoodie_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-mobile" />
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        } else if (card == "청바지") {
+            return (
+                <>
+                    <div>
+                        {sampleArr.map((a, i) => {
+                            return (
+                                <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"} key={i}
+                                    className="result-img-mobile" />
                                 );
-                            } else if (i == sampleArr.length - 1 || i == sampleArr.length - 2 || i == sampleArr.length - 3) {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-lr-tablet" />
-                                );
-                            } else {
-                                return (
-                                    <img src={process.env.PUBLIC_URL + "/image_src/test_image120/men_jeans_" + (i + 1) + ".jpg"}
-                                        className="result-img-tablet" />
-                                );
-                            }
                         })}
                     </div>
                 </>
@@ -282,11 +266,22 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
                 </button>
             </>
         );
-    }else {
+    }else if(type === "Tablet"){
         return (
             <>
                 <button
                     className={`cat_btn_tablet ${catActive ? catBtnActiveStyle : null}`}
+                    onClick={() => { handleSetCat(name) 
+                }}>
+                    {name}
+                </button>
+            </>
+        );
+    }else {
+        return (
+            <>
+                <button
+                    className={`cat_btn_mobile ${catActive ? catBtnActiveStyle : null}`}
                     onClick={() => { handleSetCat(name) 
                 }}>
                     {name}
@@ -298,45 +293,19 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type}) {
 }
 
 function Result() {
-    
-    const catBtnAtciveStyleDesktop = {
-        height: "4vh",
-        margin: "2.3vh 1vw 0 1vw",
-    
-        background: "#B5D5E2",
-        color: "white",
-        cursor: "pointer",
-    
-        fontWeight: "bold",
-    
-        letterSpacing: "1px",
-    
-        boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-    
-        border: "none",
-        borderRadius: "5px"
-    }
-    const catBtnAtciveStyleTablet = {
-        width: "5.3vw",
-        height: "4vh",
-        margin: "2.3vh 1vw 0 1vw",
-    
-        background: "#B5D5E2",
-        color: "white",
-        cursor: "pointer",
-    
-        fontSize: "1.2vw",
-        fontWeight: "bold",
-    
-        letterSpacing: "1px",
-    
-        boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-    
-        border: "none",
-        borderRadius: "5px"
-    }
 
-
+    const Desktop = ({ children }) => {
+        const isDesktop = useMediaQuery({ minWidth: 1025 })
+        return isDesktop ? children : null
+    }
+    const Tablet = ({ children }) => {
+        const isTablet = useMediaQuery({ minWidth:820, maxWidth: 1024 })
+        return isTablet ? children : null
+    }
+    const Mobile = ({ children }) => {
+        const isMobile = useMediaQuery({ maxWidth: 819 })
+        return isMobile ? children : null
+    }
 
     // 이후 코어쪽으로부터 카테고리 받아서 배열에 담기
     const categoryArr = ['상의', '하의', '가방', '후드', '원피스', '청바지', '치마'];
@@ -386,14 +355,6 @@ function Result() {
         accept  : 'image/png, image/jpeg, image/jpg',
     });
 
-    const Desktop = ({ children }) => {
-        const isDesktop = useMediaQuery({ minWidth: 1025 })
-        return isDesktop ? children : null
-    }
-    const Tablet = ({ children }) => {
-        const isTablet = useMediaQuery({ maxWidth: 1024 })
-        return isTablet ? children : null
-    }
     /* 카테고리 필터 기능 */
     const categories = [...new Set(categoryArr.map((item) => item))];
 
@@ -407,16 +368,32 @@ function Result() {
     // useState() 렌더링으로는 바로 적용이 안됨
     // useEffect()에서 렌더링 후 바로 업데이트 하기 위한 함수를 설정	
     useEffect(() => {
+        console.log("data길이:" + data.length)
         setData(categories.filter((v) => v === activeCat));
     }, [activeCat]);
 
+    const sampleArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     /* 페이지네이션 미완성 */
-    const [resultCnt, setResultCnt] = useState([]);
-    const [currentpage, setCurrentPage] = useState(1);
+    const [items, setItems] = useState(sampleArr);
+    const [count, setCount] = React.useState(0); //아이템 총 개수
+    const [currentPage, setCurrentPage] = React.useState(1); //현재페이지
+    const [postPerPage] = React.useState(5); //페이지당 아이템 개수
 
+    const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
+    const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
+    const [currentPosts, setCurrentPosts] = React.useState(0);
+    
     useEffect(() => {
-        setCurrentPage(currentpage);
-    })
+        setCount(items.length);
+        setIndexOfLastPost(currentPage * postPerPage);
+        setIndexOfFirstPost(indexOfLastPost - postPerPage);
+        setCurrentPosts(items.slice(indexOfFirstPost, indexOfLastPost));
+        console.log(items.length);
+    }, [currentPage, indexOfFirstPost, indexOfLastPost, items, postPerPage]);
+
+    const setPage = (e) => {
+        setCurrentPage(e);
+    }
 
     return (
         <>
@@ -425,13 +402,11 @@ function Result() {
                     <div className='left-result-desktop'>
                         <div>
                             <img className='left-top-image-desktop' src= {`${sessionStorage.getItem("uploadedImg")}`} />
-                            {/* <img className='left-top-image-desktop' src={process.env.PUBLIC_URL + "/image_src/upload_sample.jpg"} /> */}
-                            {/* <img className='left-top-image-desktop' src={process.env.PUBLIC_URL + "/image_src/upload_sample2.jpg"}/> */}
                         </div>
                         <button className="left-image-changeBtn" type="button" onClick={open}>
                             <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
                                 style={{
-                                    width: "4vw",
+                                    width: "4.2em",
                                 }} />다시 업로드하기
                         </button>
                         <div className="left-bottom-text-desktop">
@@ -461,10 +436,10 @@ function Result() {
                         </div>
                         <div className='result-list-desktop' style={{ overflow: "hidden" }}>
                             <div style={{
-                                margin: "4vh 0 0 2vw",
-                                width: "7vw",
-                                height: "3vh",
-                                fontSize: "1vw",
+                                margin: "2.2em 0 0 1em",
+                                // width: "7em",
+                                height: "2em",
+                                fontSize: "1.6em",
                                 fontWeight: "bold",
                                 textAlign: "center",
                                 background: "none",
@@ -474,66 +449,147 @@ function Result() {
                             </div>
                             {typeof (activeCat) == "Object" ? null : <Sample card={"All"} />}
                             {data.map((g, i) => {
-                                if (i == data.length) setResultCnt(i);
+                                // if (i == data.length) setResultCnt(i);
                                 return (
                                     <div>
-                                        <Sample card={g} key={i} type="Desktop" />
+                                        <Sample card={g} key={i} type="Desktop" sampleArr={items}/>
                                     </div>
                                 );
                             })}
-                            <Pagination
-                                activePage={currentpage}
-                                itemClass={"page-item"}
-                                itemsCountPerPage={6}
-                                totalItemsCount={resultCnt}
-                                pageRangeDisplayed={5}
-                                prevPageText={"<"}
-                                nextPageText={">"}
-                            // onChange={handlePageChange}
-                            />
+                            <Paging />
                         </div>
                     </div>
                 </div>
             </Desktop>
             <Tablet>
                 <>
-                    {/* <img className='left-top-image' src={process.env.PUBLIC_URL + "/image_src/upload_sample.jpg"} */}
-                    {/* <div style={{float:'left'}}> */}
-                    {/* <img src={process.env.PUBLIC_URL + "/image_src/sample.png"} */}
-                    <img src={process.env.PUBLIC_URL + "/image_src/upload_sample0.jpg"}
-                        style={{
-                            margin: "5vh 0 0 0",
-                            borderRadius: "3vw",
-                            minWidth: "40vw",
-                            maxWidth: "55vw",
-                            minHeight: "480px",
-                            maxHeight: "40vh",
-
-                            position: "relative"
-                        }} />
+                    <img className='left-top-image-tablet' src= {`${sessionStorage.getItem("uploadedImg")}`} />
                     <button type="button" onClick={open} style={{
-                        marginTop: "4.1vh",
-                        marginLeft: "-8.5vw",
+                        marginTop: "3.4em",
+                        marginLeft: "-4em",
                         background: "none",
                         border: "none",
                         position: "absolute"
                     }}>
                         <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
                             style={{
-                                width: "10vw",
+                                width: "5.7em",
                             }} />
                     </button>
                     <div style={{
-                        margin: "3vh 0 0 31vw",
-                        fontSize: "15px",
-                        width: "37vw",
+                        margin:"3em auto",
+                        display:"flex",
+                        justifyContent:"center",
+                        fontSize: "1.3em",
+                        width: "50%",
                         height: "auto",
-                        minHeight: "100px",
                         overflow: "hidden",
                         background: "#E8EDED",
-                        borderRadius: "3vw"
+                        borderRadius: "1.3em"
                     }}>
-                        <br />
+                        <p style={modelSpecTable}>
+                            <span style={{
+                                background : "#9DA0A0",
+                                color: "white",
+                                borderRadius:"1.3em"
+
+                            }}>업로드 이미지 모델 분석 결과</span>
+                            <table>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Height</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Chest Size</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Waist Size</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                            </table>
+                        </p>
+                    </div>
+
+                    <div style={{
+                        marginLeft: "7.5%",
+                        marginRight: "7.5%",
+                        width: "85%",
+                        marginTop: "3em",
+                        background: "#E8EDED",
+                        borderRadius: "1.8em"
+                    }}>
+                        <div className='result-category-tablet'>
+                            {categoryArr.map((idx, i) => {
+                                if (idx === '치마' || idx === '가방') {
+                                    return null;
+                                } else {
+                                    return (
+                                        <>
+                                            <Catbtn name={idx}
+                                                type="Tablet"
+                                                handleSetCat={setActiveCat}
+                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
+                                                key={idx}
+                                            />
+                                        </>
+                                    );
+                                }
+                            })}
+                        </div>
+                        <div className='result-list-tablet' style={{ overflow: "hidden" }}>
+                            <div style={{
+                                margin: "1.3em 0 0 1em",
+                                height: "2em",
+                                fontSize: "1.6em",
+                                fontWeight: "bold",
+                                textAlign: "center",
+                                background: "none",
+                                border: "none"
+                            }}>
+                                {activeCat === "All" ? null : data}
+                            </div>
+                            {typeof (activeCat) === "Object" ? null : <Sample card={"All"} />}
+                            {data.map((g, i) => {
+                                // if (i === data.length) setResultCnt(i);
+                                return (
+                                    <div>
+                                        <Sample card={g} key={i} type="Tablet" sampleArr={items} />
+                                    </div>
+                                );
+                            })}
+                            <Paging />
+
+                        </div>
+                    </div>
+                </>
+            </Tablet>
+            <Mobile>
+            <>
+                    <img className='left-top-image-tablet' src= {`${sessionStorage.getItem("uploadedImg")}`} />
+                    <button type="button" onClick={open} style={{
+                        marginTop: "3.4em",
+                        marginLeft: "-4em",
+                        background: "none",
+                        border: "none",
+                        position: "absolute"
+                    }}>
+                        <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
+                            style={{
+                                width: "5.7em",
+                            }} />
+                    </button>
+                    <div style={{
+                        margin:"3em auto",
+                        display:"flex",
+                        justifyContent:"center",
+                        fontSize: "0.9em",
+                        width: "53%",
+                        height: "auto",
+                        overflow: "hidden",
+                        background: "#E8EDED",
+                        borderRadius: "1.3em"
+                    }}>
                         <p style={modelSpecTable}>
                             <table>
                                 <tr>
@@ -556,18 +612,20 @@ function Result() {
                         marginLeft: "7.5%",
                         marginRight: "7.5%",
                         width: "85%",
-                        marginTop: "3vh",
+                        marginTop: "3em",
                         background: "#E8EDED",
-                        borderRadius: "50px"
+                        borderRadius: "1.8em"
                     }}>
-                        <div className='result-category-tablet'>
+                        <div className='result-category-mobile'>
                             {categoryArr.map((idx, i) => {
                                 if (idx === '치마' || idx === '가방') {
                                     return null;
                                 } else {
                                     return (
                                         <>
-                                            <Catbtn name={idx}
+                                            <Catbtn 
+                                                name={idx}
+                                                type="Mobile"
                                                 handleSetCat={setActiveCat}
                                                 catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
@@ -579,10 +637,9 @@ function Result() {
                         </div>
                         <div className='result-list-tablet' style={{ overflow: "hidden" }}>
                             <div style={{
-                                margin: "4vh 0 0 2vw",
-                                width: "7vw",
-                                height: "3vh",
-                                fontSize: "1vw",
+                                margin: "1.3em 0 0 1em",
+                                height: "2em",
+                                fontSize: "1.6em",
                                 fontWeight: "bold",
                                 textAlign: "center",
                                 background: "none",
@@ -592,30 +649,32 @@ function Result() {
                             </div>
                             {typeof (activeCat) === "Object" ? null : <Sample card={"All"} />}
                             {data.map((g, i) => {
-                                if (i === data.length) setResultCnt(i);
-                                return (
-                                    <div>
-                                        <Sample card={g} key={i} />
-                                    </div>
-                                );
+                                if (i === data.length) {
+                                    // setResultCnt(i);
+                                }
+                                    <Sample card={g} key={i} type="Mobile" sampleArr={items}/>
                             })}
-                            <Pagination
-                                activePage={currentpage}
-                                itemClass={"page-item"}
-                                itemsCountPerPage={6}
-                                totalItemsCount={resultCnt}
-                                pageRangeDisplayed={5}
-                                prevPageText={"<"}
-                                nextPageText={">"}
-                            // onChange={handlePageChange}
-                            />
+                            {
+                                currentPosts && items.length > 0 ?
+                                (data.map((idx, i) => (
+                                    <div>
+                                        <Sample card ={idx} key = {i} type = "Mobile" />
+                                    </div>
+                                    ))
+                                ) :
+                                <div>게시물이 없습니다.</div>
+                            }
+                            <Paging page={currentPage} count={count} setPage = {setPage} />
+
                         </div>
                     </div>
                 </>
-            </Tablet>
+            </Mobile>
         </>
 
     );
 }
+
+
 
 export default Result;

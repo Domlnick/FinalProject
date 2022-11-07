@@ -80,10 +80,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+<<<<<<< Updated upstream
 		<dependency>
        			<groupId>org.springframework.boot</groupId>
         		<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
+=======
+>>>>>>> Stashed changes
 	</dependencies>
 
 	<build>

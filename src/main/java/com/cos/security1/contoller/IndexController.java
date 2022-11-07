@@ -16,12 +16,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+<<<<<<< Updated upstream
 import org.springframework.web.multipart.MultipartFile;
+=======
+>>>>>>> Stashed changes
 
 import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.config.auth.PrincipalDetailsService;
@@ -224,6 +224,7 @@ public class IndexController {
     @PostMapping("/upload")
     public Map<String, String> uploadImage(@RequestBody String file) throws ParseException {
         Map<String, String> result = new HashMap<>();
+<<<<<<< Updated upstream
         
         
 //        JSONObject jsonObject = new JSONObject(file);
@@ -237,6 +238,16 @@ public class IndexController {
         System.out.println(file);
         System.out.println("clear");
         
+=======
+
+//        JSONObject jsonObject = new JSONObject(file);
+//        System.out.println(stringFile);
+//        result.put("file", file);
+
+        System.out.println(file);
+        System.out.println("clear");
+
+>>>>>>> Stashed changes
         return result;
     }
 

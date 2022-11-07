@@ -12,10 +12,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
     url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+<<<<<<< Updated upstream
     username: SCOTT
     password: Qwer123$
 #    username:
 #    password:
+=======
+    username: 
+    password: 
+>>>>>>> Stashed changes
     
 #  mvc:
 #    view:
@@ -25,7 +30,7 @@ spring:
   jpa:
     hibernate:
       database-platform: org.hibernate.dialect.MySQL8Dialect
-      ddl-auto: create #create update none
+      ddl-auto: update #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
