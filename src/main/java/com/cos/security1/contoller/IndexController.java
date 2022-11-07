@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import org.springframework.web.multipart.MultipartFile;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -225,6 +228,7 @@ public class IndexController {
     public Map<String, String> uploadImage(@RequestBody String file) throws ParseException {
         Map<String, String> result = new HashMap<>();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         
         
 //        JSONObject jsonObject = new JSONObject(file);
@@ -239,6 +243,8 @@ public class IndexController {
         System.out.println("clear");
         
 =======
+=======
+>>>>>>> Stashed changes
 
 //        JSONObject jsonObject = new JSONObject(file);
 //        System.out.println(stringFile);
@@ -247,6 +253,9 @@ public class IndexController {
         System.out.println(file);
         System.out.println("clear");
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         return result;
     }

@@ -13,10 +13,15 @@ spring:
 #    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
     url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     username: SCOTT
     password: Qwer123$
 #    username:
 #    password:
+=======
+    username: 
+    password: 
+>>>>>>> Stashed changes
 =======
     username: 
     password: 
