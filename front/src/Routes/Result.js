@@ -58,11 +58,11 @@ const imagesList = (card)  => {
     const post = new Array();
     
     if (card === "원피스") {
-        for(let i =0; i < 30; i++){
+        for(let i =0; i < 100; i++){
             let data = new Object();
             
             data.number = i;
-            data.src = `/image_src/test_image120/women_onepiece_${i+1}.jpg`;
+            data.src = `/image_src/test_image120/women_onepiece_${(i+1)%30+1}.jpg`;
             data.className = "result-img-"
 
             post.push(data);
@@ -70,7 +70,7 @@ const imagesList = (card)  => {
 
         return post;
     } else if (card === '하의') {
-        for(let i =0; i < 30; i++){
+        for(let i =0; i < 100; i++){
             let data = new Object();
 
             data.number = i;
@@ -82,7 +82,7 @@ const imagesList = (card)  => {
 
         return post;
     } else if (card === '상의') {
-        for(let i =0; i < 30; i++){
+        for(let i =0; i < 100; i++){
             let data = new Object();
 
             data.number = i;
@@ -94,11 +94,11 @@ const imagesList = (card)  => {
 
         return post;
     } else if (card === '후드') {
-        for(let i =0; i < 30; i++){
+        for(let i =0; i < 100; i++){
             let data = new Object();
 
             data.number = i;
-            data.src = `/image_src/test_image120/men_hoodie_${i+1}.jpg`;
+            data.src = `/image_src/test_image120/men_hoodie_${(i+1)%30+1}.jpg`;
             data.className = "result-img-"
             
             post.push(data);
@@ -106,11 +106,11 @@ const imagesList = (card)  => {
 
         return post;
     } else if (card === "청바지") {
-        for(let i =0; i < 30; i++){
+        for(let i =0; i < 100; i++){
             let data = new Object();
 
             data.number = i;
-            data.src = `/image_src/test_image120/men_jeans_${i+1}.jpg`;
+            data.src = `/image_src/test_image120/men_jeans_${(i+1)%30+1}.jpg`;
             data.className = `result-img-`
             
             post.push(data);
