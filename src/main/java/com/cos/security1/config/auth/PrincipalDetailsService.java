@@ -210,7 +210,7 @@ public class PrincipalDetailsService implements UserDetailsService{
         
         if(usedCount == null) {
             return 0;
-        }else if (usedCount.getUsedCount() < 30000) {
+        }else if (usedCount.getUsedCount() < 3) {
             return usedCount.getUsedCount();
         }
         
