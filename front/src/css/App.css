@@ -46,8 +46,8 @@
 /* Desktop CSS*/
 .cat-btn-desktop {
   width: 5em;
-  height: 2.3em;
-  margin: 1.3em 1em 0 1em;
+  height: 2em;
+  margin: 1em 1em 0 1em;
 
   background: white;
   color: black;
@@ -59,17 +59,12 @@
   letter-spacing: 0.1em;
 
   box-shadow: -1px 3px 3px 0 rgba(80, 80, 80, 0.698);
-  opacity: 0.7;
+  opacity: 0.6;
   border: none;
   border-radius: 5px;
 }
 .cat-btn-desktop:hover{
-  background: aquamarine;
-  opacity: 0.8;
-  /* transition: all 0.5s ease; */
-}
-.cat-btn-desktop:hover:after{
-  background: blue;
+  background: white;
   opacity: 1;
   /* transition: all 0.5s ease; */
 }
@@ -102,39 +97,40 @@
 }
 
 .left-image-changeBtn{
-  margin-top: 2em;
+  margin-top: 2.4em;
   margin-bottom: 0.2em;
   background: none;
   font-weight: 600;
-  font-size: 1em;
+  font-size: 1.3em;
   border: none;
 }
 
 .left-bottom-text-desktop {
-  width: 24em;
+  width: 22em;
   height: 16em;
   margin: 2em auto;  
   overflow: hidden;
-  background: url(../../public/image_src/ModelSpecDivImg.png);
+  background: #E8EDED;
   background-size: cover;
   border-radius: 2em;
-  box-shadow: -2px 2px 2px 1px rgba(80, 80, 80, 0.698);
+  box-shadow: -4px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }
 
 .right-result-desktop{
   margin: 2vh 3.5vw 0 3.5vw;
-  flex:7;
+  flex: 9;
   height: 58em;
   overflow-x: hidden;
   background: #E8EDED;
   border-radius: 2.4vw;
+  box-shadow: -4px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }
 
 .result-category-desktop{
   position: absolute;
   text-align: left;
   width: auto;
-  height: 5em;
+  height: 4em;
   background: #6e6e6E;
   border-top-left-radius: 2em;
   border-bottom-right-radius: 2em;
@@ -148,14 +144,14 @@
 
 
 .right-result-desktop::-webkit-scrollbar {
-  width: 15px;
+  width: 0.8em;
   background: hidden;
   border-radius: 6px;
 }
 
 .right-result-desktop::-webkit-scrollbar-thumb {
   border-radius: 2vw;
-  background: #8070d4;
+  background: #6e6e6E;
   border: 6px solid rgba(0, 0, 0, 0.2);
 }
 
@@ -174,6 +170,7 @@
   width: 20em;
   height: 31em;
   position: relative;
+  box-shadow: -4px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }
 
 .result-category-tablet{
@@ -188,7 +185,7 @@
 
 .result-category-mobile{
   width: 100%;
-  height: 4.4em;
+  height: 3em;
   background: #6e6e6E;
   border-top-left-radius: 1.3em;
   border-top-right-radius: 1.3em;
@@ -199,23 +196,10 @@
   overflow-y: scroll;
 }
 
-
-.right-result-tablet::-webkit-scrollbar {
-  width: 15px;
-  background: hidden;
-  border-radius: 6px;
-}
-
-.right-result-tablet::-webkit-scrollbar-thumb {
-  border-radius: 2vw;
-  background: #8070d4;
-  border: 6px solid rgba(0, 0, 0, 0.2);
-}
-
 .cat-btn-tablet {
-  width: 5em;
-  height: 2.3em;
-  margin: 1.3em 1em 0 1em;
+  width: 4em;
+  height: 1.7em;
+  margin: 0.7em 1em 0 1em;
 
   background: white;
   color: black;
@@ -227,14 +211,13 @@
   letter-spacing: 0.1em;
 
   box-shadow: -1px 3px 3px 0 rgba(80, 80, 80, 0.698);
-
+  opacity: 0.6;
   border: none;
   border-radius: 5px;
 }
 .cat-btn-tablet:hover{
-  background: aquamarine;
-  opacity: 0.8;
-  transition: all 0.5s ease;
+  background: white;
+  opacity: 1;
 }
 
 .result-img-tablet {
