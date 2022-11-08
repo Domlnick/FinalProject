@@ -62,11 +62,14 @@ function DragAndDrop() {
             sessionStorage.setItem("uploadedImg", imgBase64);
             
             // 이미지 Base64 String 비동기 전송
-            axios.post('http://localhost:5000/upload', {
+            axios.post('http://localhost:80/test', {
                 file : imgBase64
             })
             .then((res) => {
                 cntForNoLogined++;
+                console.log(res.data.result_img_path)
+                console.log(res.data.result_img_link)
+                console.log(res.data.result_img_score)
                 if(cntForNoLogined != 4){
                     imageToAI();
                 }else if(cntForNoLogined === 4) {
