@@ -31,39 +31,6 @@ const baseStyle = {
     borderRadius: '4.5em'
 }
 
- // 비로그인 유저 IP 조회
-const getUserIp = () => {
-    let userIp = axios.get("https://api.ipify.org/?format=json")
-    .then((res) => {
-        console.log("시발")
-        console.log("res.data.ip: " + res.data.ip)
-    })
-
-    console.log("getMethod: " + userIp.data.ip.toString())
-
-    return userIp;
-}
-
-export const aaaa = () => {
-    axios.post('http://localhost:8080/issignedin', {
-        visitUserIp : getUserIp(),
-        usedCount : 1
-    })
-    .then((res) => {
-        console.log(getUserIp());
-        console.log("언제 나타날까요?")
-        if(res.data.result === 1){
-            alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
-        }else if (res.data.result === 999){
-            alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
-        }
-    })
-    .catch((e) => {
-        console.error(e);
-    })
-
-}
-
 function DragAndDrop() {
     //페이지 이동용
     const navigate = useNavigate();
@@ -74,6 +41,13 @@ function DragAndDrop() {
     //Dropzone
     const [imgBase64, setImgBase64] = useState();
     const [userIp, setUserIp] = useState();
+
+    // 비로그인 유저 IP 조회
+    const mok = () => {
+        axios.get("https://api.ipify.org/?format=json").then((res) => {
+            setUserIp(res.data.ip);
+        })
+    }
     
     const onDrop = useCallback(async acceptedFiles => {
         //이미지 드랍 -> 이미지 base64 변환 
@@ -82,39 +56,31 @@ function DragAndDrop() {
         //이미지 Base64 변환
         const file = acceptedFiles.find(f => f)
         let reader = new FileReader()
-        
-        
-        
+
         reader.readAsDataURL(file);
         reader.onload = () => {
-            // getUserIp();
-            // axios.get("https://api.ipify.org/?format=json")
-            // .then((res) => {
-            //     console.log("시발")
-            //     setUserIp(res.data.ip)
-            //     console.log("res.data.ip: " + res.data.ip)
-            //     console.log("userIp1: " + userIp)
-            //     console.log("userIp2: " + userIp)
-            // })
-            
+            mok();
             setImgBase64(reader.result);
             
-            // console.log(ip)
-            try{
             if(!isLogined()) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
                 //기능 이용시 이용횟수 + 1
-                aaaa();
-            } }catch{
-
-            }
-            
-            
-        }
+                axios.post('http://localhost:8080/issignedin', {
+                    visitUserIp : userIp,
+                    usedCount : 1
+                })
+                .then((res) => {
+                    console.log("언제 나타날까요?")
+                    if(res.data.result === 2){
+                        alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
+                    }else if (res.data.result === 999){
+                        alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+                    }
+                })
+                .catch((e) => {
+                    console.error(e);
+                })
+            }}           
     }, []);
-
-    // useEffect(() => {
-    //     console.log(userIp)
-    // }, [userIp])
     
     useEffect(() => {
         if(imgBase64 != null){
