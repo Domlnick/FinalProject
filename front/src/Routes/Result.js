@@ -7,14 +7,14 @@ import Pagination from 'react-js-pagination';
 import { Link } from 'react-router-dom';
 
 const modelSizeValue = {
-    marginLeft: "7em",
+    marginLeft: "4em",
     float: "right"
 }
 
 const modelSpecTable = {
     margin: "1em auto",
     color: "#F59324",
-    fontSize: "0.9em"
+    fontSize: "0.9em",
 }
 
 const imagesList = (card)  => {
@@ -242,7 +242,7 @@ function Result() {
     const [postDt, setPostDt] = useState([]);
     const [countDt, setCountDt] = useState(0); //아이템 총 개수
     const [currentPageDt, setCurrentPageDt] = useState(1); //현재페이지
-    const [postPerPageDt] = useState(13); //페이지당 아이템 개수
+    const [postPerPageDt] = useState(20); //페이지당 아이템 개수
     
     const [indexOfLastPostDt, setIndexOfLastPostDt] = useState(0);
     const [indexOfFirstPostDt, setIndexOfFirstPostDt] = useState(0);
@@ -271,7 +271,7 @@ function Result() {
     const [postTM, setPostTM] = useState([]);
     const [countTM, setCountTM] = useState(0); //아이템 총 개수
     const [currentPageTM, setCurrentPageTM] = useState(1); //현재페이지
-    const [postPerPageTM] = useState(10); //페이지당 아이템 개수
+    const [postPerPageTM] = useState(20); //페이지당 아이템 개수
     
     const [indexOfLastPostTM, setIndexOfLastPostTM] = useState(0);
     const [indexOfFirstPostTM, setIndexOfFirstPostTM] = useState(0);
@@ -305,10 +305,41 @@ function Result() {
                             <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
                                 style={{
                                     width: "4.2em",
+                                    // marginTop:"2.2em"
                                 }} />다시 업로드하기
                         </button>
-                        <div className="left-bottom-text-desktop">
-                            <br /><br /><br /><br /><br /><br />첨부 이미지 모델 스펙 출력 영역
+                        <div style={{
+                            margin:"3em auto",
+                            display:"flex",
+                            justifyContent:"center",
+                            fontSize: "1.3em",
+                            width: "20em",
+                            height: "auto",
+                            overflow: "hidden",
+                            background: "#E8EDED",
+                            borderRadius: "1.3em",
+                            boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
+                        }}>
+                        <p style={modelSpecTable}>
+                            <span style={{
+                                color: "#6E6E6E",
+                            }}>업로드 이미지 모델 분석 결과</span>
+                            <hr style={{height:"0em", border:"2px solid"}}></hr>
+                            <table>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Height</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Chest Size</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                                <tr>
+                                    <span style={{ float: 'left' }}>Model Waist Size</span>
+                                    <span style={modelSizeValue}>178 cm</span>
+                                </tr>
+                            </table>
+                        </p>
                         </div>
                     </div>
 
@@ -344,7 +375,6 @@ function Result() {
                                 background: "none",
                                 border: "none"
                             }}>
-                                {/* {activeCat == "All" ? null : data} */}
                             </div>
                             {
                                 currentPostsDt && postDt.length > 0 ?
@@ -365,7 +395,7 @@ function Result() {
                                 activePage={currentPageDt}
                                 itemsCountPerPage={postPerPageDt}
                                 totalItemsCount={countDt}
-                                pageRangeDisplayed={countDt/6}
+                                pageRangeDisplayed={countDt/20}
                                 prevPageText={"Prev"}
                                 nextPageText={"Next"}
                                 onChange={setPageDt}
@@ -394,19 +424,18 @@ function Result() {
                         display:"flex",
                         justifyContent:"center",
                         fontSize: "1.3em",
-                        width: "50%",
+                        width: "20em",
                         height: "auto",
                         overflow: "hidden",
                         background: "#E8EDED",
-                        borderRadius: "1.3em"
+                        borderRadius: "1.3em",
+                        boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
                     }}>
                         <p style={modelSpecTable}>
                             <span style={{
-                                background : "#9DA0A0",
-                                color: "white",
-                                borderRadius:"1.3em"
-
+                                color: "#6E6E6E",
                             }}>업로드 이미지 모델 분석 결과</span>
+                            <hr style={{height:"0em", border:"2px solid"}}></hr>
                             <table>
                                 <tr>
                                     <span style={{ float: 'left' }}>Model Height</span>
@@ -454,15 +483,8 @@ function Result() {
                         </div>
                         <div className='result-list-tablet' style={{ overflow: "hidden" }}>
                             <div style={{
-                                margin: "1.3em 0 0 1em",
-                                height: "2em",
-                                fontSize: "1.6em",
-                                fontWeight: "bold",
-                                textAlign: "center",
-                                background: "none",
-                                border: "none"
+                                margin: "2em 0 0 1em",
                             }}>
-                                {activeCat === "All" ? null : data}
                             </div>
                             {
                                 currentPostsTM && postTM.length > 0 ?
@@ -484,7 +506,7 @@ function Result() {
                                 activePage={currentPageTM}
                                 itemsCountPerPage={postPerPageTM}
                                 totalItemsCount={countTM}
-                                pageRangeDisplayed={countTM/6}
+                                pageRangeDisplayed={countTM/20}
                                 prevPageText={"Prev"}
                                 nextPageText={"Next"}
                                 onChange={setPageTM}
@@ -515,14 +537,19 @@ function Result() {
                         margin:"3em auto",
                         display:"flex",
                         justifyContent:"center",
-                        fontSize: "0.9em",
-                        width: "53%",
+                        fontSize: "1.3em",
+                        width: "17em",
                         height: "auto",
                         overflow: "hidden",
                         background: "#E8EDED",
-                        borderRadius: "1.3em"
+                        borderRadius: "1.3em",
+                        boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
                     }}>
                         <p style={modelSpecTable}>
+                        <span style={{
+                                color: "#6E6E6E",
+                            }}>업로드 이미지 모델 분석 결과</span>
+                        <hr style={{height:"0em", border:"2px solid"}}></hr>
                             <table>
                                 <tr>
                                     <span style={{ float: 'left' }}>Model Height</span>
@@ -541,9 +568,9 @@ function Result() {
                     </div>
 
                     <div style={{
-                        marginLeft: "7.5%",
-                        marginRight: "7.5%",
-                        width: "85%",
+                        marginLeft: "10%",
+                        marginRight: "10%",
+                        width: "80%",
                         marginTop: "3em",
                         background: "#E8EDED",
                         borderRadius: "1.8em"
@@ -570,15 +597,8 @@ function Result() {
                         </div>
                         <div className='result-list-tablet' style={{ overflow: "hidden" }}>
                             <div style={{
-                                margin: "1.3em 0 0 1em",
-                                height: "2em",
-                                fontSize: "1.6em",
-                                fontWeight: "bold",
-                                textAlign: "center",
-                                background: "none",
-                                border: "none"
+                                margin: "2em 0 0 1em",
                             }}>
-                                {activeCat === "All" ? null : data}
                             </div>
                             {
                                 currentPostsTM && postTM.length > 0 ?
@@ -599,7 +619,7 @@ function Result() {
                                 activePage={currentPageTM}
                                 itemsCountPerPage={postPerPageTM}
                                 totalItemsCount={countTM}
-                                pageRangeDisplayed={countTM/6}
+                                pageRangeDisplayed={countTM/20}
                                 prevPageText={"‹"}
                                 nextPageText={"›"}
                                 onChange={setPageTM}
