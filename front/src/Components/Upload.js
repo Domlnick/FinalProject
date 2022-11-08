@@ -93,15 +93,15 @@ function DragAndDrop() {
             sessionStorage.setItem("uploadedImg", imgBase64);
             
             // 이미지 Base64 String 비동기 전송
-            // axios.post('http://localhost:5000/upload', {
-            //     file : imgBase64
-            // })
-            // .then((res) => {
-            //     // imageToAI();
-            // })
-            // .catch((e) => {
-            //     console.error(e);
-            // })
+            axios.post('http://localhost:80/test', {
+                file : imgBase64
+            })
+            .then((res) => {
+                // imageToAI();
+            })
+            .catch((e) => {
+                console.error(e);
+            })
         }
     }, [imgBase64]) 
 
