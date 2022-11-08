@@ -219,7 +219,7 @@ function Result() {
     const [postDt, setPostDt] = useState([]);
     const [countDt, setCountDt] = useState(0); //아이템 총 개수
     const [currentPageDt, setCurrentPageDt] = useState(1); //현재페이지
-    const [postPerPageDt] = useState(15); //페이지당 아이템 개수
+    const [postPerPageDt] = useState(13); //페이지당 아이템 개수
     
     const [indexOfLastPostDt, setIndexOfLastPostDt] = useState(0);
     const [indexOfFirstPostDt, setIndexOfFirstPostDt] = useState(0);
@@ -456,6 +456,7 @@ function Result() {
                                     <Link to="/main">다시 찾으러가기</Link>
                                 </div>
                             }
+                            <div>
                             <Pagination
                                 activePage={currentPageTM}
                                 itemsCountPerPage={postPerPageTM}
@@ -467,6 +468,7 @@ function Result() {
                                 itemClass='page-item'
                                 linkClass='page-ling'
                             />
+                            </div>
                         </div>
                     </div>
                 </>
