@@ -141,7 +141,7 @@
 }
 
 .result-list-desktop{
-  margin-top: 6vh ;
+  margin : 0.6em auto;
   background: #E8EDED;
   overflow-y: scroll;
 }
@@ -162,7 +162,7 @@
 .result-img-desktop {
   width: 13.9em;
   height: 20em;
-  margin: 2em 0em 1em 3.4em;
+  margin: 2em 1em 1em 3.4em;
   border-radius: 1.6em;
   box-shadow: -3px 5px 5px 0 rgba(80, 80, 80, 0.698);
 }

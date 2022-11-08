@@ -22,7 +22,6 @@ spring:
 
   jpa:
     hibernate:
-      database-platform: org.hibernate.dialect.MySQL8Dialect
       ddl-auto: update #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
