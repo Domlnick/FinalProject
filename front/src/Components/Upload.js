@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { isLogined } from '../Routes/User/Login';
 
 const dragActiveStyle ={
     color:"white",
@@ -30,6 +31,38 @@ const baseStyle = {
     borderRadius: '4.5em'
 }
 
+ // 비로그인 유저 IP 조회
+const getUserIp = () => {
+    let userIp = axios.get("https://api.ipify.org/?format=json")
+    .then((res) => {
+        console.log("시발")
+        console.log("res.data.ip: " + res.data.ip)
+    })
+
+    console.log("getMethod: " + userIp.data.ip.toString())
+
+    return userIp;
+}
+
+export const aaaa = () => {
+    axios.post('http://localhost:8080/issignedin', {
+        visitUserIp : getUserIp(),
+        usedCount : 1
+    })
+    .then((res) => {
+        console.log(getUserIp());
+        console.log("언제 나타날까요?")
+        if(res.data.result === 1){
+            alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
+        }else if (res.data.result === 999){
+            alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+        }
+    })
+    .catch((e) => {
+        console.error(e);
+    })
+
+}
 
 function DragAndDrop() {
     //페이지 이동용
@@ -37,71 +70,70 @@ function DragAndDrop() {
     const imageToAI = () => {
         navigate("/result");
     }
-
-    const [visitUserDetails, setVisitUserDetails] = useState(null);
-
-    // 비로그인 유저 IP 조회
-    const getUserGeolocationDetails = () => {
-        fetch(
-            "https://geolocation-db.com/jsonp"
-        )
-            .then(response => response.json())
-            .then(data => setVisitUserDetails(data));
-    };
     
     //Dropzone
     const [imgBase64, setImgBase64] = useState();
+    const [userIp, setUserIp] = useState();
     
-    const onDrop = useCallback(acceptedFiles => {
+    const onDrop = useCallback(async acceptedFiles => {
         //이미지 드랍 -> 이미지 base64 변환 
         // -> base64 String 백엔드 비동기 전송 -> session에 담기 -> 페이지 이동
-        
+
         //이미지 Base64 변환
         const file = acceptedFiles.find(f => f)
         let reader = new FileReader()
         
+        
+        
         reader.readAsDataURL(file);
         reader.onload = () => {
-            setImgBase64(reader.result);
-            getUserGeolocationDetails();
+            // getUserIp();
+            // axios.get("https://api.ipify.org/?format=json")
+            // .then((res) => {
+            //     console.log("시발")
+            //     setUserIp(res.data.ip)
+            //     console.log("res.data.ip: " + res.data.ip)
+            //     console.log("userIp1: " + userIp)
+            //     console.log("userIp2: " + userIp)
+            // })
             
-            // if(!false) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
+            setImgBase64(reader.result);
+            
+            // console.log(ip)
+            try{
+            if(!isLogined()) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
                 //기능 이용시 이용횟수 + 1
-                axios.post('http://localhost:8080/issignedin', {
-                    visitUserIp : visitUserDetails.IPv4,
-                    usedCount : 1
-                })
-                .then((res) => {
-                    console.log(res.data);
+                aaaa();
+            } }catch{
 
-                    if(res.data.result === 2){
-                        alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
-                    }else if (res.data.result === 999){
-                        alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
-                    }
-                })
-                .catch((e) => {
-                    console.error(e);
-                })
-            // }
+            }
+            
+            
         }
-        console.log(visitUserDetails.IPv4);
     }, []);
+
+    // useEffect(() => {
+    //     console.log(userIp)
+    // }, [userIp])
     
     useEffect(() => {
         if(imgBase64 != null){
             sessionStorage.setItem("uploadedImg", imgBase64);
             
             // 이미지 Base64 String 비동기 전송
-            axios.post('http://localhost:80/test', {
-                file : imgBase64
-            })
-            .then((res) => {
-                // imageToAI();
-            })
-            .catch((e) => {
-                console.error(e);
-            })
+            // axios.post('http://localhost:80/test', {
+            //     file : imgBase64
+            // })
+            // .then((res) => {
+            //     // imageToAI();
+            //     // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
+            //     console.log(res.data.result_img_path)
+            //     console.log(res.data.result_img_link)
+            //     console.log(res.data.result_img_score)
+            // })
+            // .catch((e) => {
+            //     console.error(e);
+            // })
         }
     }, [imgBase64]) 
 

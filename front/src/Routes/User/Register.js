@@ -300,7 +300,7 @@ function Register() {
                                             password: password
                                         }).then(function (response) {
                                             console.log(response);
-                                            if (response.data.result == false) {
+                                            if (response.data.result === true) {
                                                 alert('회원가입이 완료되었습니다.');
                                                 goToLogin();
                                             }

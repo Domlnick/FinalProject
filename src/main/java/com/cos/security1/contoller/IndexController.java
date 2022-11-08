@@ -144,7 +144,7 @@ public class IndexController {
         
         if(!isExistId && !isExistEmail) {
             principalDetailService.joinUser(newUser);
-            emailService.sendMail(user, "register");
+//            emailService.sendMail(user, "register");
             result.put("result", true);
             
             return result;
