@@ -1,17 +1,19 @@
 package com.cos.security1.config.auth;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cos.security1.model.NotSignedUser;
 import com.cos.security1.model.User;
+import com.cos.security1.repository.NotSignedUserRepository;
 import com.cos.security1.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class PrincipalDetailsService implements UserDetailsService{
 
 	private final UserRepository userRepository;
+	private final NotSignedUserRepository notSignedUserRepository;
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
@@ -199,6 +202,42 @@ public class PrincipalDetailsService implements UserDetailsService{
         }
         
         return result;
+    }
+    
+    public int checkLimitCount(NotSignedUser notSignedUser) {
+        
+        NotSignedUser usedCount = notSignedUserRepository.findUsedCountByVisitUserIp(notSignedUser.getVisitUserIp());
+        
+        if(usedCount == null) {
+            return 0;
+        }else if (usedCount.getUsedCount() <3) {
+            return usedCount.getUsedCount();
+        }
+        
+        return 500;
+    }
+    
+    public boolean manageVisitingUser(NotSignedUser notSignedUser) {
+        int totalCount = checkLimitCount(notSignedUser);
+        
+        // IP 존재 O & 사용 횟수 0 -> save
+        if(totalCount == 0) {
+            notSignedUserRepository.save(notSignedUser);            
+            return true;
+            
+            // IP 존재 O & 사용 횟수 1 이상 -> update
+        }else if(totalCount != 500) {
+            Optional<NotSignedUser> noUser = notSignedUserRepository.findByVisitUserIp(notSignedUser.getVisitUserIp());
+            
+            noUser.ifPresent(thisUser -> {
+                thisUser.setUsedCount(totalCount + 1);
+                
+                notSignedUserRepository.save(thisUser);
+            });
+            return true;
+        }
+        // IP 존재 O & 사용 횟수 3 -> return false;
+        return false;
     }
     
 }

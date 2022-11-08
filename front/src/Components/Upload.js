@@ -38,23 +38,54 @@ function DragAndDrop() {
         navigate("/result");
     }
 
-    let cntForNoLogined = 0;
+    const [visitUserDetails, setVisitUserDetails] = useState(null);
 
+    // 비로그인 유저 IP 조회
+    const getUserGeolocationDetails = () => {
+        fetch(
+            "https://geolocation-db.com/jsonp"
+        )
+            .then(response => response.json())
+            .then(data => setVisitUserDetails(data));
+    };
+    
     //Dropzone
     const [imgBase64, setImgBase64] = useState();
-
+    
     const onDrop = useCallback(acceptedFiles => {
         //이미지 드랍 -> 이미지 base64 변환 
         // -> base64 String 백엔드 비동기 전송 -> session에 담기 -> 페이지 이동
-
+        
         //이미지 Base64 변환
         const file = acceptedFiles.find(f => f)
         let reader = new FileReader()
-
+        
         reader.readAsDataURL(file);
         reader.onload = () => {
             setImgBase64(reader.result);
+            getUserGeolocationDetails();
+            
+            // if(!false) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
+                //기능 이용시 이용횟수 + 1
+                axios.post('http://localhost:8080/issignedin', {
+                    visitUserIp : visitUserDetails.IPv4,
+                    usedCount : 1
+                })
+                .then((res) => {
+                    console.log(res.data);
+
+                    if(res.data.result === 2){
+                        alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
+                    }else if (res.data.result === 999){
+                        alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+                    }
+                })
+                .catch((e) => {
+                    console.error(e);
+                })
+            // }
         }
+        console.log(visitUserDetails.IPv4);
     }, []);
     
     useEffect(() => {
@@ -62,20 +93,15 @@ function DragAndDrop() {
             sessionStorage.setItem("uploadedImg", imgBase64);
             
             // 이미지 Base64 String 비동기 전송
-            axios.post('http://localhost:5000/upload', {
-                file : imgBase64
-            })
-            .then((res) => {
-                cntForNoLogined++;
-                if(cntForNoLogined != 4){
-                    imageToAI();
-                }else if(cntForNoLogined === 4) {
-                    alert("비회원일 경우, 하루 3회 이용 제한됩니다.");
-                }
-            })
-            .catch((e) => {
-                console.error(e);
-            })
+            // axios.post('http://localhost:5000/upload', {
+            //     file : imgBase64
+            // })
+            // .then((res) => {
+            //     // imageToAI();
+            // })
+            // .catch((e) => {
+            //     console.error(e);
+            // })
         }
     }, [imgBase64]) 
 
