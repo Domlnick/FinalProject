@@ -157,6 +157,8 @@ public class SecurityConfig {
         configuration.addExposedHeader(JwtProperties.AT_HEADER_STRING);
         configuration.addExposedHeader(JwtProperties.RT_HEADER_STRING);
         configuration.addAllowedOriginPattern("*");
+        configuration.addExposedHeader(JwtProperties.AT_HEADER_STRING); // front에서 header에 접근 권한 설정
+        configuration.addExposedHeader(JwtProperties.RT_HEADER_STRING); // front에서 header에 접근 권한 설정
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

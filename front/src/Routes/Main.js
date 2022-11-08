@@ -199,8 +199,8 @@ function Banner() {
                         style={BannerEffect}>
                             <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count] }
                                 style = {{
-                                    width: "50em",
-                                    height: "5.5em",
+                                    width: "63em",
+                                    height: "5.8em",
                                     cursor: "pointer",
                                     alignItems: "center",}} 
                                 onClick = { () => {
