@@ -1,12 +1,10 @@
 package com.cos.security1.contoller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,15 +15,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.cos.security1.config.auth.PrincipalDetails;
@@ -33,7 +29,9 @@ import com.cos.security1.config.auth.PrincipalDetailsService;
 import com.cos.security1.email.EmailService;
 import com.cos.security1.jwt.config.JwtProperties;
 import com.cos.security1.jwt.config.JwtRefreshTokenService;
+import com.cos.security1.model.NotSignedUser;
 import com.cos.security1.model.User;
+import com.cos.security1.repository.NotSignedUserRepository;
 import com.cos.security1.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,12 +40,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class IndexController {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NotSignedUserRepository notSignedUserRepository;
+    
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -227,19 +228,27 @@ public class IndexController {
         return result;
     }
     
-
-//	@PostMapping("/upload")
-    @RequestMapping(value = "/upload", headers = "content-type = application/json", method = RequestMethod.POST)
-    public @ResponseBody MultipartFile imageUpload(@RequestPart(value = "file", required = true) MultipartFile file)
-            throws IOException {
-
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getContentType());
-        System.out.println(file.getSize());
-//    System.out.println(“받은 파일: ” + fileload.getOriginalFilename());
-//    System.out.println(“받은 파일: ” +fileload.getContentType());
-
-        return file;
+    
+    @PostMapping("/issignedin")
+    public @ResponseBody Map<String, Integer> isSignedIn(@RequestBody NotSignedUser notSignedUser) throws Exception {
+        
+        Map<String, Integer> result = new HashMap<>();
+        NotSignedUser thisUser = notSignedUserRepository.findByvisitUserIp(notSignedUser.getVisitUserIp());
+        int totalCnt = 0;
+        if(thisUser != null) {
+            totalCnt += thisUser.getUsedCount();
+        }
+        
+        boolean signedIn = principalDetailService.manageVisitingUser(notSignedUser);
+        
+        if(signedIn) {
+            result.put("result", totalCnt);
+            return result;
+        }else {
+            result.put("result", 999);
+        }
+        
+        return result;
     }
 
     @Secured("ROLE_ADMIN") // 특정 권한을 가진 유저만 해당경로로 접근 가능. SecurityConfig에서 해당 Class를

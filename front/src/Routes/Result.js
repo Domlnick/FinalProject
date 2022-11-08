@@ -145,9 +145,15 @@ function Result() {
     const Mobile = ({ children }) => {
         const isMobile = useMediaQuery({ maxWidth: 819 })
         return isMobile ? children : null
-
-
     }
+    const [visitUserDetails, setVisitUserDetails] = useState(null);
+    const getUserGeolocationDetails = () => {
+        fetch(
+            "https://geolocation-db.com/jsonp"
+        )
+            .then(response => response.json())
+            .then(data => setVisitUserDetails(data));
+    };
 
     // 이후 코어쪽으로부터 카테고리 받아서 배열에 담기
     const categoryArr = ['상의', '하의', '가방', '후드', '원피스', '청바지', '치마'];
@@ -166,9 +172,35 @@ function Result() {
         reader.readAsDataURL(file);
         reader.onload = () => {
             setReUploadImg(reader.result);
+            getUserGeolocationDetails();
+            axios.post('http://localhost:8080/issignedin', {
+                    visitUserIp : visitUserDetails.IPv4,
+                    usedCount : 1
+                })
+                .then((res) => {
+                    console.log(res.data);
+
+                    if(res.data.result === 2){
+                        alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
+                    }else if (res.data.result === 999){
+                        alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+                    }
+                })
+                .catch((e) => {
+                    console.error(e);
+                })
         }
 
         // 이미지 Base64 String 비동기 전송
+        
+        
+    }, []);
+    
+    useEffect(() => {
+        if(reUploadImg != null){
+            sessionStorage.setItem("uploadedImg", reUploadImg);
+            window.location.reload(); // 테스트용
+        }
         axios.post('http://localhost:8080/upload', {
             file : reUploadImg
         })
@@ -178,15 +210,6 @@ function Result() {
         .catch((e) => {
             console.error(e);
         })
-
-
-    }, []);
-
-    useEffect(() => {
-        if(reUploadImg != null){
-            sessionStorage.setItem("uploadedImg", reUploadImg);
-            window.location.reload(); // 테스트용
-        }
     }, [reUploadImg]) 
 
     const { open } = useDropzone({
