@@ -16,43 +16,6 @@ const modelSpecTable = {
     color: "#F59324",
     fontSize: "0.9em"
 }
-// const catBtnAtciveStyleDesktop = {
-//     height: "4em",
-//     margin: "2.3vh 1vw 0 1vw",
-
-//     // background: "#B5D5E2",
-//     background: "#FFFFFF",
-//     color: "white",
-//     cursor: "pointer",
-
-//     fontWeight: "bold",
-
-//     letterSpacing: "1px",
-
-//     boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-
-//     border: "none",
-//     borderRadius: "1.8em"
-// }
-const catBtnAtciveStyleTablet = {
-    width: "5.3vw",
-    height: "4vh",
-    margin: "2.3vh 1vw 0 1vw",
-
-    background: "#B5D5E2",
-    color: "white",
-    cursor: "pointer",
-
-    fontSize: "1.2vw",
-    fontWeight: "bold",
-
-    letterSpacing: "1px",
-
-    boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-
-    border: "none",
-    borderRadius: "1.8em"
-}
 
 const imagesList = (card)  => {
     const post = new Array();
@@ -122,7 +85,7 @@ const imagesList = (card)  => {
     return post;
 }
 
-function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handlePost, handleCurrentPage}) {
+function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
 
     if(type === "Desktop"){
         return (
@@ -142,7 +105,7 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handle
         return (
             <>
                 <button
-                    className={`cat-btn-tablet ${catActive ? catBtnActiveStyle : null}`}
+                    className="cat-btn-tablet"
                     onClick={() => { 
                         handleSetCat(name);
                         handlePost(imagesList(name));
@@ -156,7 +119,7 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handle
         return (
             <>
                 <button
-                    className={`cat-btn-mobile ${catActive ? catBtnActiveStyle : null}`}
+                    className="cat-btn-tablet"
                     onClick={() => { 
                         handleSetCat(name);
                         handlePost(imagesList(name));
@@ -246,20 +209,27 @@ function Result() {
         setData(categories.filter((v) => v === activeCat));
     }, [activeCat]);
     
-    /* 페이지네이션 미완성 */
+    //Pagination 미완성 
+    //- 비동기 데이터 받아와서 뿌리는 작업 필요
+    //아이템 총 개수 - 설정 필요
+    //Desktop과 Tablet & Mobile 한 페이지 출력 개수 구분
+    // 카테고리 버튼 누를때마다 해당 카테고리 1페이지 출력되게 구현함
+
     //Desktop
     const [postDt, setPostDt] = useState([]);
     const [countDt, setCountDt] = useState(0); //아이템 총 개수
     const [currentPageDt, setCurrentPageDt] = useState(1); //현재페이지
-    const [postPerPageDt] = useState(15); //페이지당 아이템 개수
+    const [postPerPageDt] = useState(13); //페이지당 아이템 개수
     
     const [indexOfLastPostDt, setIndexOfLastPostDt] = useState(0);
     const [indexOfFirstPostDt, setIndexOfFirstPostDt] = useState(0);
     const [currentPostsDt, setCurrentPostsDt] = useState(0);
-    
+
+
     useEffect(() => {
         setActiveCat(categories[0]);
         setPostDt(imagesList(categories[0]));
+        // btnEffect.current.focus();
     }, []);
 
 
@@ -333,7 +303,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostDt}
                                                 handleCurrentPage={setCurrentPageDt}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={i}
                                             />
                                         </>
@@ -374,8 +343,8 @@ function Result() {
                                 itemsCountPerPage={postPerPageDt}
                                 totalItemsCount={countDt}
                                 pageRangeDisplayed={countDt/6}
-                                prevPageText={"‹"}
-                                nextPageText={"›"}
+                                prevPageText={"Prev"}
+                                nextPageText={"Next"}
                                 onChange={setPageDt}
                             />
                         </div>
@@ -453,7 +422,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
                                         </>
@@ -488,15 +456,19 @@ function Result() {
                                     <Link to="/main">다시 찾으러가기</Link>
                                 </div>
                             }
+                            <div>
                             <Pagination
                                 activePage={currentPageTM}
                                 itemsCountPerPage={postPerPageTM}
                                 totalItemsCount={countTM}
                                 pageRangeDisplayed={countTM/6}
-                                prevPageText={"‹"}
-                                nextPageText={"›"}
+                                prevPageText={"Prev"}
+                                nextPageText={"Next"}
                                 onChange={setPageTM}
+                                itemClass='page-item'
+                                linkClass='page-ling'
                             />
+                            </div>
                         </div>
                     </div>
                 </>
@@ -566,7 +538,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
                                         </>

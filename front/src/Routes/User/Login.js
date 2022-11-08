@@ -2,7 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Header } from "../../Components/Header";
 import { useMediaQuery } from "react-responsive";
+import Cookies from "universal-cookie";
 import axios from "axios";
+
+const cookies = new Cookies();
 
 const Desktop = ({ children }) => {
     const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -17,6 +20,18 @@ const Tablet = ({ children }) => {
 const Mobile = ({ children }) => {
     const isMobile = useMediaQuery({ maxWidth: 705 })
     return isMobile ? children : null
+};
+
+// 토큰을 쿠키에 저장하는 함수/
+export function setRefreshTokenToCookie(refreshToken) {
+    cookies.set('refreshToken', refreshToken);
+};
+
+// 로그아웃 하면 쿠키를 삭제하는 함수.
+export function logout() {
+    console.log('localStorage set logout!');
+    window.localStorage.setItem('logout', Date.now());
+    cookies.remove('refreshToken');
 };
 
 // 로그인 컴포넌트
@@ -82,11 +97,15 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
-                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
-                                    // 리프레쉬토큰도 DB에 저장해놔야함.
                                     console.log(respons);
                                     console.log(respons.data.result);
+
+                                    const accessToken = respons.headers.get("AT_RT_Authorization");
+                                    setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
+
+                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                                    axios.defaults.headers.common['Authorization'] = accessToken;
+
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
                                     } else {
@@ -149,11 +168,15 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
-                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
-                                    // 리프레쉬토큰도 DB에 저장해놔야함.
                                     console.log(respons);
                                     console.log(respons.data.result);
+
+                                    const accessToken = respons.headers.get("AT_RT_Authorization");
+                                    setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
+
+                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                                    axios.defaults.headers.common['Authorization'] = accessToken;
+
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
                                     } else {
@@ -209,11 +232,15 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    // 엑세스토큰 및 리프레쉬토큰 2개 쿠키에 담아서 줄거임
-                                    // 단 우리가 요청할때는 헤더값에 넣어줘야함
-                                    // 리프레쉬토큰도 DB에 저장해놔야함.
                                     console.log(respons);
                                     console.log(respons.data.result);
+
+                                    const accessToken = respons.headers.get("AT_RT_Authorization");
+                                    setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
+
+                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                                    axios.defaults.headers.common['Authorization'] = accessToken;
+
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
                                     } else {
