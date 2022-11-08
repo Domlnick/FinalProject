@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
     encoding:
@@ -12,8 +12,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://db-3team-project.ckirsmdzwudh.ap-northeast-2.rds.amazonaws.com:3306/security?serverTimezone=Asia/Seoul
     url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
-    username: root
-    password: playdata
+    username: 
+    password: 
     
 #  mvc:
 #    view:

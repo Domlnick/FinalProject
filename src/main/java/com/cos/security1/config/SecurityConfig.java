@@ -154,6 +154,8 @@ public class SecurityConfig {
 //        configuration.addAllowedOrigin("*");    // 모든 도메인 다 허용
         configuration.addAllowedHeader("*");    // 모든 header 다 허용
         configuration.addAllowedMethod("*");    // 모든 method 다 허용
+        configuration.addExposedHeader(JwtProperties.AT_HEADER_STRING);
+        configuration.addExposedHeader(JwtProperties.RT_HEADER_STRING);
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowCredentials(true);
 
