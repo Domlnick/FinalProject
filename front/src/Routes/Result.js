@@ -16,43 +16,6 @@ const modelSpecTable = {
     color: "#F59324",
     fontSize: "0.9em"
 }
-// const catBtnAtciveStyleDesktop = {
-//     height: "4em",
-//     margin: "2.3vh 1vw 0 1vw",
-
-//     // background: "#B5D5E2",
-//     background: "#FFFFFF",
-//     color: "white",
-//     cursor: "pointer",
-
-//     fontWeight: "bold",
-
-//     letterSpacing: "1px",
-
-//     boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-
-//     border: "none",
-//     borderRadius: "1.8em"
-// }
-const catBtnAtciveStyleTablet = {
-    width: "5.3vw",
-    height: "4vh",
-    margin: "2.3vh 1vw 0 1vw",
-
-    background: "#B5D5E2",
-    color: "white",
-    cursor: "pointer",
-
-    fontSize: "1.2vw",
-    fontWeight: "bold",
-
-    letterSpacing: "1px",
-
-    boxShadow: "-1px 3px 3px 0 rgba(80, 80, 80, 0.698)",
-
-    border: "none",
-    borderRadius: "1.8em"
-}
 
 const imagesList = (card)  => {
     const post = new Array();
@@ -122,7 +85,7 @@ const imagesList = (card)  => {
     return post;
 }
 
-function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handlePost, handleCurrentPage}) {
+function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
 
     if(type === "Desktop"){
         return (
@@ -142,7 +105,7 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handle
         return (
             <>
                 <button
-                    className={`cat-btn-tablet ${catActive ? catBtnActiveStyle : null}`}
+                    className="cat-btn-tablet"
                     onClick={() => { 
                         handleSetCat(name);
                         handlePost(imagesList(name));
@@ -156,7 +119,7 @@ function Catbtn({ name, catActive, handleSetCat, catBtnActiveStyle, type, handle
         return (
             <>
                 <button
-                    className={`cat-btn-mobile ${catActive ? catBtnActiveStyle : null}`}
+                    className="cat-btn-tablet"
                     onClick={() => { 
                         handleSetCat(name);
                         handlePost(imagesList(name));
@@ -333,7 +296,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostDt}
                                                 handleCurrentPage={setCurrentPageDt}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={i}
                                             />
                                         </>
@@ -453,7 +415,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
                                         </>
@@ -566,7 +527,6 @@ function Result() {
                                                 handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                catBtnActiveStyle={catBtnAtciveStyleTablet}
                                                 key={idx}
                                             />
                                         </>
