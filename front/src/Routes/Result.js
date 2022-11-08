@@ -209,7 +209,12 @@ function Result() {
         setData(categories.filter((v) => v === activeCat));
     }, [activeCat]);
     
-    /* 페이지네이션 미완성 */
+    //Pagination 미완성 
+    //- 비동기 데이터 받아와서 뿌리는 작업 필요
+    //아이템 총 개수 - 설정 필요
+    //Desktop과 Tablet & Mobile 한 페이지 출력 개수 구분
+    // 카테고리 버튼 누를때마다 해당 카테고리 1페이지 출력되게 구현함
+
     //Desktop
     const [postDt, setPostDt] = useState([]);
     const [countDt, setCountDt] = useState(0); //아이템 총 개수
@@ -219,10 +224,12 @@ function Result() {
     const [indexOfLastPostDt, setIndexOfLastPostDt] = useState(0);
     const [indexOfFirstPostDt, setIndexOfFirstPostDt] = useState(0);
     const [currentPostsDt, setCurrentPostsDt] = useState(0);
-    
+
+
     useEffect(() => {
         setActiveCat(categories[0]);
         setPostDt(imagesList(categories[0]));
+        // btnEffect.current.focus();
     }, []);
 
 
@@ -336,8 +343,8 @@ function Result() {
                                 itemsCountPerPage={postPerPageDt}
                                 totalItemsCount={countDt}
                                 pageRangeDisplayed={countDt/6}
-                                prevPageText={"‹"}
-                                nextPageText={"›"}
+                                prevPageText={"Prev"}
+                                nextPageText={"Next"}
                                 onChange={setPageDt}
                             />
                         </div>
@@ -454,9 +461,11 @@ function Result() {
                                 itemsCountPerPage={postPerPageTM}
                                 totalItemsCount={countTM}
                                 pageRangeDisplayed={countTM/6}
-                                prevPageText={"‹"}
-                                nextPageText={"›"}
+                                prevPageText={"Prev"}
+                                nextPageText={"Next"}
                                 onChange={setPageTM}
+                                itemClass='page-item'
+                                linkClass='page-ling'
                             />
                         </div>
                     </div>

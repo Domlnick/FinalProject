@@ -68,7 +68,7 @@
   opacity: 0.8;
   /* transition: all 0.5s ease; */
 }
-.cat-btn-desktop:focus{
+.cat-btn-desktop:hover:after{
   background: blue;
   opacity: 1;
   /* transition: all 0.5s ease; */
@@ -91,8 +91,8 @@
 
 .left-top-image-desktop {
   margin-top: 1.2em;
-  width: 20em; 
-  height: 30em;
+  width: 22em; 
+  height: 34em;
   
   overflow: hidden;
 
@@ -102,7 +102,7 @@
 }
 
 .left-image-changeBtn{
-  margin-top: 1em;
+  margin-top: 2em;
   margin-bottom: 0.2em;
   background: none;
   font-weight: 600;
@@ -113,7 +113,7 @@
 .left-bottom-text-desktop {
   width: 24em;
   height: 16em;
-  margin: 0 auto;  
+  margin: 2em auto;  
   overflow: hidden;
   background: url(../../public/image_src/ModelSpecDivImg.png);
   background-size: cover;
@@ -124,7 +124,7 @@
 .right-result-desktop{
   margin: 2vh 3.5vw 0 3.5vw;
   flex:7;
-  height: 51em;
+  height: 58em;
   overflow-x: hidden;
   background: #E8EDED;
   border-radius: 2.4vw;
