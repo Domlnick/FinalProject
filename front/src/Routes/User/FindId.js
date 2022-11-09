@@ -84,15 +84,12 @@ function FindId() {
                                     }).then(function (response) {
                                         sessionStorage.setItem("foundUserId", response.data.result);
                                         sessionStorage.setItem('userEmail', userEmail);
-                                        console.log('성공')
                                         goToShowIdPage();
                                     }).catch(function (error) {
-                                        console.log(error);
                                         console.log('실패');
                                     }).then(function () {
                                         console.log('실행중')
                                     })
-                                    // goToList();
                                 }}>아이디 찾기</button>
                             </div>
                             <div className="find-pw">
@@ -127,7 +124,6 @@ function FindId() {
                         <div>
                             <button className="findid-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
                                 axios.get('http://localhost:8080/findUserIdByEmailAndUsername', {
-                                    // Headers: { 'content-type': 'application/json' },
                                     params: {
                                         userName: userName,
                                         userEmail: userEmail
@@ -135,7 +131,6 @@ function FindId() {
                                 }).then(function (response) {
                                     sessionStorage.setItem("foundUserId", response.data.result);
                                     sessionStorage.setItem('userEmail', userEmail);
-                                    console.log('성공')
                                     goToShowIdPage();
                                 }).catch(function (error) {
                                     console.log(error);
@@ -143,7 +138,6 @@ function FindId() {
                                 }).then(function () {
                                     console.log('실행중')
                                 })
-                                // goToList();
                             }}>아이디 찾기</button>
                         </div>
                         <div className="find-pw">
@@ -179,7 +173,6 @@ function FindId() {
                                 }).then(function (response) {
                                     sessionStorage.setItem("foundUserId", response.data.result);
                                     sessionStorage.setItem('userEmail', userEmail);
-                                    console.log('성공')
                                     goToShowIdPage();
                                 }).catch(function (error) {
                                     console.log(error);
@@ -187,7 +180,6 @@ function FindId() {
                                 }).then(function () {
                                     console.log('실행중')
                                 })
-                                // goToList();
                             }}>아이디 찾기</button>
                         </div>
                         <div className="find-pw">
@@ -223,6 +215,7 @@ function ShowId() {
     let matchCode = "";
     const [isMaskOn, setIsMaskOn] = useState(true);
     const [showGetCodeBtn, setShowGetCodeBtn] = useState(false);
+    const [authCode, setAuthCode] = useState();
     const [userCode, setUserCode] = useState('');
     const [disable, setDisable] = useState(true);
     const [opacity, setOpacity] = useState(0.5);
@@ -245,7 +238,6 @@ function ShowId() {
         return() => {
             if(window.location.href != "http://localhost:3000/showid"){
                 sessionStorage.removeItem("foundUserId");
-                sessionStorage.removeItem("authcode");
                 sessionStorage.removeItem("userEmail");
             }
         }
@@ -269,7 +261,6 @@ function ShowId() {
         if (second === 0) {
             if (minute === 0 && second < 2) {
                 setIsRunning(false);
-                sessionStorage.removeItem("authcode");
             } else {
                 setMinute((min) => min - 1);
                 setSecond(59);
@@ -366,7 +357,6 @@ function ShowId() {
                                 <>
                                 <div style={{marginTop: "20px", marginBottom:"30px"}}>
                                 <b className="findid-input-email-text">
-                                    {/* // 2022-11-02 시작 */}
                                     {isMaskOn ? isMemberText : noMaskedId} 
                                 </b>
                                 <button className="findid-button-getcode" disabled={showGetCodeBtn} onClick={() => {
@@ -381,14 +371,12 @@ function ShowId() {
                                     })
                                     .then((res) => {
                                         JSON.stringify(res.data);
-                                        console.log(res.data.authcode);
                                         if(res.data["authcode"].length >= 1){
-                                            sessionStorage.setItem('authcode', res.data.authcode);
+                                            setAuthCode(res.data.authcode);
                                             setShowAuthTag(true);
                                             setMinute(parseInt(299 / 60));
                                             setSecond(parseInt(299 % 60));
                                             setIsRunning(true);
-                                            // console.log(isRunning);
                                         }
                                     })
                                     .catch((e) => {
@@ -404,19 +392,18 @@ function ShowId() {
                                                 <form onSubmit={handleSubmit}>
                                                     {isRunning ? <p>남은시간 : {timeFormat()}</p> : <p style={{color:"red"}}>시간초과 되었습니다. 다시 시도해주세요.</p>}
                                                     
-                                                    <input className="findid-input-getcode" onChange={(e) => {
+                                                    <input type="text" className="findid-input-getcode" onChange={(e) => {
                                                         setUserCode(e.target.value);
                                                         handleDisable();
                                                     }}/>
-                                                    <button type= "submit" className="findid-button-getcode" disabled={isRunning ? disable : !disable} style={{opacity : opacity, marginLeft:"15px"}}
+                                                    <button type= "submit" className="findid-button-getcode" disabled={!isRunning} style={{marginLeft:"15px"}}
                                                         // 인증코드 동일 여부 확인  
                                                         onClick = {() => {
-                                                            if(userCode == sessionStorage.getItem("authcode")){
+                                                            if(userCode == authCode){
                                                                 setShowAuthTag(false);
                                                                 setDisable(true);
                                                                 setIsMaskOn(false);
                                                                 setShowGetCodeBtn(true);
-                                                                console.log("아이디 전체 확인");
                                                             }else {
                                                                 alert("인증번호가 일치 하지 않습니다.");
                                                             }
@@ -511,7 +498,7 @@ function ShowId() {
                                                         setUserCode(e.target.value);
                                                         handleDisable();
                                                     }}/>
-                                                    <button type= "submit" className="findid-button-getcode" disabled={isRunning ? disable : !disable} style={{opacity : opacity, marginLeft:"15px"}}
+                                                    <button type= "submit" className="findid-button-getcode" disabled={disable} style={{opacity : opacity, marginLeft:"15px"}}
                                                         // 인증코드 동일 여부 확인  
                                                         onClick = {() => {
                                                             if(userCode == sessionStorage.getItem("authcode")){
