@@ -40,15 +40,7 @@ function DragAndDrop() {
     
     //Dropzone
     const [imgBase64, setImgBase64] = useState();
-    const [userIp, setUserIp] = useState();
 
-    // 비로그인 유저 IP 조회
-    const mok = () => {
-        axios.get("https://api.ipify.org/?format=json").then((res) => {
-            setUserIp(res.data.ip);
-        })
-    }
-    
     const onDrop = useCallback(async acceptedFiles => {
         //이미지 드랍 -> 이미지 base64 변환 
         // -> base64 String 백엔드 비동기 전송 -> session에 담기 -> 페이지 이동
@@ -59,25 +51,29 @@ function DragAndDrop() {
 
         reader.readAsDataURL(file);
         reader.onload = () => {
-            mok();
             setImgBase64(reader.result);
             
             if(!isLogined()) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
                 //기능 이용시 이용횟수 + 1
-                axios.post('http://localhost:8080/issignedin', {
-                    visitUserIp : userIp,
-                    usedCount : 1
-                })
+                console.log(1)
+                // 비로그인 유저 IP 조회
+                axios.get("https://api.ipify.org/?format=json")
                 .then((res) => {
-                    console.log("언제 나타날까요?")
-                    if(res.data.result === 2){
-                        alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
-                    }else if (res.data.result === 999){
-                        alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
-                    }
-                })
-                .catch((e) => {
-                    console.error(e);
+                    console.log(2)
+                    // db 해당 IP 조회
+                    axios.post('http://localhost:8080/issignedin', {
+                        visitUserIp : res.data.ip,
+                        usedCount : 1,
+                    }).then((res) => {
+                        console.log(3)
+                        if(res.data.result === 2){
+                            alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
+                        }else if (res.data.result === 999){
+                            alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+                        }
+                    }).catch((e) => {
+                        console.error(e)
+                    })
                 })
             }}           
     }, []);
@@ -85,7 +81,6 @@ function DragAndDrop() {
     useEffect(() => {
         if(imgBase64 != null){
             sessionStorage.setItem("uploadedImg", imgBase64);
-            
             // 이미지 Base64 String 비동기 전송
             // axios.post('http://localhost:80/test', {
             //     file : imgBase64
