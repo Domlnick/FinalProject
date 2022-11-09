@@ -34,6 +34,15 @@ export function logout() {
     cookies.remove('refreshToken');
 };
 
+export function isLogined() {
+    let getCookie = cookies.get("refreshToken");
+
+    if(getCookie){
+        return true;
+    }
+    return false;
+}
+
 // 로그인 컴포넌트
 function Login() {
 
@@ -99,7 +108,6 @@ function Login() {
                                 }).then(function (respons) {
                                     console.log(respons);
                                     console.log(respons.data.result);
-
                                     const accessToken = respons.headers.get("AT_RT_Authorization");
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
 

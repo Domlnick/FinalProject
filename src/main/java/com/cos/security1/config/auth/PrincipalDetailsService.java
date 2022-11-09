@@ -174,7 +174,7 @@ public class PrincipalDetailsService implements UserDetailsService{
         
         String result = "false";
         String userId = user.getUserId();
-        String userName = user.getUserName();
+        String userName = userRepository.findUserNameByUserIdAndUserEmail(user.getUserId(), user.getUserEmail()).getUserName();
         String userEmail = user.getUserEmail();
         String newPassword = user.getPassword();
         Pattern pattern = Pattern.compile("[ !@#$%^&*(),.?\":{}|<>]");
@@ -182,13 +182,18 @@ public class PrincipalDetailsService implements UserDetailsService{
         if (userId != null && userName != null && userEmail != null && newPassword != null) {
             
             if (newPassword != null && newPassword.length() >= 8 && pattern.matcher(newPassword).find() == true) {
-                User getUser = userRepository.findByUserIdAndUserNameAndUserEmail(userId, userName, userEmail);
+//                User getUser = userRepository.findByUserIdAndUserNameAndUserEmail(userId, userName, userEmail);
+                //Optional<NotSignedUser> noUser = notSignedUserRepository.findByVisitUserIp(notSignedUser.getVisitUserIp());
+                Optional<User> getUser = userRepository.findByUserIdAndUserEmailAndUserName(userId, userEmail, userName);
                 
                 if (getUser != null) {
                     String encPassword = bCryptPasswordEncoder.encode(newPassword);
                     
-                    getUser.setPassword(encPassword);
-                    userRepository.save(getUser);
+                    getUser.ifPresent(thisUser -> {
+                        thisUser.setPassword(encPassword);
+                        
+                        userRepository.save(thisUser);
+                    });
                     
                     result = "true";
                 }else {
@@ -198,7 +203,7 @@ public class PrincipalDetailsService implements UserDetailsService{
                 result = "비밀번호 설정 조건을 확인해 주세요";
             }
         }else {
-            result = "누락된 정보가 없는지 확인해주세요";
+            result = "누락된 정보가 없는지 확인해주세요!!!!!";
         }
         
         return result;
@@ -210,7 +215,7 @@ public class PrincipalDetailsService implements UserDetailsService{
         
         if(usedCount == null) {
             return 0;
-        }else if (usedCount.getUsedCount() <3) {
+        }else if (usedCount.getUsedCount() < 3) {
             return usedCount.getUsedCount();
         }
         

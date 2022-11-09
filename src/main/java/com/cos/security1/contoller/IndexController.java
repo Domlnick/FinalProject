@@ -144,7 +144,7 @@ public class IndexController {
         
         if(!isExistId && !isExistEmail) {
             principalDetailService.joinUser(newUser);
-            emailService.sendMail(user, "register");
+//            emailService.sendMail(user, "register");
             result.put("result", true);
             
             return result;
@@ -164,10 +164,9 @@ public class IndexController {
         String type = "findid";
         Map<String, String> result = new HashMap<>();
         User newUser = userRepository.findByUserEmail(user.getUserEmail());
-//        String sentKey = emailService.sendMail(newUser, type);
+        String sentKey = emailService.sendMail(newUser, type);
         
-//        result.put("authcode", sentKey);
-        result.put("authcode", "aaaaaa");
+        result.put("authcode", sentKey);
         
         return result;
     }
@@ -184,7 +183,6 @@ public class IndexController {
         result.put("authcode", sentKey);
             result.put("result", "true");
             result.put("authcode", sentKey);            
-//            result.put("authcode", "aaaaaa");            
         } else {
             result.put("result", "false");
         }
@@ -299,7 +297,7 @@ public class IndexController {
     }
 
     // JSON 타입으로 변환 후 return. 로그인 후 session에 권한이 저장되어 있어야지만 수정할 수 있도록 해놓을 예정.
-    @PostMapping("/user/updateLoginedUserPassword")
+    @PostMapping("/user/updateuserpw")
     public @ResponseBody Map<String, String> updateLoginedUserPassword(@RequestBody User user,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
@@ -319,12 +317,15 @@ public class IndexController {
         return result;
     }
 
-    @PostMapping("/updateUnloginedUserPassword")
+    @PostMapping("/updateuserpw")
     public @ResponseBody Map<String, String> updateUnloginedUserPassword(@RequestBody User user) {
 
         Map<String, String> result = new HashMap<>();
-
-        if (user.getUserId() != null && user.getUserEmail() != null && user.getUserName() != null) {
+        System.out.println(user.getUserId());
+        System.out.println(user.getUserEmail());
+        System.out.println(user.getPassword());
+        
+        if (user.getUserId() != null && user.getUserEmail() != null) {
 
             String updateUserPassword = principalDetailService.updateUnloginedUserPassword(user);
 

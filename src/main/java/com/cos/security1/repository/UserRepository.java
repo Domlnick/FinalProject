@@ -1,9 +1,12 @@
 package com.cos.security1.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.cos.security1.model.NotSignedUser;
 import com.cos.security1.model.User;
 
 // CRUD 함수를 JpaRepository가 들고 있음
@@ -26,7 +29,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query("select count(u) from User u where userId = :userId and userName = :userName and userEmail = :userEmail")
 	public int countUserByUserIdAndUserNameAndUserEmail(@Param("userId") String userId, @Param("userName") String userName, @Param("userEmail") String userEmail);
 	
+	public Optional<User> findByUserIdAndUserEmailAndUserName(String userId, String userEmail, String userName);
 	
 	public User findByUserIdAndUserNameAndUserEmail(String userId, String userName, String userEmail);
 	
+	public User findUserNameByUserIdAndUserEmail(String userId, String userEmail);
 }

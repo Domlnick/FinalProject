@@ -17,6 +17,7 @@ import Register from './Routes/User/Register.js';
 import NoPage from './Routes/ErrorPage';
 import Welcome from './Routes/Welcome';
 import Searching from './Routes/Searching';
+import { useEffect } from 'react';
 
 // 주석 용도 내용 전달
 // 1. 회원가입 / 로그인 / 아이디찾기 / 비밀번호 찾기 / 비밀번호재설정 페이지
@@ -25,6 +26,7 @@ import Searching from './Routes/Searching';
 // 
 
 function App() {
+
   return (
     <div className="App">
 
@@ -42,7 +44,6 @@ function App() {
             <Banner />
           </>
         } />
-
         <Route path="/searching" element={
           <>
             <Searching />
