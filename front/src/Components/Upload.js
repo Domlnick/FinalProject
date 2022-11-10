@@ -58,7 +58,7 @@ function DragAndDrop() {
                 axios.get("https://api.ipify.org/?format=json")
                     .then((res) => {
                         // db 해당 IP 조회
-                        axios.post('http://localhost:8080/issignedin', {
+                        axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
                             visitUserIp: res.data.ip,
                             usedCount: 1,
                         }).then((res) => {
@@ -68,7 +68,7 @@ function DragAndDrop() {
                                 }
                                 console.log("imgBase64는" + reader.result)
                                 sessionStorage.setItem("uploadedImg", reader.result);
-                                axios.post('http://localhost:5000/upload', {
+                                axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:5000/upload', {
                                     file: reader.result
                                 }).then((res) => {
                                     let data = res.data.top
