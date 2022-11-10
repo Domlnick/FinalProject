@@ -151,7 +151,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.addAllowedOrigin("*");    // 모든 도메인 다 허용
+        configuration.addAllowedOrigin("*");    // 모든 도메인 다 허용
         configuration.addAllowedHeader("*");    // 모든 header 다 허용
         configuration.addAllowedMethod("*");    // 모든 method 다 허용
         configuration.addExposedHeader(JwtProperties.AT_HEADER_STRING);
@@ -159,7 +159,7 @@ public class SecurityConfig {
         configuration.addAllowedOriginPattern("*");
         configuration.addExposedHeader(JwtProperties.AT_HEADER_STRING); // front에서 header에 접근 권한 설정
         configuration.addExposedHeader(JwtProperties.RT_HEADER_STRING); // front에서 header에 접근 권한 설정
-        configuration.setAllowCredentials(true);
+//        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
