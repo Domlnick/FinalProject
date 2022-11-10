@@ -796,7 +796,7 @@ function LoginResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/updatelogineduserpw', {
                                         password: password
                                     },
                                         {
@@ -848,7 +848,7 @@ function LoginResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/updatelogineduserpw', {
                                         password: password
                                     },
                                         {
@@ -893,7 +893,7 @@ function LoginResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/updatelogineduserpw', {
                                         password: password
                                     },
                                         {
