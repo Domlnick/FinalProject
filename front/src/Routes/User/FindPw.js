@@ -2,9 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Header } from "../../Components/Header";
 import { useMediaQuery } from "react-responsive";
-import axios from "axios";
 import Cookies from "universal-cookie";
+import axios from "axios";
+import { logout } from "./Login";
 
+
+const cookies = new Cookies();
 
 const Desktop = ({ children }) => {
     const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -35,7 +38,7 @@ function FindPw() {
     const [isShow, setIsShow] = useState(true);
     const [authCode, setAuthCode] = useState(null);
     const navigate = useNavigate();
-    
+
     const goToResetPw = () => {
         navigate('/resetpw');
     };
@@ -144,8 +147,8 @@ function FindPw() {
 
     useEffect(() => {
         //언마운트 시 세션스토리지 foundUserId 삭제
-        return() => {
-            if(window.location.href != "http://localhost:3000/resetpw"){
+        return () => {
+            if (window.location.href != "http://localhost:3000/resetpw") {
                 sessionStorage.removeItem("userId");
                 sessionStorage.removeItem("userEmail");
             }
@@ -205,7 +208,7 @@ function FindPw() {
                                                         sessionStorage.setItem("userId", userId);
                                                         sessionStorage.setItem("userName", userName);
                                                         sessionStorage.setItem("userEmail", userEmail);
-                                                    if (res.data["authcode"].length >= 1) {
+                                                        if (res.data["authcode"].length >= 1) {
                                                             setAuthCode(res.data.authcode);
                                                             console.log("생성시점:" + authCode);
                                                             setShowAuthTag(true);
@@ -223,7 +226,8 @@ function FindPw() {
                                                 })
                                         } else if (!isValidEmail) {
                                             alert("이메일 형식이 잘못되었습니다.");
-                                }}}>인증</button>
+                                        }
+                                    }}>인증</button>
                             </span>
                             {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
                             {
@@ -278,34 +282,112 @@ function FindPw() {
                             </Link>
                         </div>
                     </div>
-                    <div className="findpw-rectangle-tablet">
+                    <div className="findpw-rectangle">
                         <img src="/logos/findpw_logo.png" width='30%' className="findpw-logo-img" />
                         <div></div>
                         <img src="/logos/sub_title.png" width='50%' className="findpw-title-img" />
-                        <h5 className="findpw-input-name-text">이름을 입력해주세요</h5>
-                        <input type='text' className="findpw-input-name" placeholder="Enter your name" value={userName} onChange={(event) => {
-                            setName(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-id-text">아이디를 입력해주세요.</h5>
-                        <input type='text' className="findpw-input-id" placeholder="Enter your I'd" value={userId} onChange={(event) => {
-                            setUserId(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-email-text">이메일을 입력해주세요.</h5>
-                        <input type='email' className="findpw-input-email" placeholder="Enter your e-mail" value={userEmail} onChange={(event) => {
-                            setUserEmail(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-cn-text">인증번호를 입력해주세요.</h5>
-                        <input type='text' className="findpw-input-cn" placeholder="메일로 발송된 인증번호를 입력해주세요." onChange={(event) => {
-                            setUserCode(event.target.value);
-                            handleDisable();
-                        }} />
+                        <form onSubmit={handleSubmit}>
+                            <h5 className="findpw-input-name-text">이름을 입력해주세요</h5>
+                            <input type='text' className="findpw-input-name" placeholder="Enter your name" value={userName} onChange={(event) => {
+                                setName(handleInput(event));
+                                handleDisable();
+                            }} />
+                            <h5 className="findpw-input-id-text">아이디를 입력해주세요.</h5>
+                            <input type='text' className="findpw-input-id" placeholder="Enter your I'd" value={userId} onChange={(event) => {
+                                setUserId(handleInput(event));
+                                handleDisable();
+                            }} />
+                            <h5 className="findpw-input-email-text">이메일을 입력해주세요.</h5>
+                            <span style={{ position: "relative" }}>
+                                <input type='email' className="findpw-input-email" placeholder="Enter your e-mail" value={userEmail} style={{ marginLeft: "-50px", width: "250px" }} onChange={(event) => {
+                                    setUserEmail(handleInput(event));
+                                    handleDisableGetCode();
+                                }} />
+
+                                {
+                                    isRunning ?
+                                        <></> :
+                                        <button disabled={disableCodeBtn} style={{ position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                            onClick={() => {
+                                                if (isValidEmail) {
+                                                    axios({
+                                                        method: "get",
+                                                        url: "http://localhost:8080/sendcodepw",
+                                                        params: {
+                                                            userId: userId,
+                                                            userName: userName,
+                                                            userEmail: userEmail
+                                                        }
+                                                    })
+                                                        .then((res) => {
+                                                            JSON.stringify(res.data);
+                                                            if (res.data.result === "true") {
+                                                                setIsExistUser(true);
+                                                                sessionStorage.setItem("userId", userId);
+                                                                sessionStorage.setItem("userName", userName);
+                                                                sessionStorage.setItem("userEmail", userEmail);
+                                                                // console.log(res.data.authcode);
+                                                                // console.log(res.data.result);
+                                                                if (res.data["authcode"].length >= 1) {
+                                                                    sessionStorage.setItem('authcode', res.data.authcode);
+                                                                    setShowAuthTag(true);
+                                                                    setMinute(parseInt(299 / 60));
+                                                                    setSecond(parseInt(299 % 60));
+                                                                    setIsRunning(true);
+                                                                    // console.log(isRunning);
+                                                                }
+                                                            } else if (res.data.result === "false") {
+                                                                setDisable(false);
+                                                                setIsExistUser(false);
+                                                            }
+                                                        })
+                                                        .catch((e) => {
+                                                            console.error(e);
+                                                        })
+                                                } else if (!isValidEmail) {
+                                                    alert("이메일 형식이 잘못되었습니다.");
+                                                }
+                                            }}
+                                        >인증</button>
+
+                                }
+                            </span>
+                            {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
+                            {
+                                showAuthTag ?
+                                    <>
+                                        <h5 className="findpw-input-cn-text">메일로 발송된 인증번호를 입력해주세요.</h5>
+                                        {!isSameCode ? <p style={{ fontSize: "15px", marginBottom: "5px" }}>남은시간 : {timeFormat()}</p> : <p style={{ color: "red", fontSize: "17px", marginBottom: "5px" }}>시간초과 되었습니다. 다시 시도해주세요.</p>}
+                                        <input type='text' className="findpw-input-cn" disabled={disableCodeInput} placeholder="Enter your code" style={{ marginLeft: "-50px", width: "250px" }} onChange={(event) => {
+                                            setUserCode(event.target.value);
+                                            handleDisable();
+                                        }} />
+                                        <button disabled={disableCodeBtn} style={isShow ? { position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" } : { display: "none", position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                            // 인증코드 동일 여부 확인  
+                                            onClick={() => {
+                                                if (userCode == sessionStorage.getItem("authcode")) {
+                                                    setDisableCodeInput(true);
+                                                    setIsShow(false);
+                                                    sessionStorage.removeItem("authcode")
+                                                } else {
+                                                    alert("인증번호가 일치 하지 않습니다.");
+                                                }
+                                            }}
+                                        >인증완료</button>
+                                        <img src={process.env.PUBLIC_URL + "image_src/check.png"}
+                                            style={isShow ? { display: "none", width: "20px", position: "absolute", margin: "5px 0 0 13px" } : { width: "28px", position: "absolute", margin: "5px 0 0 13px" }}
+                                        />
+
+                                    </> :
+                                    <></>
+                            }
+                        </form>
                         <div>
-                            <button className="findpw-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
+                            <button className="findpw-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
                                 // Ajax를 통한 서버 연동 후 새로운 패스워드 입력 페이지로 이동.
-                                goToResetPw();
+                                if (sessionStorage.getItem("userId") != null && sessionStorage.getItem("userName") && sessionStorage.getItem("userEmail") != null && (sessionStorage.getItem("authcode") == null)) {
+                                    goToResetPw();
+                                }
                             }}>비밀번호 찾기</button>
                         </div>
                     </div>
@@ -314,34 +396,112 @@ function FindPw() {
             <Mobile>
                 <Header />
                 <div className="user-bg-mobile">
-                    <div className="findpw-rectangle-mobile">
+                    <div className="findpw-rectangle">
                         <img src="/logos/findpw_logo.png" width='30%' className="findpw-logo-img" />
                         <div></div>
                         <img src="/logos/sub_title.png" width='50%' className="findpw-title-img" />
-                        <h5 className="findpw-input-name-text">이름을 입력해주세요</h5>
-                        <input type='text' className="findpw-input-name" placeholder="Enter your name" value={userName} onChange={(event) => {
-                            setName(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-id-text">아이디를 입력해주세요.</h5>
-                        <input type='text' className="findpw-input-id" placeholder="Enter your I'd" value={userId} onChange={(event) => {
-                            setUserId(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-email-text">이메일을 입력해주세요.</h5>
-                        <input type='email' className="findpw-input-email" placeholder="Enter your e-mail" value={userEmail} onChange={(event) => {
-                            setUserEmail(handleInput(event));
-                            handleDisable();
-                        }} />
-                        <h5 className="findpw-input-cn-text">인증번호를 입력해주세요.</h5>
-                        <input type='text' className="findpw-input-cn" placeholder="메일로 발송된 인증번호를 입력해주세요." onChange={(event) => {
-                            setUserCode(event.target.value);
-                            handleDisable();
-                        }} />
+                        <form onSubmit={handleSubmit}>
+                            <h5 className="findpw-input-name-text">이름을 입력해주세요</h5>
+                            <input type='text' className="findpw-input-name" placeholder="Enter your name" value={userName} onChange={(event) => {
+                                setName(handleInput(event));
+                                handleDisable();
+                            }} />
+                            <h5 className="findpw-input-id-text">아이디를 입력해주세요.</h5>
+                            <input type='text' className="findpw-input-id" placeholder="Enter your I'd" value={userId} onChange={(event) => {
+                                setUserId(handleInput(event));
+                                handleDisable();
+                            }} />
+                            <h5 className="findpw-input-email-text">이메일을 입력해주세요.</h5>
+                            <span style={{ position: "relative" }}>
+                                <input type='email' className="findpw-input-email" placeholder="Enter your e-mail" value={userEmail} style={{ marginLeft: "-50px", width: "250px" }} onChange={(event) => {
+                                    setUserEmail(handleInput(event));
+                                    handleDisableGetCode();
+                                }} />
+
+                                {
+                                    isRunning ?
+                                        <></> :
+                                        <button disabled={disableCodeBtn} style={{ position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                            onClick={() => {
+                                                if (isValidEmail) {
+                                                    axios({
+                                                        method: "get",
+                                                        url: "http://localhost:8080/sendcodepw",
+                                                        params: {
+                                                            userId: userId,
+                                                            userName: userName,
+                                                            userEmail: userEmail
+                                                        }
+                                                    })
+                                                        .then((res) => {
+                                                            JSON.stringify(res.data);
+                                                            if (res.data.result === "true") {
+                                                                setIsExistUser(true);
+                                                                sessionStorage.setItem("userId", userId);
+                                                                sessionStorage.setItem("userName", userName);
+                                                                sessionStorage.setItem("userEmail", userEmail);
+                                                                // console.log(res.data.authcode);
+                                                                // console.log(res.data.result);
+                                                                if (res.data["authcode"].length >= 1) {
+                                                                    sessionStorage.setItem('authcode', res.data.authcode);
+                                                                    setShowAuthTag(true);
+                                                                    setMinute(parseInt(299 / 60));
+                                                                    setSecond(parseInt(299 % 60));
+                                                                    setIsRunning(true);
+                                                                    // console.log(isRunning);
+                                                                }
+                                                            } else if (res.data.result === "false") {
+                                                                setDisable(false);
+                                                                setIsExistUser(false);
+                                                            }
+                                                        })
+                                                        .catch((e) => {
+                                                            console.error(e);
+                                                        })
+                                                } else if (!isValidEmail) {
+                                                    alert("이메일 형식이 잘못되었습니다.");
+                                                }
+                                            }}
+                                        >인증</button>
+
+                                }
+                            </span>
+                            {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
+                            {
+                                showAuthTag ?
+                                    <>
+                                        <h5 className="findpw-input-cn-text">메일로 발송된 인증번호를 입력해주세요.</h5>
+                                        {!isSameCode ? <p style={{ fontSize: "15px", marginBottom: "5px" }}>남은시간 : {timeFormat()}</p> : <p style={{ color: "red", fontSize: "17px", marginBottom: "5px" }}>시간초과 되었습니다. 다시 시도해주세요.</p>}
+                                        <input type='text' className="findpw-input-cn" disabled={disableCodeInput} placeholder="Enter your code" style={{ marginLeft: "-50px", width: "250px" }} onChange={(event) => {
+                                            setUserCode(event.target.value);
+                                            handleDisable();
+                                        }} />
+                                        <button disabled={disableCodeBtn} style={isShow ? { position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" } : { display: "none", position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                            // 인증코드 동일 여부 확인  
+                                            onClick={() => {
+                                                if (userCode == sessionStorage.getItem("authcode")) {
+                                                    setDisableCodeInput(true);
+                                                    setIsShow(false);
+                                                    sessionStorage.removeItem("authcode")
+                                                } else {
+                                                    alert("인증번호가 일치 하지 않습니다.");
+                                                }
+                                            }}
+                                        >인증완료</button>
+                                        <img src={process.env.PUBLIC_URL + "image_src/check.png"}
+                                            style={isShow ? { display: "none", width: "20px", position: "absolute", margin: "5px 0 0 13px" } : { width: "28px", position: "absolute", margin: "5px 0 0 13px" }}
+                                        />
+
+                                    </> :
+                                    <></>
+                            }
+                        </form>
                         <div>
-                            <button className="findpw-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
+                            <button className="findpw-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
                                 // Ajax를 통한 서버 연동 후 새로운 패스워드 입력 페이지로 이동.
-                                goToResetPw();
+                                if (sessionStorage.getItem("userId") != null && sessionStorage.getItem("userName") && sessionStorage.getItem("userEmail") != null && (sessionStorage.getItem("authcode") == null)) {
+                                    goToResetPw();
+                                }
                             }}>비밀번호 찾기</button>
                         </div>
                     </div>
@@ -452,14 +612,14 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/updateuserpwla', {
-                                        userEmail : sessionStorage.getItem("userEmail"),
-                                        userId : sessionStorage.getItem("userId"),
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail: sessionStorage.getItem("userEmail"),
+                                        userId: sessionStorage.getItem("userId"),
                                         password: password,
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
-                                        
+
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
@@ -498,9 +658,9 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/user/updateuserpw', {
-                                        userEmail : sessionStorage.getItem("userEmail"),
-                                        userId : sessionStorage.getItem("userId"),
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail: sessionStorage.getItem("userEmail"),
+                                        userId: sessionStorage.getItem("userId"),
                                         password: password
                                     }).then(function (respons) {
                                         sessionStorage.removeItem("userId")
@@ -536,9 +696,9 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/user/updateuserpw', {
-                                        userEmail : sessionStorage.getItem("userEmail"),
-                                        userId : sessionStorage.getItem("userId"),
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail: sessionStorage.getItem("userEmail"),
+                                        userId: sessionStorage.getItem("userId"),
                                         password: password
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
@@ -548,6 +708,230 @@ function ResetPw() {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
                                     })
+                                }}>완료</button>
+                        </div>
+                    </div>
+                </div>
+            </Mobile>
+        </>
+    )
+}
+
+// 로그인 유저 비밀번호 업데이트 컴포넌트
+function LoginResetPw() {
+
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [disable, setDisable] = useState(true);
+    const [opacity, setOpacity] = useState(0.5);
+
+    const [newPassword, setNewPassword] = useState('새로운 비밀번호를 입력해 주세요.')
+    const [reNewPassword, setReNewPassword] = useState('한번 더 입력해 주세요.');
+
+    const [newPasswordErrorColor, setNewPasswordErrorColor] = useState('#494949');
+    const [reNewPasswordErrorColor, setReNewPasswordErrorColor] = useState('#494949');
+
+    const navigate = useNavigate();
+    const goToList = () => {
+        navigate('/login');
+    };
+
+    const specialLetter = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+    const isValidPassword = password.length >= 8 && specialLetter >= 1;
+
+    const isValidPasswordConfirm = passwordConfirm === password;
+
+    const handleDisable = () => {
+        isValidPassword && isValidPasswordConfirm ? setDisable(false) : setDisable(true);
+        isValidPassword && isValidPasswordConfirm ? setOpacity(1) : setOpacity(0.5);
+    };
+
+    const newPasswordErrorHandler = () => {
+        if (!isValidPassword) {
+            setNewPassword('특수문자를 포함한 8자 이상 입력해 주세요.');
+            setNewPasswordErrorColor('red');
+        } else {
+            setNewPassword('정상입니다.');
+            setNewPasswordErrorColor('blue');
+        }
+    };
+
+    const reNewPasswordErrorHandler = () => {
+        if (!isValidPasswordConfirm) {
+            setReNewPassword('비밀번호가 일치하지않습니다.');
+            setReNewPasswordErrorColor('red');
+        } else {
+            setReNewPassword('비밀번호가 일치합니다.');
+            setReNewPasswordErrorColor('blue');
+        }
+    };
+
+    useEffect(() => {
+        if (password.length >= 1) {
+            newPasswordErrorHandler();
+        }
+    }, [password]);
+
+    useEffect(() => {
+        if (passwordConfirm.length >= 1) {
+            reNewPasswordErrorHandler();
+        }
+    }, [passwordConfirm]);
+
+    useEffect(() => {
+        handleDisable();
+    });
+
+    const handleInput = event => {
+        return event.target.value;
+    };
+
+    return (
+        <>
+            <Desktop>
+                <Header />
+                <div className="user-bg">
+                    <div className="user-bg-rectangle">
+                        <div className="user-bg-title">
+                            <Link to="/">
+                                <img src="/logos/title.png" width='60%' />
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="resetpw-rectangle">
+                        <img src="/logos/reset_pw_logo.png" width='40%' className="resetpw-logo-img" />
+                        <img src="/logos/sub_title.png" width='50%' className="resetpw-title-img" />
+                        <h5 className="resetpw-input-pw-text" style={{ color: newPasswordErrorColor }}>{newPassword}</h5>
+                        <input type='password' className="resetpw-input-pw" placeholder="Enter your new password" style={{ borderColor: newPasswordErrorColor }} value={password} onChange={(event) => {
+                            setPassword(handleInput(event));
+                            newPasswordErrorHandler();
+                            handleDisable();
+                        }} />
+                        <h5 className="resetpw-re-input-pw-text" style={{ color: reNewPasswordErrorColor }}>{reNewPassword}</h5>
+                        <input type='password' className="resetpw-re-input-pw" placeholder="Enter re-password" style={{ borderColor: reNewPasswordErrorColor }} value={passwordConfirm} onChange={(event) => {
+                            setPasswordConfirm(handleInput(event));
+                            reNewPasswordErrorHandler();
+                            handleDisable();
+                        }} />
+                        <div>
+                            <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
+                                onClick={() => {
+                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                        password: password
+                                    },
+                                        {
+                                            headers: {
+                                                Authorization: cookies.get('accessToken')
+                                            }
+                                        }).then(function (respons) {
+                                            console.log(respons);
+                                            if (respons.data.result == 'true') {
+                                                logout();
+                                                alert('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');
+                                                goToList();
+                                            }
+                                        }).catch(function (error) {
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.')
+                                        })
+                                }}>완료</button>
+                        </div>
+                    </div>
+                </div>
+            </Desktop>
+
+            <Tablet>
+                <Header />
+                <div className="user-bg">
+                    <div className="user-bg-rectangle-tablet">
+                        <div className="user-bg-title-tablet">
+                            <Link to="/">
+                                <img src="/logos/title.png" width='60%' />
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="resetpw-rectangle-tablet">
+                        <img src="/logos/reset_pw_logo.png" width='40%' className="resetpw-logo-img" />
+                        <img src="/logos/sub_title.png" width='50%' className="resetpw-title-img" />
+                        <h5 className="resetpw-input-pw-text" style={{ color: newPasswordErrorColor }}>{newPassword}</h5>
+                        <input type='password' className="resetpw-input-pw" placeholder="Enter your new password" style={{ borderColor: newPasswordErrorColor }} value={password} onChange={(event) => {
+                            setPassword(handleInput(event));
+                            handleDisable();
+                            newPasswordErrorHandler();
+                        }} />
+                        <h5 className="resetpw-re-input-pw-text" style={{ color: reNewPasswordErrorColor }}>{reNewPassword}</h5>
+                        <input type='password' className="resetpw-re-input-pw" placeholder="Enter re-password" style={{ borderColor: reNewPasswordErrorColor }} value={passwordConfirm} onChange={(event) => {
+                            setPasswordConfirm(handleInput(event));
+                            handleDisable();
+                            reNewPasswordErrorHandler();
+                        }} />
+                        <div>
+                            <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
+                                onClick={() => {
+                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                        password: password
+                                    },
+                                        {
+                                            headers: {
+                                                Authorization: cookies.get('accessToken')
+                                            }
+                                        }).then(function (respons) {
+                                            console.log(respons);
+                                            if (respons.data.result == 'true') {
+                                                logout();
+                                                alert('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');
+                                                goToList();
+                                            }
+                                        }).catch(function (error) {
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.')
+                                        })
+                                }}>완료</button>
+                        </div>
+                    </div>
+                </div>
+            </Tablet>
+
+            <Mobile>
+                <Header />
+                <div className="user-bg-mobile">
+                    <div className="resetpw-rectangle-mobile">
+                        <img src="/logos/reset_pw_logo.png" width='50%' className="resetpw-logo-img" />
+                        <img src="/logos/sub_title.png" width='50%' className="resetpw-title-img" />
+                        <h5 className="resetpw-input-pw-text" style={{ color: newPasswordErrorColor }}>{newPassword}</h5>
+                        <input type='password' className="resetpw-input-pw" placeholder="Enter your new password" style={{ borderColor: newPasswordErrorColor }} value={password} onChange={(event) => {
+                            setPassword(handleInput(event));
+                            handleDisable();
+                            newPasswordErrorHandler();
+                        }} />
+                        <h5 className="resetpw-re-input-pw-text" style={{ color: reNewPasswordErrorColor }}>{reNewPassword}</h5>
+                        <input type='password' className="resetpw-re-input-pw" placeholder="Enter re-password" style={{ borderColor: reNewPasswordErrorColor }} value={passwordConfirm} onChange={(event) => {
+                            setPasswordConfirm(handleInput(event));
+                            handleDisable();
+                            reNewPasswordErrorHandler();
+                        }} />
+                        <div>
+                            <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
+                                onClick={() => {
+                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                        password: password
+                                    },
+                                        {
+                                            headers: {
+                                                Authorization: cookies.get('accessToken')
+                                            }
+                                        }).then(function (respons) {
+                                            console.log(respons);
+                                            if (respons.data.result == 'true') {
+                                                logout();
+                                                alert('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');
+                                                goToList();
+                                            }
+                                        }).catch(function (error) {
+                                            console.error(error);
+                                            console.log('에러가 발생되었습니다.')
+                                        })
                                 }}>완료</button>
                         </div>
                     </div>
@@ -577,4 +961,4 @@ function useInterval(callback, delay) {
     }, [delay]);
 }
 
-export { FindPw, ResetPw };
+export { FindPw, ResetPw, LoginResetPw };

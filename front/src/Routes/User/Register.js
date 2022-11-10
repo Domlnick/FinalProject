@@ -87,7 +87,7 @@ function Register() {
 
     // 아이디 적합성 검사
     // _를 제외한 모든 특수문자 불허
-    const isValidId = specialLetterId <= 0;
+    const isValidId = specialLetterId <= 0 && userId.length > 5;
 
     // 비밀번호 특수문자 검사를 위한 정규식
     const specialLetterPw = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
