@@ -77,7 +77,7 @@ function FindId() {
                         }} />
                         <div>
                             <button className="findid-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.get('http://localhost:8080/findUserIdByEmailAndUsername', {
+                                axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/findUserIdByEmailAndUsername', {
                                     params: {
                                         userName: userName,
                                         userEmail: userEmail
@@ -163,7 +163,6 @@ function FindId() {
                             <button className="findid-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
 
                                 axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/sendcodeid', {
-                                    // Headers: { 'content-type': 'application/json' },
                                     params: {
                                         userName: userName,
                                         userEmail: userEmail
@@ -349,7 +348,7 @@ function ShowId() {
                                                 <button className="findid-button-getcode" disabled={showGetCodeBtn} onClick={() => {
                                                     axios({
                                                         method: "get",
-                                                        url: "http://localhost:8080/sendcodeid",
+                                                        url: "http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/sendcodeid",
                                                         params: {
                                                             userId: foundUserId,
                                                             userEmail: sessionStorage.getItem('userEmail')
@@ -446,7 +445,7 @@ function ShowId() {
                                                     // 이메일 전송 axios
                                                     axios({
                                                         method: "get",
-                                                        url: "http://localhost:8080/sendcodeid",
+                                                        url: "http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/sendcodeid",
                                                         params: {
                                                             userId: foundUserId,
                                                             userEmail: sessionStorage.getItem('userEmail')
@@ -536,7 +535,7 @@ function ShowId() {
                                                     // 이메일 전송 axios
                                                     axios({
                                                         method: "get",
-                                                        url: "http://localhost:8080/sendcodeid",
+                                                        url: "http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/sendcodeid",
                                                         params: {
                                                             userId: foundUserId,
                                                             userEmail: sessionStorage.getItem('userEmail')
