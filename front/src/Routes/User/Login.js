@@ -127,15 +127,10 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
-                                    console.log(respons.data.userName);
 
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
                                     setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
                                     setLoginUserNameToLS(respons.data.userName);
-
-                                    navigate(-1);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
@@ -145,7 +140,6 @@ function Login() {
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>
@@ -199,15 +193,10 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
-                                    console.log(respons.data.userName);
 
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
                                     setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
                                     setLoginUserNameToLS(respons.data.userName);
-
-                                    navigate(-1);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
@@ -217,7 +206,6 @@ function Login() {
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>
@@ -264,15 +252,10 @@ function Login() {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
-                                    console.log(respons.data.userName);
 
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
                                     setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
                                     setLoginUserNameToLS(respons.data.userName);
-
-                                    navigate(-1);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
@@ -282,7 +265,6 @@ function Login() {
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>

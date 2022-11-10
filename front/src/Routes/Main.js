@@ -1,5 +1,3 @@
-// 1. 이미지 업로드 div 영역 코드 
-// 1.2 가운데 이미지 업로드 버튼 생성(UI 설계 필요)
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import DragAndDrop from "../Components/Upload";
@@ -9,7 +7,7 @@ const Desktop = ({ children }) => {
     return isDesktop ? children : null
 }
 const Tablet = ({ children }) => {
-    const isTablet = useMediaQuery({ minWidth:820, maxWidth: 1024 })
+    const isTablet = useMediaQuery({ minWidth: 820, maxWidth: 1024 })
     return isTablet ? children : null
 }
 const Mobile = ({ children }) => {
@@ -20,126 +18,126 @@ const Mobile = ({ children }) => {
 function UploadArea(props) {
 
     var guidelineTitle = [
-        "사진을 통해 제품 찾기", "사진 모델 정보 검색", "이런 것들을 찾아드려요"
+        "사진을 통해 제품 찾기", "이런 것들을 찾아드려요"
     ];
     var guidelineContent = [
         `위의 박스에 사용자의 이미지 파일을 드래그 앤 드롭 또는 버튼을 눌러 업로드하세요.
         이미지 파일을 업로드 해주시면, 저희 인공지능 기술로 이미지 안에서 
         감지된 옷을 통해 유사한 옷들을 검색하여 찾아드려요!`,
-        `전신이 나오는 이미지 파일을 업로드 하신다면, 저희 인공지능 기술로
-        이미지 분석하여 모델의 대략적인 키, 가슴 둘레 사이즈, 허리 둘레 사이즈 등을
-        알려드릴 수 있어요! 이미지에서 신체 일부가 잘려있다면 검색 되지 않아요.`,
         `이미지 파일에서 감지된 옷들을 카테고리 별로 검색해 드려요!
-        저희는 상의 계열, 하의 계열, 가방 카테고리를 검색해 드릴 수 있어요.
+        저희는 상의 계열, 하의 계열 카테고리를 검색해 드릴 수 있어요.
         검색된 결과가 화면에 출력되면 버튼을 눌러 카테고리 별로 구경하실 수 있어요!`
     ];
-    
+
     return (
         <>
-        <Desktop>
-            <div>
-                <DragAndDrop />
-                <div className="parent" 
-                    style={{
-                        width:"70%", 
-                        display:"flex", 
-                        margin: "6em 15% 0 15%",
-                        position:"relative"
+            <Desktop>
+                <div>
+                    <DragAndDrop />
+                    <div className="parent"
+                        style={{
+                            width: "70%",
+                            display: "flex",
+                            margin: "6em 15% 0 15%",
+                            position: "relative"
 
-                }}>
-                    {guidelineTitle.map((a,i) => {
-                        return(
-                        <div className="child" style={{background: "none", flex:"1"}} key = {i}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/guideline_image"+(i+1)+".png"} style = {{width:"5.3em", height:"5.2em"}}/>
-                            <h4 style={{marginTop:"1vh"}}>{guidelineTitle[i]}</h4>
-                            <p style={{fontSize:"1.2em", marginTop:"1vh", width:"75%", marginLeft:"12.5%"}}>
-                                {guidelineContent[i]}
-                            </p>
-                        </div>
-                        );
+                        }}>
+                        {guidelineTitle.map((a, i) => {
+                            return (
+                                <div className="child" style={{ background: "none", flex: "1" }} key={i}>
+                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i + 1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
+                                    <h4 style={{ marginTop: "1vh" }}>{guidelineTitle[i]}</h4>
+                                    <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
+                                        {guidelineContent[i]}
+                                    </p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </Desktop>
+            <Tablet>
+                <DragAndDrop />
+                <div className="parent"
+                    style={{
+                        width: "70%",
+                        display: "flex",
+                        margin: "6em 15% 0 15%",
+                        position: "relative"
+                    }}>
+                    {guidelineTitle.map((a, i) => {
+                        if (i < 2) {
+                            return (
+                                <div className="child" style={{ background: "none", flex: "1", minHeight: "33em" }} key={i}>
+                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i + 1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
+                                    <h4 style={{ marginTop: "1em" }}>{guidelineTitle[i]}</h4>
+                                    <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
+                                        {guidelineContent[i]}
+                                    </p>
+                                </div>
+                            );
+                        }
                     })}
                 </div>
-            </div>
-        </Desktop>
-        <Tablet>
-            <DragAndDrop />
-            <div className="parent" 
-                style={{
-                    width:"70%", 
-                    display:"flex", 
-                    margin: "6em 15% 0 15%",
-                    position:"relative"
-                }}>
-                {guidelineTitle.map((a,i) => {
-                    if(i < 2){
-                    return(
-                        <div className="child" style={{background: "none", flex:"1", minHeight: "33em"}} key = {i}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/guideline_image"+(i+1)+".png"} style = {{width:"5.3em", height:"5.2em"}}/>
-                            <h4 style={{marginTop:"1em"}}>{guidelineTitle[i]}</h4>
-                            <p style={{fontSize:"1.2em", marginTop:"1vh", width:"75%", marginLeft:"12.5%"}}>
-                                {guidelineContent[i]}
-                            </p>
-                        </div>
-                    );}
-                })}
+                <div className="parent"
+                    style={{
+                        width: "40%",
+                        display: "flex",
+                        margin: "-10vh 30% 0 30%",
+                        position: "relative"
+                    }}>
+                    {guidelineTitle.map((a, i) => {
+                        if (i >= 2 && i < 4) {
+                            return (
+                                <div className="child" style={{ background: "none", flex: "1" }} key={i}>
+                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i + 1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
+                                    <h4 style={{ marginTop: "1em" }}>{guidelineTitle[i]}</h4>
+                                    <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
+                                        {guidelineContent[i]}
+                                    </p>
+                                </div>
+                            );
+                        }
+                    })}
                 </div>
-                <div className="parent" 
-                style={{
-                    width:"40%", 
-                    display:"flex", 
-                    margin:"-10vh 30% 0 30%",
-                    position:"relative"
-                }}>
-                {guidelineTitle.map((a,i) => {
-                    if(i >= 2 && i < 4){
-                    return(
-                        <div className="child" style={{background: "none", flex:"1"}} key = {i}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/guideline_image"+(i+1)+".png"} style = {{width:"5.3em", height:"5.2em"}}/>
-                            <h4 style={{marginTop:"1em"}}>{guidelineTitle[i]}</h4>
-                            <p style={{fontSize:"1.2em", marginTop:"1vh", width:"75%", marginLeft:"12.5%"}}>
-                                {guidelineContent[i]}
-                            </p>
-                        </div>
-                    );}
-                })}
-            </div>
-        </Tablet>
-        <Mobile>
-            <DragAndDrop />
-                <div className = "parent"
-                        style={{
-                            width:"70%", 
-                            display:"flex", 
-                            margin: "4em 15% 0 15%",
-                            position:"relative"
-                        }}>
-                        <div className = "child" style={{background: "none", minHeight: "28em"}} >
-                            <img src={process.env.PUBLIC_URL + "/image_src/guideline_image1.png"} style = {{width:"5.3em", height:"5.2em"}}/>
-                            <h4 style={{marginTop:"1em"}}>{guidelineTitle[0]}</h4>
-                            <p style={{fontSize:"1.2em", marginTop:"1vh", width:"75%", marginLeft:"12.5%"}}>
-                                {guidelineContent[0]}
-                            </p>
-                        </div>
+            </Tablet>
+            <Mobile>
+                <DragAndDrop />
+                <div className="parent"
+                    style={{
+                        width: "70%",
+                        display: "flex",
+                        margin: "4em 15% 0 15%",
+                        position: "relative"
+                    }}>
+                    <div className="child" style={{ background: "none", minHeight: "28em" }} >
+                        <img src={process.env.PUBLIC_URL + "/image_src/guideline_image1.png"} style={{ width: "5.3em", height: "5.2em" }} />
+                        <h4 style={{ marginTop: "1em" }}>{guidelineTitle[0]}</h4>
+                        <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
+                            {guidelineContent[0]}
+                        </p>
+                    </div>
                 </div>
-                {guidelineTitle.map((a,i) => {
-                    if(i >0){
-                    return(
-                        <div className = "parent"
-                            style={{
-                                width:"80%", 
-                                margin:"-8vh 10% 0 10%",
-                            }} key= {i}>
-                            <div className = "child" style={{background: "none", minHeight: "28em"}} >
-                                <img src={process.env.PUBLIC_URL + "/image_src/guideline_image"+(i+1)+".png"} style = {{width:"5.3em", height:"5.2em"}}/>
-                                <h4 style={{marginTop:"1em"}}>{guidelineTitle[i]}</h4>
-                                <p style={{fontSize:"1.2em", marginTop:"1vh", width:"75%", marginLeft:"12.5%"}}>
-                                    {guidelineContent[i]}
-                                </p>
+                {guidelineTitle.map((a, i) => {
+                    if (i > 0) {
+                        return (
+                            <div className="parent"
+                                style={{
+                                    width: "80%",
+                                    margin: "-8vh 10% 0 10%",
+                                }} key={i}>
+                                <div className="child" style={{ background: "none", minHeight: "28em" }} >
+                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i + 1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
+                                    <h4 style={{ marginTop: "1em" }}>{guidelineTitle[i]}</h4>
+                                    <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
+                                        {guidelineContent[i]}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        );}
-                    })}            
-        </Mobile>
+                        );
+                    }
+                })}
+            </Mobile>
         </>
     );
 }
@@ -151,7 +149,7 @@ function Banner() {
 
     const bannerImgArray = ['playdata_ad_banner2.png', 'playdata_ad_banner1.png']
     const [count, setCount] = useState(0)
-    
+
     const changeState = useRef();
     const boolean = useRef(true);
 
@@ -172,8 +170,8 @@ function Banner() {
                 boolean.current = true;
                 setCount(prev => prev + 1);
             }
-        }, boolean.current === 0 ? 0: 4000);
-        
+        }, boolean.current === 0 ? 0 : 4000);
+
         return () => {
             clearInterval(timer);
         }
@@ -181,85 +179,86 @@ function Banner() {
 
     const BannerEffect = {
         display: "flex",
-        flexDirection:"row",
+        flexDirection: "row",
         alignItems: "center",
     }
 
     return (
         <>
-        <Desktop>
-            <div style ={{
-                marginTop:"0.7em",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
-                <div className="ad_banner">
-                    <div className="banner_list" count = {count} boolean = {boolean.current}  
-                        style={BannerEffect}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count] }
-                                style = {{
+            <Desktop>
+                <div style={{
+                    marginTop: "0.7em",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                    <div className="ad_banner">
+                        <div className="banner_list" count={count} boolean={boolean.current}
+                            style={BannerEffect}>
+                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count]}
+                                style={{
                                     width: "63em",
                                     height: "5.8em",
                                     cursor: "pointer",
-                                    alignItems: "center",}} 
-                                onClick = { () => {
-                                    {boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank")}
-                            }}/>
+                                    alignItems: "center",
+                                }}
+                                onClick={() => {
+                                    { boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank") }
+                                }} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Desktop>
-        <Tablet>
-            <div style ={{
-                marginTop:"2em",
-                display: "flex",
-                justifyContent: "center",
-            }}>
-                <div className="ad_banner">
-                    <div className="banner_list" count = {count} boolean = {boolean.current}  
-                        style={BannerEffect}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count] }
-                                style = {{
+            </Desktop>
+            <Tablet>
+                <div style={{
+                    marginTop: "2em",
+                    display: "flex",
+                    justifyContent: "center",
+                }}>
+                    <div className="ad_banner">
+                        <div className="banner_list" count={count} boolean={boolean.current}
+                            style={BannerEffect}>
+                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count]}
+                                style={{
                                     width: "40em",
                                     height: "5.5em",
                                     cursor: "pointer",
                                     alignItems: "center",
-                                }} 
-                                onClick = { () => {
-                                    {boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank")}
-                            }}/>
+                                }}
+                                onClick={() => {
+                                    { boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank") }
+                                }} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Tablet>
-        <Mobile>
-            <div style ={{
-                marginTop:"-6vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
-                <div className="ad_banner">
-                    <div className="banner_list" count = {count} boolean = {boolean.current}  
-                        style={BannerEffect}>
-                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count] }
-                                style = {{
+            </Tablet>
+            <Mobile>
+                <div style={{
+                    marginTop: "-6vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                    <div className="ad_banner">
+                        <div className="banner_list" count={count} boolean={boolean.current}
+                            style={BannerEffect}>
+                            <img src={process.env.PUBLIC_URL + "/image_src/" + bannerImgArray[count]}
+                                style={{
                                     width: "30em",
                                     height: "5.5em",
                                     cursor: "pointer",
                                     alignItems: "center",
-                                }} 
-                                onClick = { () => {
-                                    {boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank")}
-                            }}/>
+                                }}
+                                onClick={() => {
+                                    { boolean.current ? window.open("https://playdata.io/bootcamp-all", "_blank") : window.open("https://github.com/Domlnick/FinalProject", "_blank") }
+                                }} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Mobile>
+            </Mobile>
         </>
     );
 }
 
 
-export {UploadArea, Banner};
+export { UploadArea, Banner };
