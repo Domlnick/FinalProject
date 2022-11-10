@@ -1,5 +1,4 @@
 import './css/App.css';
-import './css/Searching.css';
 import './css/welcome.css';
 import './css/User/Login.css';
 import './css/User/FindId.css';
@@ -16,7 +15,6 @@ import { FindPw, ResetPw, LoginResetPw } from './Routes/User/FindPw';
 import Register from './Routes/User/Register.js';
 import NoPage from './Routes/ErrorPage';
 import Welcome from './Routes/Welcome';
-import Searching from './Routes/Searching';
 
 // 주석 용도 내용 전달
 // 1. 회원가입 / 로그인 / 아이디찾기 / 비밀번호 찾기 / 비밀번호재설정 페이지
@@ -41,11 +39,6 @@ function App() {
             <Header />
             <UploadArea />
             <Banner />
-          </>
-        } />
-        <Route path="/searching" element={
-          <>
-            <Searching />
           </>
         } />
 

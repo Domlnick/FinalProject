@@ -129,7 +129,7 @@ function Register() {
 
     const userIdErrorHandler = () => {
         if (!isValidId) {
-            setUserIdShowErrorMessage('특수문자를 제외하여 입력해 주세요.');
+            setUserIdShowErrorMessage('특수문자를 제외하여 5자 이상이어야합니다.');
             setUserIdErrorBorderColor('red');
         } else {
             setUserIdShowErrorMessage('아이디를 입력해 주세요.');
@@ -232,7 +232,7 @@ function Register() {
                                 }} />
                                 <button disabled={isValidEmail ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={isValidEmail ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
-                                        axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/checkexistemail', {
+                                        axios.get('http://localhost:8080/findEmail', {
                                             params: {
                                                 userEmail: userEmail
                                             }
@@ -246,7 +246,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -259,7 +258,7 @@ function Register() {
                                 }} />
                                 <button disabled={userId.length >= 1 && isValidId ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={userId.length >= 1 && isValidId ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
-                                        axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/checkexistid', {
+                                        axios.get('http://localhost:8080/findUserId', {
                                             params: {
                                                 userId: userId
                                             }
@@ -273,7 +272,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -293,20 +291,18 @@ function Register() {
                             <div>
                                 <button className="register-button" disabled={disable} style={{ opacity: opacity }}
                                     onClick={() => {
-                                        axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/join', {
+                                        axios.post('http://localhost:8080/join', {
                                             userName: userName,
                                             userEmail: userEmail,
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log(response);
                                             if (response.data.result === true) {
                                                 alert('회원가입이 완료되었습니다.');
                                                 goToLogin();
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>
@@ -357,7 +353,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -384,7 +379,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -410,14 +404,12 @@ function Register() {
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log(response);
-                                            if (response.data.result == false) {
+                                            if (response.data.result === true) {
                                                 alert('회원가입이 완료되었습니다.');
                                                 goToLogin();
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>
@@ -461,7 +453,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -488,7 +479,6 @@ function Register() {
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.')
                                         })
                                     }}
                                 >중복체크</button>
@@ -514,14 +504,12 @@ function Register() {
                                             userId: userId,
                                             password: password
                                         }).then(function (response) {
-                                            console.log(response);
-                                            if (response.data.result == false) {
+                                            if (response.data.result === true) {
                                                 alert('회원가입이 완료되었습니다.');
                                                 goToLogin();
                                             }
                                         }).catch(function (error) {
                                             console.error(error);
-                                            console.log('에러가 발생되었습니다.');
                                         })
                                     }}
                                 >가입완료하기</button>

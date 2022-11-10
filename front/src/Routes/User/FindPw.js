@@ -109,10 +109,6 @@ function FindPw() {
 
     useEffect(() => {
         getTime();
-
-        return () => {
-            sessionStorage.removeItem("userName");
-        }
     }, [])
 
     useEffect(() => {
@@ -141,12 +137,10 @@ function FindPw() {
 
     if (!isExistUser) {
         sessionStorage.removeItem("userId");
-        sessionStorage.removeItem("userName");
         sessionStorage.removeItem("userEmail");
     }
 
     useEffect(() => {
-        //언마운트 시 세션스토리지 foundUserId 삭제
         return () => {
             if (window.location.href != "http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:3000/resetpw") {
                 sessionStorage.removeItem("userId");
@@ -200,30 +194,27 @@ function FindPw() {
                                                     userName: userName,
                                                     userEmail: userEmail
                                                 }
-                                            })
-                                                .then((res) => {
-                                                    JSON.stringify(res.data);
-                                                    if (res.data.result === "true") {
-                                                        setIsExistUser(true);
-                                                        sessionStorage.setItem("userId", userId);
-                                                        sessionStorage.setItem("userName", userName);
-                                                        sessionStorage.setItem("userEmail", userEmail);
-                                                        if (res.data["authcode"].length >= 1) {
-                                                            setAuthCode(res.data.authcode);
-                                                            console.log("생성시점:" + authCode);
-                                                            setShowAuthTag(true);
-                                                            setMinute(parseInt(299 / 60));
-                                                            setSecond(parseInt(299 % 60));
-                                                            setIsRunning(true);
-                                                        }
-                                                    } else if (res.data.result === "false") {
-                                                        setDisable(false);
-                                                        setIsExistUser(false);
+                                            }).then((res) => {
+                                                JSON.stringify(res.data);
+                                                if (res.data.result === "true") {
+                                                    setIsExistUser(true);
+                                                    sessionStorage.setItem("userId", userId);
+                                                    sessionStorage.setItem("userName", userName);
+                                                    sessionStorage.setItem("userEmail", userEmail);
+                                                    if (res.data["authcode"].length >= 1) {
+                                                        setAuthCode(res.data.authcode);
+                                                        setShowAuthTag(true);
+                                                        setMinute(parseInt(299 / 60));
+                                                        setSecond(parseInt(299 % 60));
+                                                        setIsRunning(true);
                                                     }
-                                                })
-                                                .catch((e) => {
-                                                    console.error(e);
-                                                })
+                                                } else if (res.data.result === "false") {
+                                                    setDisable(false);
+                                                    setIsExistUser(false);
+                                                }
+                                            }).catch((e) => {
+                                                console.error(e);
+                                            })
                                         } else if (!isValidEmail) {
                                             alert("이메일 형식이 잘못되었습니다.");
                                         }
@@ -318,38 +309,31 @@ function FindPw() {
                                                             userName: userName,
                                                             userEmail: userEmail
                                                         }
-                                                    })
-                                                        .then((res) => {
-                                                            JSON.stringify(res.data);
-                                                            if (res.data.result === "true") {
-                                                                setIsExistUser(true);
-                                                                sessionStorage.setItem("userId", userId);
-                                                                sessionStorage.setItem("userName", userName);
-                                                                sessionStorage.setItem("userEmail", userEmail);
-                                                                // console.log(res.data.authcode);
-                                                                // console.log(res.data.result);
-                                                                if (res.data["authcode"].length >= 1) {
-                                                                    sessionStorage.setItem('authcode', res.data.authcode);
-                                                                    setShowAuthTag(true);
-                                                                    setMinute(parseInt(299 / 60));
-                                                                    setSecond(parseInt(299 % 60));
-                                                                    setIsRunning(true);
-                                                                    // console.log(isRunning);
-                                                                }
-                                                            } else if (res.data.result === "false") {
-                                                                setDisable(false);
-                                                                setIsExistUser(false);
+                                                    }).then((res) => {
+                                                        JSON.stringify(res.data);
+                                                        if (res.data.result === "true") {
+                                                            setIsExistUser(true);
+                                                            sessionStorage.setItem("userId", userId);
+                                                            sessionStorage.setItem("userName", userName);
+                                                            sessionStorage.setItem("userEmail", userEmail);
+                                                            if (res.data["authcode"].length >= 1) {
+                                                                setAuthCode(res.data.authcode);
+                                                                setShowAuthTag(true);
+                                                                setMinute(parseInt(299 / 60));
+                                                                setSecond(parseInt(299 % 60));
+                                                                setIsRunning(true);
                                                             }
-                                                        })
-                                                        .catch((e) => {
-                                                            console.error(e);
-                                                        })
+                                                        } else if (res.data.result === "false") {
+                                                            setDisable(false);
+                                                            setIsExistUser(false);
+                                                        }
+                                                    }).catch((e) => {
+                                                        console.error(e);
+                                                    })
                                                 } else if (!isValidEmail) {
                                                     alert("이메일 형식이 잘못되었습니다.");
                                                 }
-                                            }}
-                                        >인증</button>
-
+                                            }}>인증</button>
                                 }
                             </span>
                             {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
@@ -432,38 +416,31 @@ function FindPw() {
                                                             userName: userName,
                                                             userEmail: userEmail
                                                         }
-                                                    })
-                                                        .then((res) => {
-                                                            JSON.stringify(res.data);
-                                                            if (res.data.result === "true") {
-                                                                setIsExistUser(true);
-                                                                sessionStorage.setItem("userId", userId);
-                                                                sessionStorage.setItem("userName", userName);
-                                                                sessionStorage.setItem("userEmail", userEmail);
-                                                                // console.log(res.data.authcode);
-                                                                // console.log(res.data.result);
-                                                                if (res.data["authcode"].length >= 1) {
-                                                                    sessionStorage.setItem('authcode', res.data.authcode);
-                                                                    setShowAuthTag(true);
-                                                                    setMinute(parseInt(299 / 60));
-                                                                    setSecond(parseInt(299 % 60));
-                                                                    setIsRunning(true);
-                                                                    // console.log(isRunning);
-                                                                }
-                                                            } else if (res.data.result === "false") {
-                                                                setDisable(false);
-                                                                setIsExistUser(false);
+                                                    }).then((res) => {
+                                                        JSON.stringify(res.data);
+                                                        if (res.data.result === "true") {
+                                                            setIsExistUser(true);
+                                                            sessionStorage.setItem("userId", userId);
+                                                            sessionStorage.setItem("userName", userName);
+                                                            sessionStorage.setItem("userEmail", userEmail);
+                                                            if (res.data["authcode"].length >= 1) {
+                                                                setAuthCode(res.data.authcode);
+                                                                setShowAuthTag(true);
+                                                                setMinute(parseInt(299 / 60));
+                                                                setSecond(parseInt(299 % 60));
+                                                                setIsRunning(true);
                                                             }
-                                                        })
-                                                        .catch((e) => {
-                                                            console.error(e);
-                                                        })
+                                                        } else if (res.data.result === "false") {
+                                                            setDisable(false);
+                                                            setIsExistUser(false);
+                                                        }
+                                                    }).catch((e) => {
+                                                        console.error(e);
+                                                    })
                                                 } else if (!isValidEmail) {
                                                     alert("이메일 형식이 잘못되었습니다.");
                                                 }
-                                            }}
-                                        >인증</button>
-
+                                            }}>인증</button>
                                 }
                             </span>
                             {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
@@ -515,6 +492,7 @@ function FindPw() {
 function ResetPw() {
 
     const cookies = new Cookies();
+
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [disable, setDisable] = useState(true);
@@ -615,7 +593,7 @@ function ResetPw() {
                                     axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/updateuserpw', {
                                         userEmail: sessionStorage.getItem("userEmail"),
                                         userId: sessionStorage.getItem("userId"),
-                                        password: password,
+                                        password: password
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
@@ -662,9 +640,10 @@ function ResetPw() {
                                         userEmail: sessionStorage.getItem("userEmail"),
                                         userId: sessionStorage.getItem("userId"),
                                         password: password
-                                    }).then(function (respons) {
+                                    }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
+
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')

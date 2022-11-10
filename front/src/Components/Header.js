@@ -9,12 +9,6 @@ function Header() {
     let login = isLogined();
     let userName = getLoginUserName();
 
-    const [userInfo, setUserInfo] = useState(false);
-
-    const showUserInfo = () => {
-        setUserInfo(true);
-    };
-
     return (
         <Nav className="navbar navbar-expand-sm bg-black navbar-dark" >
             <div className="container-fluid">
