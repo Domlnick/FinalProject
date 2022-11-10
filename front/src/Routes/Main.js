@@ -69,7 +69,7 @@ function UploadArea(props) {
                         if (i < 2) {
                             return (
                                 <div className="child" style={{ background: "none", flex: "1", minHeight: "33em" }} key={i}>
-                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i + 1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
+                                    <img src={process.env.PUBLIC_URL + "/image_src/guideline_image" + (i+1) + ".png"} style={{ width: "5.3em", height: "5.2em" }} />
                                     <h4 style={{ marginTop: "1em" }}>{guidelineTitle[i]}</h4>
                                     <p style={{ fontSize: "1.2em", marginTop: "1vh", width: "75%", marginLeft: "12.5%" }}>
                                         {guidelineContent[i]}
