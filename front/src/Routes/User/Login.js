@@ -127,14 +127,15 @@ function Login() {
                                     console.log(respons.data.result);
                                     console.log(respons.data.userName);
 
-                                    const accessToken = respons.headers.get("AT_RT_Authorization");
+                                    const accessToken = respons.headers.get("AT_Authorization");
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
                                     setLoginUserNameToLS(respons.data.userName);
 
                                     navigate(-1);
 
                                     // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                                    axios.defaults.headers.common['Authorization'] = accessToken;
+                                    // axios.defaults.headers.common['Authorization'] = accessToken;
+                                    // axios.defaults.headers.post['Authorization'] = accessToken;
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);

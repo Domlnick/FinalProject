@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Header } from "../../Components/Header";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 
 const Desktop = ({ children }) => {
@@ -353,6 +354,7 @@ function FindPw() {
 // 비밀번호 업데이트 컴포넌트
 function ResetPw() {
 
+    const cookies = new Cookies();
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [disable, setDisable] = useState(true);
@@ -450,11 +452,11 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/updateuserpw', {
+                                    axios.post('http://localhost:8080/updateuserpwla', {
                                         userEmail : sessionStorage.getItem("userEmail"),
                                         userId : sessionStorage.getItem("userId"),
-                                        password: password
-                                    }).then(function (respons) {
+                                        password: password,
+                                    }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
                                         
@@ -496,7 +498,7 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/updateuserpw', {
+                                    axios.post('http://localhost:8080/user/updateuserpw', {
                                         userEmail : sessionStorage.getItem("userEmail"),
                                         userId : sessionStorage.getItem("userId"),
                                         password: password
@@ -534,13 +536,14 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/updateuserpw', {
+                                    axios.post('http://localhost:8080/user/updateuserpw', {
                                         userEmail : sessionStorage.getItem("userEmail"),
                                         userId : sessionStorage.getItem("userId"),
                                         password: password
-                                    }).then(function (respons) {
+                                    }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
+
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
