@@ -182,8 +182,7 @@ public class IndexController {
         String sentKey = emailService.sendMail(user, type);
             
         result.put("authcode", sentKey);
-            result.put("result", "true");
-            result.put("authcode", sentKey);            
+            result.put("result", "true");          
 //            result.put("authcode", "aaaaaa");            
         } else {
             result.put("result", "false");
