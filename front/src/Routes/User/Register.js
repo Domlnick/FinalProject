@@ -232,7 +232,7 @@ function Register() {
                                 }} />
                                 <button disabled={isValidEmail ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={isValidEmail ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
-                                        axios.get('http://localhost:8080/findEmail', {
+                                        axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/findEmail', {
                                             params: {
                                                 userEmail: userEmail
                                             }
@@ -258,7 +258,7 @@ function Register() {
                                 }} />
                                 <button disabled={userId.length >= 1 && isValidId ? duplicateCheckButtonDisableFalse : duplicateCheckButtonDisableTrue} style={userId.length >= 1 && isValidId ? duplicateCheckButtonStyleTrue : duplicateCheckButtonStyleFalse}
                                     onClick={() => {
-                                        axios.get('http://localhost:8080/findUserId', {
+                                        axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/findUserId', {
                                             params: {
                                                 userId: userId
                                             }
@@ -291,7 +291,7 @@ function Register() {
                             <div>
                                 <button className="register-button" disabled={disable} style={{ opacity: opacity }}
                                     onClick={() => {
-                                        axios.post('http://localhost:8080/join', {
+                                        axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/join', {
                                             userName: userName,
                                             userEmail: userEmail,
                                             userId: userId,
