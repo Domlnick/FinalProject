@@ -32,7 +32,9 @@ function FindPw() {
     const [isSameCode, setIsSameCode] = useState(false);
     const [isExistUser, setIsExistUser] = useState(true);
     const [isShow, setIsShow] = useState(true);
+    const [authCode, setAuthCode] = useState(null);
     const navigate = useNavigate();
+    
     const goToResetPw = () => {
         navigate('/resetpw');
     };
@@ -102,16 +104,12 @@ function FindPw() {
     }, isRunning ? 1000 : null);
 
     useEffect(() => {
+        getTime();
 
         return () => {
             sessionStorage.removeItem("userName");
-
         }
     }, [])
-
-    useEffect(() => {
-        getTime();
-    }, []);
 
     useEffect(() => {
         if (second === 0) {
@@ -143,17 +141,15 @@ function FindPw() {
         sessionStorage.removeItem("userEmail");
     }
 
-    // useEffect(() => {
-    //     //언마운트 시 세션스토리지 foundUserId 삭제
-    //     return() => {
-    //         if(window.location.href != "http://localhost:3000/findpw" || window.location.href != "http://localhost:3000/resetpw"){
-    //             sessionStorage.removeItem("userId");
-    //             sessionStorage.removeItem("authcode");
-    //             sessionStorage.removeItem("userEmail");
-    //             sessionStorage.removeItem("userName");
-    //         }
-    //     }
-    // }, [])
+    useEffect(() => {
+        //언마운트 시 세션스토리지 foundUserId 삭제
+        return() => {
+            if(window.location.href != "http://localhost:3000/resetpw"){
+                sessionStorage.removeItem("userId");
+                sessionStorage.removeItem("userEmail");
+            }
+        }
+    }, [])
 
     return (
         <>
@@ -189,53 +185,44 @@ function FindPw() {
                                     handleDisableGetCode();
                                 }} />
 
-                                {
-                                    isRunning ?
-                                        <></> :
-                                        <button disabled={disableCodeBtn} style={{ position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
-                                            onClick={() => {
-                                                if (isValidEmail) {
-                                                    axios({
-                                                        method: "get",
-                                                        url: "http://localhost:8080/sendcodepw",
-                                                        params: {
-                                                            userId: userId,
-                                                            userName: userName,
-                                                            userEmail: userEmail
-                                                        }
-                                                    })
-                                                        .then((res) => {
-                                                            JSON.stringify(res.data);
-                                                            if (res.data.result === "true") {
-                                                                setIsExistUser(true);
-                                                                sessionStorage.setItem("userId", userId);
-                                                                sessionStorage.setItem("userName", userName);
-                                                                sessionStorage.setItem("userEmail", userEmail);
-                                                                // console.log(res.data.authcode);
-                                                                // console.log(res.data.result);
-                                                                if (res.data["authcode"].length >= 1) {
-                                                                    sessionStorage.setItem('authcode', res.data.authcode);
-                                                                    setShowAuthTag(true);
-                                                                    setMinute(parseInt(299 / 60));
-                                                                    setSecond(parseInt(299 % 60));
-                                                                    setIsRunning(true);
-                                                                    // console.log(isRunning);
-                                                                }
-                                                            } else if (res.data.result === "false") {
-                                                                setDisable(false);
-                                                                setIsExistUser(false);
-                                                            }
-                                                        })
-                                                        .catch((e) => {
-                                                            console.error(e);
-                                                        })
-                                                } else if (!isValidEmail) {
-                                                    alert("이메일 형식이 잘못되었습니다.");
+                                <button disabled={disableCodeBtn} style={{ position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
+                                    onClick={() => {
+                                        if (isValidEmail) {
+                                            axios({
+                                                method: "get",
+                                                url: "http://localhost:8080/sendcodepw",
+                                                params: {
+                                                    userId: userId,
+                                                    userName: userName,
+                                                    userEmail: userEmail
                                                 }
-                                            }}
-                                        >인증</button>
-
-                                }
+                                            })
+                                                .then((res) => {
+                                                    JSON.stringify(res.data);
+                                                    if (res.data.result === "true") {
+                                                        setIsExistUser(true);
+                                                        sessionStorage.setItem("userId", userId);
+                                                        sessionStorage.setItem("userName", userName);
+                                                        sessionStorage.setItem("userEmail", userEmail);
+                                                    if (res.data["authcode"].length >= 1) {
+                                                            setAuthCode(res.data.authcode);
+                                                            console.log("생성시점:" + authCode);
+                                                            setShowAuthTag(true);
+                                                            setMinute(parseInt(299 / 60));
+                                                            setSecond(parseInt(299 % 60));
+                                                            setIsRunning(true);
+                                                        }
+                                                    } else if (res.data.result === "false") {
+                                                        setDisable(false);
+                                                        setIsExistUser(false);
+                                                    }
+                                                })
+                                                .catch((e) => {
+                                                    console.error(e);
+                                                })
+                                        } else if (!isValidEmail) {
+                                            alert("이메일 형식이 잘못되었습니다.");
+                                }}}>인증</button>
                             </span>
                             {isExistUser ? <></> : <p style={{ marginTop: "15px", fontSize: "17px", color: "red" }}>회원정보가 존재하지 않습니다.</p>}
                             {
@@ -250,8 +237,10 @@ function FindPw() {
                                         <button disabled={disableCodeBtn} style={isShow ? { position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" } : { display: "none", position: "absolute", width: "50px", height: "44px", fontSize: "4px", border: "1px solid #494949", borderRadius: "8px", boxSizing: "border-box" }}
                                             // 인증코드 동일 여부 확인  
                                             onClick={() => {
-                                                if (userCode == sessionStorage.getItem("authcode")) {
+                                                console.log("비교시점: " + authCode);
+                                                if (userCode == authCode) {
                                                     setDisableCodeInput(true);
+                                                    setDisableCodeBtn(true);
                                                     setIsShow(false);
                                                     sessionStorage.removeItem("authcode")
                                                 } else {
@@ -461,10 +450,14 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail : sessionStorage.getItem("userEmail"),
+                                        userId : sessionStorage.getItem("userId"),
                                         password: password
                                     }).then(function (respons) {
-                                        console.log(respons);
+                                        sessionStorage.removeItem("userId")
+                                        sessionStorage.removeItem("userEmail")
+                                        
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
@@ -503,10 +496,13 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail : sessionStorage.getItem("userEmail"),
+                                        userId : sessionStorage.getItem("userId"),
                                         password: password
                                     }).then(function (respons) {
-                                        console.log(respons);
+                                        sessionStorage.removeItem("userId")
+                                        sessionStorage.removeItem("userEmail")
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
@@ -538,10 +534,13 @@ function ResetPw() {
                         <div>
                             <button className="resetpw-button" disabled={disable} style={{ opacity: opacity }}
                                 onClick={() => {
-                                    axios.post('http://localhost:8080/user/updateLoginedUserPassword', {
+                                    axios.post('http://localhost:8080/updateuserpw', {
+                                        userEmail : sessionStorage.getItem("userEmail"),
+                                        userId : sessionStorage.getItem("userId"),
                                         password: password
                                     }).then(function (respons) {
-                                        console.log(respons);
+                                        sessionStorage.removeItem("userId")
+                                        sessionStorage.removeItem("userEmail")
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
