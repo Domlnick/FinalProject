@@ -38,7 +38,6 @@ function DragAndDrop() {
     const goToResult = () => {
         navigate("/result");
     }
-    const cookies = new Cookies();
 
     const onDrop = useCallback(async acceptedFiles => {
 
