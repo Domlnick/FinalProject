@@ -142,7 +142,7 @@ public class IndexController {
         
         if(!isExistId && !isExistEmail) {
             principalDetailService.joinUser(newUser);
-//            emailService.sendMail(user, "register");
+            emailService.sendMail(user, "register");
             result.put("result", true);
             
             return result;
@@ -294,7 +294,7 @@ public class IndexController {
     }
 
     // JSON 타입으로 변환 후 return. 로그인 후 session에 권한이 저장되어 있어야지만 수정할 수 있도록 해놓을 예정.
-    @PostMapping("/updateuserpwla")
+    @PostMapping("/updatelogineduserpw")
     public @ResponseBody Map<String, String> updateLoginedUserPassword(@RequestBody User user,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
 

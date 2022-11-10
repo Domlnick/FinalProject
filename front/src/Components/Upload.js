@@ -58,15 +58,15 @@ function DragAndDrop() {
                 axios.get("https://api.ipify.org/?format=json")
                     .then((res) => {
                         // db 해당 IP 조회
-                        axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
+                        axios.post('http://localhost:8080/issignedin', {
                             visitUserIp: res.data.ip,
                             usedCount: 1,
                         }).then((res) => {
                             if (res.data.result === 2) {
                                 alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
                             } else if (res.data.result === 999) {
+                                setImgBase64(res.data.result)
                                 alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
-                                setImgBase64(null)
                             }
                         }).catch((e) => {
                             console.error(e)
@@ -78,12 +78,12 @@ function DragAndDrop() {
 
     useEffect(() => {
 
-        if (imgBase64 === null) {
-
+        if (imgBase64 == 999) {
+            console.log("page dㅣ동하면 안됨")
         } else if (imgBase64 != null) {
             sessionStorage.setItem("uploadedImg", imgBase64);
 
-            axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:80/upload', {
+            axios.post('http://localhost:5000/upload', {
                 file: imgBase64
             }).then((res) => {
 
