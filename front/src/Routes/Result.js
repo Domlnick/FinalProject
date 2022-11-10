@@ -6,6 +6,7 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { Link } from 'react-router-dom';
 import { isLogined } from './User/Login';
+import Cookies from 'universal-cookie';
 
 const modelSizeValue = {
     marginLeft: "4em",
@@ -86,7 +87,7 @@ const imagesList = (card)  => {
     return post;
 }
 
-function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
+function Catbtn({ name, type, handlePost, handleCurrentPage}) {
 
     if(type === "Desktop"){
         return (
@@ -94,7 +95,6 @@ function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-desktop"
                     onClick={() => { 
-                        handleSetCat(name);
                         handlePost(imagesList(name));
                         handleCurrentPage(1);
                 }}>
@@ -108,7 +108,6 @@ function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-tablet"
                     onClick={() => { 
-                        handleSetCat(name);
                         handlePost(imagesList(name));
                         handleCurrentPage(1);
                 }}>
@@ -122,7 +121,6 @@ function Catbtn({ name, handleSetCat, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-tablet"
                     onClick={() => { 
-                        handleSetCat(name);
                         handlePost(imagesList(name));
                         handleCurrentPage(1);
                 }}>
@@ -147,6 +145,12 @@ function Result() {
         const isMobile = useMediaQuery({ maxWidth: 819 })
         return isMobile ? children : null
     }
+    const cookies = new Cookies();
+    const [categoriesArray, setCategoriesArray] = useState([]);
+
+    // const categoriyTop = [outer, dress, top, shorts];
+    const categoryTop = ["아우터", "드레스", "셔츠", "반팔"];
+    const categoryBottom = ["바지", "치마"];
 
     // 이후 코어쪽으로부터 카테고리 받아서 배열에 담기
     const categoryArr = ['상의', '하의', '가방', '후드', '원피스', '청바지', '치마'];
@@ -174,7 +178,7 @@ function Result() {
                 .then((res) => {
                     console.log(2)
                     // db 해당 IP 조회
-                    axios.post('http://localhost:8080/issignedin', {
+                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
                         visitUserIp : res.data.ip,
                         usedCount : 1,
                     }).then((res) => {
@@ -191,22 +195,31 @@ function Result() {
             }
         }
     }, []);
-    
     useEffect(() => {
-        // 이미지 Base64 String 비동기 전송
         if(reUploadImg != null){
             sessionStorage.setItem("uploadedImg", reUploadImg);
-            window.location.reload(); // 테스트용
+            if(sessionStorage.getItem("uploadImg")){
+                window.location.reload();
+            }else{
+                alert("첨부한 이미지가 잘못되어씁니다")
+            }
+            // 이미지 Base64 String 비동기 전송
+            axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:80/test', {
+                file : reUploadImg
+            })
+            .then((res) => {
+                // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
+                // cookies.set("pred_img", res.data.result_img_path_top);
+                // cookies.set("pred_img_url", res.data.result_img_link_top);
+                // cookies.set("pred_img_score", res.data.result_img_score_top);
+                // sessionStorage.setItem("pred_img", res.data.result_img_path_top)
+                // sessionStorage.setItem("pred_img_url", res.data.result_img_link_top)
+                // sessionStorage.setItem("pred_img_score", res.data.result_img_score_top)
+            })
+            .catch((e) => {
+                console.error(e);
+            })
         }
-        axios.post('http://localhost:80/test', {
-            file : reUploadImg
-        })
-        .then((res) => {
-            
-        })
-        .catch((e) => {
-            console.error(e);
-        })
     }, [reUploadImg]) 
 
     const { open } = useDropzone({
@@ -220,22 +233,7 @@ function Result() {
     /* 카테고리 필터 기능 */
     const categories = [...new Set(categoryArr.map((item) => item))];
 
-    const [activeCat, setActiveCat] = useState(categories);
-    const [data, setData] = useState(categories);
-
-    // useState() 렌더링으로는 바로 적용이 안됨
-    // useEffect()에서 렌더링 후 바로 업데이트 하기 위한 함수를 설정	
-    useEffect(() => {
-        setData(categories.filter((v) => v === activeCat));
-    }, [activeCat]);
-    
-    //Pagination 미완성 
-    //- 비동기 데이터 받아와서 뿌리는 작업 필요
-    //아이템 총 개수 - 설정 필요
-    //Desktop과 Tablet & Mobile 한 페이지 출력 개수 구분
-    // 카테고리 버튼 누를때마다 해당 카테고리 1페이지 출력되게 구현함
-
-    //Desktop
+    //Desktop - pagination
     const [postDt, setPostDt] = useState([]);
     const [countDt, setCountDt] = useState(0); //아이템 총 개수
     const [currentPageDt, setCurrentPageDt] = useState(1); //현재페이지
@@ -247,11 +245,13 @@ function Result() {
 
 
     useEffect(() => {
-        setActiveCat(categories[0]);
         setPostDt(imagesList(categories[0]));
-        // btnEffect.current.focus();
+        setPostTM(imagesList(categories[0]));
+        if(sessionStorage.getItem("pred_img") && sessionStorage.getItem("pred_img_url") && sessionStorage.getItem("pred_img_score")){
+            //카테고리 분류 로직 짜야함
+            setCategoriesArray();
+        }
     }, []);
-
 
     useEffect(() => {
         setCountDt(postDt.length);
@@ -264,7 +264,7 @@ function Result() {
         setCurrentPageDt(e);
     }
 
-    //Tablet & Mobile
+    //Tablet & Mobile - pagination
     const [postTM, setPostTM] = useState([]);
     const [countTM, setCountTM] = useState(0); //아이템 총 개수
     const [currentPageTM, setCurrentPageTM] = useState(1); //현재페이지
@@ -273,11 +273,6 @@ function Result() {
     const [indexOfLastPostTM, setIndexOfLastPostTM] = useState(0);
     const [indexOfFirstPostTM, setIndexOfFirstPostTM] = useState(0);
     const [currentPostsTM, setCurrentPostsTM] = useState(0);
-    
-    useEffect(() => {
-        setActiveCat(categories[0]);
-        setPostTM(imagesList(categories[0]));
-    }, []);
 
     useEffect(() => {
         setCountTM(postTM.length);
@@ -300,10 +295,7 @@ function Result() {
                         </div>
                         <button className="left-image-changeBtn" type="button" onClick={open}>
                             <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
-                                style={{
-                                    width: "4.2em",
-                                    // marginTop:"2.2em"
-                                }} />다시 업로드하기
+                                style={{width: "4.2em"}} />다시 업로드하기
                         </button>
                         <div style={{
                             margin:"3em auto",
@@ -318,9 +310,7 @@ function Result() {
                             boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
                         }}>
                         <p style={modelSpecTable}>
-                            <span style={{
-                                color: "#6E6E6E",
-                            }}>업로드 이미지 모델 분석 결과</span>
+                            <span style={{color: "#6E6E6E"}}>업로드 이미지 모델 분석 결과</span>
                             <hr style={{height:"0em", border:"2px solid"}}></hr>
                             <table>
                                 <tr>
@@ -342,6 +332,7 @@ function Result() {
 
                     <div className="right-result-desktop">
                         <div className='result-category-desktop'>
+                            {/* {categoriesArray.map((idx, i) => { */}
                             {categoryArr.map((idx, i) => {
                                 if (idx == '치마' || idx == '가방') {
                                     return null;
@@ -351,7 +342,6 @@ function Result() {
                                             <Catbtn 
                                                 name={idx}
                                                 type="Desktop"
-                                                handleSetCat={setActiveCat}
                                                 handlePost={setPostDt}
                                                 handleCurrentPage={setCurrentPageDt}
                                                 key={i}
@@ -364,9 +354,7 @@ function Result() {
                         <div className='result-list-desktop' style={{ overflow: "hidden" }}>
                             <div style={{
                                 margin: "2.2em 0 0 1em",
-                                // width: "7em",
                                 height: "2em",
-                                // fontSize: "1.6em",
                                 fontWeight: "bold",
                                 textAlign: "center",
                                 background: "none",
@@ -468,7 +456,7 @@ function Result() {
                                             <Catbtn 
                                                 name={idx}
                                                 type="Tablet"
-                                                handleSetCat={setActiveCat}
+                                                // handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
                                                 key={idx}
@@ -479,9 +467,7 @@ function Result() {
                             })}
                         </div>
                         <div className='result-list-tablet' style={{ overflow: "hidden" }}>
-                            <div style={{
-                                margin: "2em 0 0 1em",
-                            }}>
+                            <div style={{margin: "2em 0 0 1em"}}>
                             </div>
                             {
                                 currentPostsTM && postTM.length > 0 ?
@@ -526,9 +512,7 @@ function Result() {
                         position: "absolute"
                     }}>
                         <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
-                            style={{
-                                width: "5.7em",
-                            }} />
+                            style={{width: "5.7em"}} />
                     </button>
                     <div style={{
                         margin:"3em auto",
@@ -582,7 +566,7 @@ function Result() {
                                             <Catbtn 
                                                 name={idx}
                                                 type="Mobile"
-                                                handleSetCat={setActiveCat}
+                                                // handleSetCat={setActiveCat}
                                                 handlePost={setPostTM}
                                                 handleCurrentPage={setCurrentPageTM}
                                                 key={idx}
@@ -593,9 +577,7 @@ function Result() {
                             })}
                         </div>
                         <div className='result-list-tablet' style={{ overflow: "hidden" }}>
-                            <div style={{
-                                margin: "2em 0 0 1em",
-                            }}>
+                            <div style={{margin: "2em 0 0 1em"}}>
                             </div>
                             {
                                 currentPostsTM && postTM.length > 0 ?

@@ -17,7 +17,6 @@ function Welcome() {
         height: "100vh",
         float: "left",
         backgroundColor: "black",
-        // display: "grid",
         placeItems: "center",
         minHeight: "100vh",
         color: "white",
@@ -28,6 +27,17 @@ function Welcome() {
         marginTop: "50vh",
         opacity: "0"
     });
+
+    const [buttonStyle, setButtonStyle] = useState({
+        border: "none",
+        borderRadius: "10px",
+        color: "#fff",
+        backgroundColor: "#000",
+        width: "200px",
+        height: "50px",
+        marginTop: "100px",
+        opacity: "0"
+    })
 
     useEffect(() => {
         setTimeout(() => {
@@ -47,6 +57,16 @@ function Welcome() {
             setUnknownGif({
                 width: "200px",
                 marginTop: "30vh",
+                opacity: "1"
+            });
+            setButtonStyle({
+                border: "none",
+                borderRadius: "10px",
+                color: "#fff",
+                backgroundColor: "#000",
+                width: "200px",
+                height: "50px",
+                marginTop: "100px",
                 opacity: "1"
             });
         }, 500)
@@ -69,7 +89,7 @@ function Welcome() {
                 <div className="text" style={{ marginTop: '35vh' }}>
                     <h2>걱정마요! LYKYL가 있잖아요!</h2>
                     <h2>우리가 찾아줄게요!</h2>
-                    <button type="button" className="start-button" onClick={() => {
+                    <button type="button" style={buttonStyle} className="start-button" onClick={() => {
                         setRightPageStyle({
                             width: "1px",
                             height: "100vh",
@@ -90,9 +110,19 @@ function Welcome() {
                         });
                         setUnknownGif({
                             width: "0px",
-                            marginTop: "0%",
+                            marginTop: "30vh",
                             opacity: "0"
                         });
+                        setButtonStyle({
+                            border: "none",
+                            borderRadius: "10px",
+                            color: "#fff",
+                            backgroundColor: "#000",
+                            width: "200px",
+                            height: "50px",
+                            marginTop: "100px",
+                            opacity: "0"
+                        })
                         setTimeout(() => {
                             goToList();
                         }, 2000);

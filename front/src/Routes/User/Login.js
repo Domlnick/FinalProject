@@ -22,9 +22,14 @@ const Mobile = ({ children }) => {
     return isMobile ? children : null
 };
 
-// 토큰을 쿠키에 저장하는 함수/
+
+// 토큰을 쿠키에 저장하는 함수
 export function setRefreshTokenToCookie(refreshToken) {
     cookies.set('refreshToken', refreshToken);
+};
+
+export function setAccessTokenToCookie(accessToken) {
+    cookies.set('accessToken', accessToken);
 };
 
 // 로그아웃 하면 쿠키를 삭제하는 함수.
@@ -32,16 +37,32 @@ export function logout() {
     console.log('localStorage set logout!');
     window.localStorage.setItem('logout', Date.now());
     cookies.remove('refreshToken');
+    cookies.remove('accessToken');
+    localStorage.removeItem('userName');
+
+    return true;
 };
 
+// 로그인 여부
 export function isLogined() {
     let getCookie = cookies.get("refreshToken");
 
-    if(getCookie){
+    if (getCookie) {
         return true;
     }
     return false;
-}
+};
+
+// 이름을 로컬세션에 담아두는 함수
+export function setLoginUserNameToLS(userName) {
+    localStorage.setItem('userName', userName);
+};
+
+// 이름 가져오기
+export function getLoginUserName() {
+    let userName = localStorage.getItem('userName');
+    return userName;
+};
 
 // 로그인 컴포넌트
 function Login() {
@@ -69,6 +90,8 @@ function Login() {
         userId && password ? setDisable(false) : setDisable(true);
     };
 
+    let nevigate = useNavigate();
+
     return (
         <>
             <Desktop>
@@ -79,7 +102,6 @@ function Login() {
                             <Link to="/">
                                 <img src="/logos/title.png" width='60%' />
                             </Link>
-
                         </div>
                     </div>
                     <div className="login-rectangle">
@@ -101,27 +123,23 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                // 요청상태를 state로 관리하도록 구현해야함.
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
-                                    const accessToken = respons.headers.get("AT_RT_Authorization");
-                                    setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
 
-                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                                    axios.defaults.headers.common['Authorization'] = accessToken;
+                                    setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
+                                    setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
+                                    setLoginUserNameToLS(respons.data.userName);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
+                                        cookies.remove('refreshToken');
                                     } else {
                                         goToList();
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>
@@ -171,28 +189,23 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                // 요청상태를 state로 관리하도록 구현해야함.
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
 
-                                    const accessToken = respons.headers.get("AT_RT_Authorization");
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
-
-                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                                    axios.defaults.headers.common['Authorization'] = accessToken;
+                                    setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
+                                    setLoginUserNameToLS(respons.data.userName);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
+                                        cookies.remove('refreshToken');
                                     } else {
                                         goToList();
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>
@@ -235,28 +248,23 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                // 요청상태를 state로 관리하도록 구현해야함.
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
-                                    console.log(respons);
-                                    console.log(respons.data.result);
 
-                                    const accessToken = respons.headers.get("AT_RT_Authorization");
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
-
-                                    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                                    axios.defaults.headers.common['Authorization'] = accessToken;
+                                    setAccessTokenToCookie(respons.headers.get("AT_Authorization"));
+                                    setLoginUserNameToLS(respons.data.userName);
 
                                     if (respons.data.result == 'false') {
                                         alert(respons.data.message);
+                                        cookies.remove('refreshToken');
                                     } else {
                                         goToList();
                                     }
                                 }).catch(function (error) {
                                     console.error(error);
-                                    console.log('에러가 발생되었습니다.')
                                 })
                             }}>Login</button>
                         </div>
