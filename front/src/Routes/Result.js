@@ -6,7 +6,6 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { Link } from 'react-router-dom';
 import { isLogined } from './User/Login';
-import Cookies from 'universal-cookie';
 
 const modelSizeValue = {
     marginLeft: "4em",
@@ -19,63 +18,79 @@ const modelSpecTable = {
     fontSize: "0.9em",
 }
 
-const imagesList = (card)  => {
+const imagesList = (category)  => {
     const post = new Array();
-    
-    if (card === "원피스") {
+    if (category === "아우터") {
         for(let i =0; i < 100; i++){
             let data = new Object();
             
             data.number = i;
-            data.src = `/image_src/test_image120/women_onepiece_${(i+1)%30+1}.jpg`;
-            data.className = "result-img-"
-
-            post.push(data);
-        }
-
-        return post;
-    } else if (card === '하의') {
-        for(let i =0; i < 100; i++){
-            let data = new Object();
-
-            data.number = i;
-            data.src = `/image_src/upload_sample${i%3}.jpg`;
+            data.src = JSON.parse(sessionStorage.getItem('outerLink'))
+            data.link = JSON.parse(sessionStorage.getItem('outerUrl'))
             data.className = "result-img-"
             
             post.push(data);
         }
-
+        
         return post;
-    } else if (card === '상의') {
+    } else if (category === '드레스') {
         for(let i =0; i < 100; i++){
             let data = new Object();
-
+            
             data.number = i;
-            data.src = `/image_src/result_sample${i%3}.jpg`;
+            data.src = JSON.parse(sessionStorage.getItem('dressLink'))
+            data.link = JSON.parse(sessionStorage.getItem('dressUrl'))
+            data.className = "result-img-"
+            
+            post.push(data);
+        }
+        
+        return post;
+    } else if (category === '셔츠류') {
+        for(let i =0; i < 100; i++){
+            let data = new Object();
+            
+            data.number = i;
+            data.src = JSON.parse(sessionStorage.getItem('topLink'))
+            data.link = JSON.parse(sessionStorage.getItem('topUrl'))
             data.className = `result-img-`;
-            
+            // console.log(data.src[0] == data.src[20])
             post.push(data);
         }
-
+        
         return post;
-    } else if (card === '후드') {
+    } else if (category === '반팔') {
         for(let i =0; i < 100; i++){
             let data = new Object();
-
+            
             data.number = i;
-            data.src = `/image_src/test_image120/men_hoodie_${(i+1)%30+1}.jpg`;
+            data.src = JSON.parse(sessionStorage.getItem('shortsLink'))
+            data.link = JSON.parse(sessionStorage.getItem('shortsUrl'))
             data.className = "result-img-"
-            
             post.push(data);
         }
 
         return post;
-    } else if (card === "청바지") {
+    } else if (category === "바지") {
         for(let i =0; i < 100; i++){
             let data = new Object();
 
             data.number = i;
-            data.src = `/image_src/test_image120/men_jeans_${(i+1)%30+1}.jpg`;
+            data.src = JSON.parse(sessionStorage.getItem('pantsLink'))
+            data.link = JSON.parse(sessionStorage.getItem('pantsUrl'))
+            data.className = `result-img-`
+
+            post.push(data);
+        }
+
+        return post;
+    }else if (category === "치마") {
+        for(let i =0; i < 100; i++){
+            let data = new Object();
+
+            data.number = i;
+            data.src = JSON.parse(sessionStorage.getItem('skirtLink'))
+            data.link = JSON.parse(sessionStorage.getItem('skirtUrl'))
             data.className = `result-img-`
             
             post.push(data);
@@ -87,7 +102,7 @@ const imagesList = (card)  => {
     return post;
 }
 
-function Catbtn({ name, type, handlePost, handleCurrentPage}) {
+function Catbtn({ name, type, handlePost, handleCurrentPage, category, currentPostsDt}) {
 
     if(type === "Desktop"){
         return (
@@ -95,8 +110,9 @@ function Catbtn({ name, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-desktop"
                     onClick={() => { 
-                        handlePost(imagesList(name));
+                        handlePost(imagesList(category));
                         handleCurrentPage(1);
+                        console.log(currentPostsDt)
                 }}>
                     {name}
                 </button>
@@ -108,7 +124,7 @@ function Catbtn({ name, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-tablet"
                     onClick={() => { 
-                        handlePost(imagesList(name));
+                        handlePost(imagesList(category));
                         handleCurrentPage(1);
                 }}>
                     {name}
@@ -121,7 +137,7 @@ function Catbtn({ name, type, handlePost, handleCurrentPage}) {
                 <button
                     className="cat-btn-tablet"
                     onClick={() => { 
-                        handlePost(imagesList(name));
+                        handlePost(imagesList(category));
                         handleCurrentPage(1);
                 }}>
                     {name}
@@ -145,49 +161,119 @@ function Result() {
         const isMobile = useMediaQuery({ maxWidth: 819 })
         return isMobile ? children : null
     }
-    const cookies = new Cookies();
-    const [categoriesArray, setCategoriesArray] = useState([]);
 
-    // const categoriyTop = [outer, dress, top, shorts];
-    const categoryTop = ["아우터", "드레스", "셔츠", "반팔"];
-    const categoryBottom = ["바지", "치마"];
+    const categoryStr = sessionStorage.getItem("category")
+    const category = categoryStr.split(',')
 
-    // 이후 코어쪽으로부터 카테고리 받아서 배열에 담기
-    const categoryArr = ['상의', '하의', '가방', '후드', '원피스', '청바지', '치마'];
+    //outer, dress, top, shorts, pants, skirt
+    // const [outerUrl, setOuterUrl] = useState([])
+    // const [outerLink, setOuterLink] = useState([])
+
+    // const [dressUrl, setDressUrl] = useState([])
+    // const [dressLink, setDressLink] = useState([])
+
+    // const [topUrl, setTopUrl] = useState([])
+    // const [topLink, setTopLink] = useState([])
+
+    // const [shortsUrl, setShortsUrl] = useState([])
+    // const [shortsLink, setShortsLink] = useState([])
+
+    // const [skirtsUrl, setSkirtsUrl] = useState([])
+    // const [skirtsLink, setSkirtsLink] = useState([])
+
+    // const [pantsUrl, setPantsUrl] = useState([])
+    // const [pantsLink, setPantsLink] = useState([])
+
+    
+    //outer, dress, top, shorts, pants, skirt
+    
+
 
     // 이미지 재업로드
-    const [reUploadImg, setReUploadImg] = useState();
-    
     const onDrop = useCallback(acceptedFiles => {
-        //이미지 드랍 -> 이미지 base64 변환 
-        // -> base64 String 백엔드 비동기 전송 -> session에 담기 -> 페이지 이동
-
         //이미지 Base64 변환
         const file = acceptedFiles.find(f => f)
         let reader = new FileReader()
 
         reader.readAsDataURL(file);
         reader.onload = () => {
-            setReUploadImg(reader.result);
-            
-            if(!isLogined()) {  //로그인 유저가 아닐경우 = jwt token이 없을 경우
-                //기능 이용시 이용횟수 + 1
-                console.log(1)
+
+            sessionStorage.clear();
+
+            if (!isLogined()) {
                 // 비로그인 유저 IP 조회
                 axios.get("https://api.ipify.org/?format=json")
-                .then((res) => {
-                    console.log(2)
-                    // db 해당 IP 조회
-                    axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
-                        visitUserIp : res.data.ip,
-                        usedCount : 1,
-                    }).then((res) => {
-                        console.log(3)
-                        if(res.data.result === 2){
-                            alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
-                        }else if (res.data.result === 999){
-                            alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
-                        }
+                    .then((res) => {
+                        // db 해당 IP 조회
+                        axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
+                            visitUserIp: res.data.ip,
+                            usedCount: 1,
+                        }).then((res) => {
+                            if (res.data.result < 3) {
+                                if(res.data.result == 1){
+                                    alert(`저희 서비스는 비로그인으로 이용 시 하루 3회로 제한됩니다😭 \n 오늘 남은 횟수 : ${3-res.data.result-1} 번`);
+                                }
+                                sessionStorage.setItem("uploadedImg", reader.result);
+                                axios.post('http://ec2-3-34-217-228.ap-northeast-2.compute.amazonaws.com:5000/upload', {
+                                    file: reader.result
+                                }).then((res) => {
+                                    const category = new Array();
+                                    if(JSON.stringify(res.data.top.outer) != null){
+                                        if(JSON.stringify(res.data.top.outer.result_img_link_top) != null){
+                                            sessionStorage.setItem("outerUrl", JSON.stringify(res.data.top.outer.result_img_link_top))
+                                            sessionStorage.setItem("outerLink", JSON.stringify(res.data.top.outer.result_img_path_top))
+                                            sessionStorage.setItem("outerScore", JSON.stringify(res.data.top.outer.result_img_score_top))
+                                            category.push("아우터")
+                                        }
+                                    }
+                                    if(JSON.stringify(res.data.top.dress) != null){
+                                        if(JSON.stringify(res.data.top.dress.result_img_link_top) != null){
+                                            sessionStorage.setItem("dressUrl", JSON.stringify(res.data.top.dress.result_img_link_top))
+                                            sessionStorage.setItem("dressLink", JSON.stringify(res.data.top.dress.result_img_path_top))
+                                            sessionStorage.setItem("dressScore", JSON.stringify(res.data.top.dress.result_img_score_top))
+                                            category.push("드레스")
+                                        }
+                                    }
+                                    if(JSON.stringify(res.data.top.top) != null){
+                                        if(JSON.stringify(res.data.top.top.result_img_link_top) != null){
+                                            sessionStorage.setItem("topUrl", JSON.stringify(res.data.top.top.result_img_link_top))
+                                            sessionStorage.setItem("topLink", JSON.stringify(res.data.top.top.result_img_path_top))
+                                            sessionStorage.setItem("topScore", JSON.stringify(res.data.top.top.result_img_score_top))
+                                            category.push("셔츠류")
+                                        }
+                                    }
+                                    if(JSON.stringify(res.data.top.shorts) != null){
+                                        if(JSON.stringify(res.data.top.shorts.result_img_link_top) != null){
+                                            sessionStorage.setItem("shortsUrl", JSON.stringify(res.data.top.shorts.result_img_link_top))
+                                            sessionStorage.setItem("shortsLink", JSON.stringify(res.data.top.shorts.result_img_path_top))
+                                            sessionStorage.setItem("shortsScore", JSON.stringify(res.data.top.shorts.result_img_score_top))
+                                            category.push("반팔")
+                                        }
+                                    }
+                                    if(JSON.stringify(res.data.bottom.pants) != null){
+                                        if(JSON.stringify(res.data.bottom.pants.result_img_link_top) != null){
+                                            sessionStorage.setItem("pantsUrl", JSON.stringify(res.data.bottom.pants.result_img_link_top))
+                                            sessionStorage.setItem("pantsLink", JSON.stringify(res.data.bottom.pants.result_img_path_top))
+                                            sessionStorage.setItem("pantsScore", JSON.stringify(res.data.bottom.pants.result_img_score_top))
+                                            category.push("바지")
+                                        }
+                                    }
+                                    if(JSON.stringify(res.data.bottom.skirts) != null){
+                                        if(JSON.stringify(res.data.bottom.skirts.result_img_link_top) != null){
+                                            sessionStorage.setItem("skirtsUrl", JSON.stringify(res.data.bottom.skirts.result_img_link_top))
+                                            sessionStorage.setItem("skirtsLink", JSON.stringify(res.data.bottom.skirts.result_img_path_top))
+                                            sessionStorage.setItem("skirtsScore", JSON.stringify(res.data.bottom.skirts.result_img_score_top))
+                                            category.push("치마")
+                                        }
+                                    }
+                                    sessionStorage.setItem("category", category)
+                                    window.location.reload();
+                                }).catch((e) => {
+                                    console.error(e);
+                                })
+                            } else if (res.data.result === 999) {
+                                alert(`오늘 사용가능한 횟수를 모두 소진하셨습니다.\n회원가입 시 무제한으로 이용 가능합니다.🎉🎉`);
+                            }
                     }).catch((e) => {
                         console.error(e)
                     })
@@ -195,32 +281,6 @@ function Result() {
             }
         }
     }, []);
-    useEffect(() => {
-        if(reUploadImg != null){
-            sessionStorage.setItem("uploadedImg", reUploadImg);
-            if(sessionStorage.getItem("uploadImg")){
-                window.location.reload();
-            }else{
-                alert("첨부한 이미지가 잘못되어씁니다")
-            }
-            // 이미지 Base64 String 비동기 전송
-            axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:80/test', {
-                file : reUploadImg
-            })
-            .then((res) => {
-                // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
-                // cookies.set("pred_img", res.data.result_img_path_top);
-                // cookies.set("pred_img_url", res.data.result_img_link_top);
-                // cookies.set("pred_img_score", res.data.result_img_score_top);
-                // sessionStorage.setItem("pred_img", res.data.result_img_path_top)
-                // sessionStorage.setItem("pred_img_url", res.data.result_img_link_top)
-                // sessionStorage.setItem("pred_img_score", res.data.result_img_score_top)
-            })
-            .catch((e) => {
-                console.error(e);
-            })
-        }
-    }, [reUploadImg]) 
 
     const { open } = useDropzone({
         onDrop,
@@ -229,9 +289,6 @@ function Result() {
         multiple: false,
         accept  : 'image/png, image/jpeg, image/jpg',
     });
-
-    /* 카테고리 필터 기능 */
-    const categories = [...new Set(categoryArr.map((item) => item))];
 
     //Desktop - pagination
     const [postDt, setPostDt] = useState([]);
@@ -245,12 +302,8 @@ function Result() {
 
 
     useEffect(() => {
-        setPostDt(imagesList(categories[0]));
-        setPostTM(imagesList(categories[0]));
-        if(sessionStorage.getItem("pred_img") && sessionStorage.getItem("pred_img_url") && sessionStorage.getItem("pred_img_score")){
-            //카테고리 분류 로직 짜야함
-            setCategoriesArray();
-        }
+        setPostDt(imagesList(category[0]));
+        setPostTM(imagesList(category[0]));
     }, []);
 
     useEffect(() => {
@@ -332,23 +385,20 @@ function Result() {
 
                     <div className="right-result-desktop">
                         <div className='result-category-desktop'>
-                            {/* {categoriesArray.map((idx, i) => { */}
-                            {categoryArr.map((idx, i) => {
-                                if (idx == '치마' || idx == '가방') {
-                                    return null;
-                                } else {
-                                    return (
-                                        <>
-                                            <Catbtn 
-                                                name={idx}
-                                                type="Desktop"
-                                                handlePost={setPostDt}
-                                                handleCurrentPage={setCurrentPageDt}
-                                                key={i}
-                                            />
-                                        </>
-                                    );
-                                }
+                            {category.map((idx, i) => { {
+                                return (
+                                    <>
+                                        <Catbtn 
+                                            name={idx}
+                                            type="Desktop"
+                                            currentPostsDt = {currentPostsDt}
+                                            handlePost={setPostDt}
+                                            category={category[i]}
+                                            handleCurrentPage={setCurrentPageDt}
+                                            key={i}
+                                        />
+                                    </>
+                                );}
                             })}
                         </div>
                         <div className='result-list-desktop' style={{ overflow: "hidden" }}>
@@ -366,14 +416,13 @@ function Result() {
                                 <div>
                                 {currentPostsDt.map((idx, i) => (
                                     <>
-                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}desktop`} />
+                                        <img src={idx.src[i] } key={i} className={`${idx.className}desktop`} />
                                     </>
                                     ))
                                 }
                                 </div> :
                                 <div>
-                                    <h3>이미지를 분석할 수 없습니다.</h3>
-                                    <Link to="/main">다시 찾으러가기</Link>
+                                    <h1>이미지를 분석할 수 없습니다.😢</h1>
                                 </div>
                             }
                             <Pagination
@@ -447,7 +496,7 @@ function Result() {
                         borderRadius: "1.8em"
                     }}>
                         <div className='result-category-tablet'>
-                            {categoryArr.map((idx, i) => {
+                            {category.map((idx, i) => {
                                 if (idx === '치마' || idx === '가방') {
                                     return null;
                                 } else {
@@ -474,14 +523,13 @@ function Result() {
                                 <div>
                                 {currentPostsTM.map((idx, i) => (
                                     <>
-                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}tablet`} />
+                                        <img src={idx.src[i] } key={i} className={`${idx.className}desktop`} />
                                     </>
                                     ))
                                 }
                                 </div> :
                                 <div>
-                                    <h3>이미지를 분석할 수 없습니다.</h3>
-                                    <Link to="/main">다시 찾으러가기</Link>
+                                    <h1>이미지를 분석할 수 없습니다.😢</h1>
                                 </div>
                             }
                             <div>
@@ -557,7 +605,7 @@ function Result() {
                         borderRadius: "1.8em"
                     }}>
                         <div className='result-category-mobile'>
-                            {categoryArr.map((idx, i) => {
+                            {category.map((idx, i) => {
                                 if (idx === '치마' || idx === '가방') {
                                     return null;
                                 } else {
@@ -590,8 +638,7 @@ function Result() {
                                 }
                                 </div> :
                                 <div>
-                                    <h3>이미지를 분석할 수 없습니다.</h3>
-                                    <Link to="/main">다시 찾으러가기</Link>
+                                    <h1>이미지를 분석할 수 없습니다.😢</h1>
                                 </div>
                             }
                             <Pagination
