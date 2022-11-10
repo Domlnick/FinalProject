@@ -4,19 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import '../css/Paging.css';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
-import { Link } from 'react-router-dom';
 import { isLogined } from './User/Login';
-
-const modelSizeValue = {
-    marginLeft: "4em",
-    float: "right"
-}
-
-const modelSpecTable = {
-    margin: "1em auto",
-    color: "#F59324",
-    fontSize: "0.9em",
-}
 
 const imagesList = (category)  => {
     const post = new Array();
@@ -164,30 +152,6 @@ function Result() {
 
     const categoryStr = sessionStorage.getItem("category")
     const category = categoryStr.split(',')
-
-    //outer, dress, top, shorts, pants, skirt
-    // const [outerUrl, setOuterUrl] = useState([])
-    // const [outerLink, setOuterLink] = useState([])
-
-    // const [dressUrl, setDressUrl] = useState([])
-    // const [dressLink, setDressLink] = useState([])
-
-    // const [topUrl, setTopUrl] = useState([])
-    // const [topLink, setTopLink] = useState([])
-
-    // const [shortsUrl, setShortsUrl] = useState([])
-    // const [shortsLink, setShortsLink] = useState([])
-
-    // const [skirtsUrl, setSkirtsUrl] = useState([])
-    // const [skirtsLink, setSkirtsLink] = useState([])
-
-    // const [pantsUrl, setPantsUrl] = useState([])
-    // const [pantsLink, setPantsLink] = useState([])
-
-    
-    //outer, dress, top, shorts, pants, skirt
-    
-
 
     // 이미지 재업로드
     const onDrop = useCallback(acceptedFiles => {
@@ -350,37 +314,7 @@ function Result() {
                             <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
                                 style={{width: "4.2em"}} />다시 업로드하기
                         </button>
-                        <div style={{
-                            margin:"3em auto",
-                            display:"flex",
-                            justifyContent:"center",
-                            fontSize: "1.3em",
-                            width: "20em",
-                            height: "auto",
-                            overflow: "hidden",
-                            background: "#E8EDED",
-                            borderRadius: "1.3em",
-                            boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
-                        }}>
-                        <p style={modelSpecTable}>
-                            <span style={{color: "#6E6E6E"}}>업로드 이미지 모델 분석 결과</span>
-                            <hr style={{height:"0em", border:"2px solid"}}></hr>
-                            <table>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Height</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Chest Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Waist Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                            </table>
-                        </p>
-                        </div>
+                        
                     </div>
 
                     <div className="right-result-desktop">
@@ -453,39 +387,6 @@ function Result() {
                                 width: "5.7em",
                             }} />
                     </button>
-                    <div style={{
-                        margin:"3em auto",
-                        display:"flex",
-                        justifyContent:"center",
-                        fontSize: "1.3em",
-                        width: "20em",
-                        height: "auto",
-                        overflow: "hidden",
-                        background: "#E8EDED",
-                        borderRadius: "1.3em",
-                        boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
-                    }}>
-                        <p style={modelSpecTable}>
-                            <span style={{
-                                color: "#6E6E6E",
-                            }}>업로드 이미지 모델 분석 결과</span>
-                            <hr style={{height:"0em", border:"2px solid"}}></hr>
-                            <table>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Height</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Chest Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Waist Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                            </table>
-                        </p>
-                    </div>
 
                     <div style={{
                         marginLeft: "7.5%",
@@ -505,10 +406,11 @@ function Result() {
                                             <Catbtn 
                                                 name={idx}
                                                 type="Tablet"
-                                                // handleSetCat={setActiveCat}
+                                                currentPostsDt = {currentPostsTM}
                                                 handlePost={setPostTM}
+                                                category={category[i]}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                key={idx}
+                                                key={i}
                                             />
                                         </>
                                     );
@@ -523,7 +425,7 @@ function Result() {
                                 <div>
                                 {currentPostsTM.map((idx, i) => (
                                     <>
-                                        <img src={idx.src[i] } key={i} className={`${idx.className}desktop`} />
+                                        <img src={idx.src[i] } key={i} className={`${idx.className}tablet`} />
                                     </>
                                     ))
                                 }
@@ -562,39 +464,6 @@ function Result() {
                         <img src={process.env.PUBLIC_URL + "/image_src/uploadBtn.png"}
                             style={{width: "5.7em"}} />
                     </button>
-                    <div style={{
-                        margin:"3em auto",
-                        display:"flex",
-                        justifyContent:"center",
-                        fontSize: "1.3em",
-                        width: "17em",
-                        height: "auto",
-                        overflow: "hidden",
-                        background: "#E8EDED",
-                        borderRadius: "1.3em",
-                        boxShadow: "-4px 5px 5px 0 rgba(80, 80, 80, 0.698)"
-                    }}>
-                        <p style={modelSpecTable}>
-                        <span style={{
-                                color: "#6E6E6E",
-                            }}>업로드 이미지 모델 분석 결과</span>
-                        <hr style={{height:"0em", border:"2px solid"}}></hr>
-                            <table>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Height</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Chest Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                                <tr>
-                                    <span style={{ float: 'left' }}>Model Waist Size</span>
-                                    <span style={modelSizeValue}>178 cm</span>
-                                </tr>
-                            </table>
-                        </p>
-                    </div>
 
                     <div style={{
                         marginLeft: "10%",
@@ -614,10 +483,11 @@ function Result() {
                                             <Catbtn 
                                                 name={idx}
                                                 type="Mobile"
-                                                // handleSetCat={setActiveCat}
+                                                currentPostsDt = {currentPostsTM}
                                                 handlePost={setPostTM}
+                                                category={category[i]}
                                                 handleCurrentPage={setCurrentPageTM}
-                                                key={idx}
+                                                key={i}
                                             />
                                         </>
                                     );
@@ -632,7 +502,7 @@ function Result() {
                                 <div>
                                 {currentPostsTM.map((idx, i) => (
                                     <>
-                                        <img src={process.env.PUBLIC_URL + idx.src } key={i} className={`${idx.className}mobile`} />
+                                        <img src={idx.src[i] } key={i} className={`${idx.className}mobile`} />
                                     </>
                                     ))
                                 }
