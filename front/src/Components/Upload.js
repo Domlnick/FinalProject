@@ -82,19 +82,19 @@ function DragAndDrop() {
         if(imgBase64 != null){
             sessionStorage.setItem("uploadedImg", imgBase64);
             // 이미지 Base64 String 비동기 전송
-            // axios.post('http://localhost:80/test', {
-            //     file : imgBase64
-            // })
-            // .then((res) => {
-            //     // imageToAI();
-            //     // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
-            //     console.log(res.data.result_img_path)
-            //     console.log(res.data.result_img_link)
-            //     console.log(res.data.result_img_score)
-            // })
-            // .catch((e) => {
-            //     console.error(e);
-            // })
+            axios.post('http://localhost:80/test', {
+                file : imgBase64
+            })
+            .then((res) => {
+                imageToAI();
+                // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
+                console.log(res.data.result_img_path)
+                console.log(res.data.result_img_link)
+                console.log(res.data.result_img_score)
+            })
+            .catch((e) => {
+                console.error(e);
+            })
         }
     }, [imgBase64]) 
 

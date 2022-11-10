@@ -12,19 +12,28 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)  # 다른 포트번호에 대한 보안 제거
 api = Api(app)
 
+@app.route("/upload", methods=["GET", "POST"])
 
-@app.route("/test", methods=["GET", "POST"])
 def test():
     if request.method == "POST":
 
         file = request.get_json()["file"]
 
-        req = requests.post("http://127.0.0.1:5000/upload",
-                            json={"file": file}).json()
+        
+        req = requests.post("http://127.0.0.1:5000/upload", json={"file" : file}).json()
+        
+        result = req["result"]
+        number_of_top = req["number_of_top"]
+        top = req["top"]
+        number_of_bottom = req["number_of_bottom"]
+        bottom = req["bottom"]
+        
+        return flask.jsonify({"result" : result,
+                              "number_of_top" : number_of_top,
+                              "top" : top,
+                              "number_of_bottom" : number_of_bottom,
+                              "bottom" : bottom})
 
-        result_img_path = req["result_img_path"]
-        result_img_link = req["result_img_link"]
-        result_img_score = req["result_img_score"]
 
         return flask.jsonify({"result_img_path": result_img_path,
                               "result_img_link": result_img_link,

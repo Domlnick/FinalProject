@@ -43,7 +43,6 @@ function App() {
             <Banner />
           </>
         } />
-
         <Route path="/searching" element={
           <>
             <Searching />
