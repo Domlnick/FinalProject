@@ -178,7 +178,7 @@ function Result() {
                 .then((res) => {
                     console.log(2)
                     // db 해당 IP 조회
-                    axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
+                    axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:8080/issignedin', {
                         visitUserIp : res.data.ip,
                         usedCount : 1,
                     }).then((res) => {
@@ -204,7 +204,7 @@ function Result() {
                 alert("첨부한 이미지가 잘못되어씁니다")
             }
             // 이미지 Base64 String 비동기 전송
-            axios.post('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:80/test', {
+            axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:80/test', {
                 file : reUploadImg
             })
             .then((res) => {
