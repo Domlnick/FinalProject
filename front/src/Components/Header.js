@@ -32,34 +32,10 @@ function Header() {
                     <div className="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <Link className="nav-link" to="/main">main</Link>
+                                <Link className="nav-link" style={{color:"white", fontSize:"1.2em"}} to="/login">Login</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/searching">Searching</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/result">Result</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/register">Register</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/findid">Find Id</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/findpw">Find Pw</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/login">Login</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/resetpw">resetpw</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/showid">showid</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/test">test</Link>
+                                <Link className="nav-link" style={{color:"white", fontSize:"1.2em"}} to="/register">Register</Link>
                             </li>
                         </ul>
                     </div>
