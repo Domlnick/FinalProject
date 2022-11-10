@@ -112,8 +112,8 @@ function Register() {
             setUserNameShowErrorMessage('한글이름을 입력해 주세요.');
             setUserNameErrorBorderColor('red');
         } else {
-            setUserNameShowErrorMessage('이름을 입력해 주세요.');
-            setUserNameErrorBorderColor('#494949');
+            setUserNameShowErrorMessage('정상입니다✅');
+            setUserNameErrorBorderColor('blue');
         }
     };
 
@@ -142,8 +142,8 @@ function Register() {
             setPwShowErrorMessage('특수문자를 포함한 8자 이상이어야합니다.');
             setPwErrorBorderColor('red');
         } else {
-            setPwShowErrorMessage('비밀번호를 입력해 주세요.');
-            setPwErrorBorderColor('#494949');
+            setPwShowErrorMessage('사용가능한 비밀번호입니다✅');
+            setPwErrorBorderColor('blue');
         }
     };
 
@@ -151,9 +151,9 @@ function Register() {
         if (!isValidPasswordConfirm) {
             setRePwShowErrorMessage('비밀번호가 일치하지 않습니다.');
             setRePwErrorBorderColor('red');
-        } else {
-            setRePwShowErrorMessage('비밀번호를 한번 더 입력해 주세요.');
-            setRePwErrorBorderColor('#494949');
+        } else if (isValidPasswordConfirm && passwordConfirm.length > 1) {
+            setRePwShowErrorMessage('비밀번호가 일치합니다✅');
+            setRePwErrorBorderColor('blue');
         }
     };
 
@@ -241,7 +241,7 @@ function Register() {
                                                 setUserEmailShowErrorMessage('존재하는 이메일 입니다.');
                                                 setUserEmailErrorBorderColor('red');
                                             } else {
-                                                setUserEmailShowErrorMessage('사용가능한 이메일 입니다.');
+                                                setUserEmailShowErrorMessage('사용가능한 이메일 입니다✅');
                                                 setUserEmailErrorBorderColor('blue');
                                             }
                                         }).catch(function (error) {
@@ -267,7 +267,7 @@ function Register() {
                                                 setUserIdShowErrorMessage('존재하는 아이디 입니다.');
                                                 setUserIdErrorBorderColor('red');
                                             } else {
-                                                setUserIdShowErrorMessage('사용가능한 아이디 입니다.');
+                                                setUserIdShowErrorMessage('사용가능한 아이디 입니다✅');
                                                 setUserIdErrorBorderColor('blue');
                                             }
                                         }).catch(function (error) {

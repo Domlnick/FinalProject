@@ -505,7 +505,7 @@ function ResetPw() {
     const [reNewPasswordErrorColor, setReNewPasswordErrorColor] = useState('#494949');
 
     const navigate = useNavigate();
-    const goToList = () => {
+    const goToLogin = () => {
         navigate('/login');
     };
 
@@ -597,7 +597,8 @@ function ResetPw() {
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
-
+                                        alert("비밀번호가 정상적으로 변경되었습니다 👍")
+                                        goToLogin();
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
@@ -643,7 +644,8 @@ function ResetPw() {
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
-
+                                        alert("비밀번호가 정상적으로 변경되었습니다 👍")
+                                        goToLogin();
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
@@ -682,7 +684,8 @@ function ResetPw() {
                                     }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
-
+                                        alert("비밀번호가 정상적으로 변경되었습니다 👍")
+                                        goToLogin();
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')
