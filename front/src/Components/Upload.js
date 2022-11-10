@@ -58,6 +58,7 @@ function DragAndDrop() {
                             visitUserIp: res.data.ip,
                             usedCount: 1,
                         }).then((res) => {
+                            console.log(1)
                             if (res.data.result < 3) {
                                 if(res.data.result == 1){
                                     alert(`저희 서비스는 비로그인으로 이용 시 하루 3회로 제한됩니다😭 \n 오늘 남은 횟수 : ${3-res.data.result-1} 번`);
@@ -66,6 +67,7 @@ function DragAndDrop() {
                                 axios.post('http://ec2-3-34-217-228.ap-northeast-2.compute.amazonaws.com:5000/upload', {
                                     file: reader.result
                                 }).then((res) => {
+                                    console.log(2)
                                     const category = new Array();
                                     //outer, dress, top shorts, pants, skirt
                                     if(res.data.top.outer != null){
