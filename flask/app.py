@@ -20,7 +20,7 @@ def test():
         file = request.get_json()["file"]
 
         
-        req = requests.post("http://127.0.0.1:5000/upload", json={"file" : file}).json()
+        req = requests.post("http://ec2-3-34-217-228.ap-northeast-2.compute.amazonaws.com:5000/upload", json={"file" : file}).json()
         
         result = req["result"]
         number_of_top_category = req["number_of_top_category"]
@@ -35,5 +35,5 @@ def test():
                               "bottom" : bottom})
 
 if __name__ == "__main__":
-    app.run(host=0.0.0.0, port=80)
+    app.run(host='0.0.0.0', port=80)
     # app.run(port=80)
