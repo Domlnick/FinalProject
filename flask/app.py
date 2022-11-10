@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)  # 다른 포트번호에 대한 보안 제거
 api = Api(app)
 
-@app.route("/upload", methods=["GET", "POST"])
+@app.route("/upload", methods=["POST"])
 
 def test():
     if request.method == "POST":
@@ -34,12 +34,6 @@ def test():
                               "number_of_bottom_category" : number_of_bottom_category,
                               "bottom" : bottom})
 
-
-        return flask.jsonify({"result_img_path": result_img_path,
-                              "result_img_link": result_img_link,
-                              "result_img_score": result_img_score})
-
-
 if __name__ == "__main__":
-    # app.run(host=0.0.0.0, port=80)
-    app.run(port=80)
+    app.run(host=0.0.0.0, port=80)
+    # app.run(port=80)
