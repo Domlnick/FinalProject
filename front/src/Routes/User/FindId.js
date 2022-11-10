@@ -62,6 +62,7 @@ function FindId() {
                         </div>
                     </div>
                     <div className="findid-rectangle">
+
                         <img src="/logos/findid_logo.png" width='20%' className="findid-logo-img" />
                         <img src="/logos/sub_title.png" width='50%' className="findid-title-img" />
                         <h5 className="findid-input-name-text">이름을 입력해주세요</h5>
@@ -93,6 +94,7 @@ function FindId() {
                         <div className="find-pw">
                             <Link to='/FindPw'>비밀번호를 잊어버렸어요.</Link>
                         </div>
+
                     </div>
                 </div>
             </Desktop>
@@ -121,7 +123,7 @@ function FindId() {
                         }} />
                         <div>
                             <button className="findid-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.get('http://localhost:8080/findUserIdByEmailAndUsername', {
+                                axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/findUserIdByEmailAndUsername', {
                                     params: {
                                         userName: userName,
                                         userEmail: userEmail
@@ -159,7 +161,9 @@ function FindId() {
                         }} />
                         <div>
                             <button className="findid-button" disable={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.get('http://localhost:8080/findUserIdByEmailAndUsername', {
+
+                                axios.get('http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/sendcodeid', {
+                                    // Headers: { 'content-type': 'application/json' },
                                     params: {
                                         userName: userName,
                                         userEmail: userEmail
@@ -222,8 +226,9 @@ function ShowId() {
     };
 
     useEffect(() => {
-        return () => {
-            if (window.location.href != "http://localhost:3000/showid") {
+        //언마운트 시 세션스토리지 foundUserId 삭제
+        return() => {
+            if(window.location.href != "http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:3000/showid"){
                 sessionStorage.removeItem("foundUserId");
                 sessionStorage.removeItem("userEmail");
             }
@@ -417,6 +422,7 @@ function ShowId() {
                                 </Link>
                             </div>
                         </div>
+
                         <div className="findid-rectangle-tablet">
                             <img src="/logos/findid_logo.png" width='20%' className="findid-logo-img" />
                             <img src="/logos/sub_title.png" width='50%' className="findid-title-img" />
@@ -502,6 +508,7 @@ function ShowId() {
                             </div>
                         </div>
                     </div>
+
                 </Tablet>
                 <Mobile>
                     <Header />

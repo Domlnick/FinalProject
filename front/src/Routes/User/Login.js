@@ -123,7 +123,7 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
@@ -189,7 +189,7 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
@@ -248,7 +248,7 @@ function Login() {
                         </div>
                         <div>
                             <button type="submit" className="login-button" disabled={disable} style={{ opacity: opacity }} onClick={() => {
-                                axios.post("http://localhost:8080/login", {
+                                axios.post("http://ec2-43-200-216-202.ap-northeast-2.compute.amazonaws.com:8080/login", {
                                     userId: userId,
                                     password: password
                                 }).then(function (respons) {
