@@ -35,12 +35,10 @@ const baseStyle = {
 function DragAndDrop() {
 
     const navigate = useNavigate();
-    const imageToAI = () => {
+    const goToResult = () => {
         navigate("/result");
     }
     const cookies = new Cookies();
-
-    const [imgBase64, setImgBase64] = useState('');
 
     const onDrop = useCallback(async acceptedFiles => {
 
@@ -51,8 +49,6 @@ function DragAndDrop() {
 
         reader.readAsDataURL(file);
         reader.onload = () => {
-            // setImgBase64(reader.result);
-
             if (!isLogined()) {
                 // 비로그인 유저 IP 조회
                 axios.get("https://api.ipify.org/?format=json")
@@ -66,13 +62,50 @@ function DragAndDrop() {
                                 if(res.data.result == 1){
                                     alert(`저희 서비스는 비로그인으로 이용 시 하루 3회로 제한됩니다😭 \n 오늘 남은 횟수 : ${3-res.data.result-1} 번`);
                                 }
-                                console.log("imgBase64는" + reader.result)
                                 sessionStorage.setItem("uploadedImg", reader.result);
-                                axios.post('http://ec2-13-209-48-179.ap-northeast-2.compute.amazonaws.com:5000/upload', {
+                                axios.post('http://ec2-3-34-217-228.ap-northeast-2.compute.amazonaws.com:5000/upload', {
                                     file: reader.result
                                 }).then((res) => {
-                                    let data = res.data.top
-                                    imageToAI();
+                                    const category = new Array();
+                                    //outer, dress, top shorts, pants, skirt
+                                    if(res.data.top.outer != null){
+                                        sessionStorage.setItem("outerUrl", JSON.stringify(res.data.top.outer.result_img_link_top))
+                                        sessionStorage.setItem("outerLink", JSON.stringify(res.data.top.outer.result_img_path_top))
+                                        sessionStorage.setItem("outerScore", JSON.stringify(res.data.top.outer.result_img_score_top))
+                                        category.push("아우터")
+                                    }
+                                    if(res.data.top.dress != null){
+                                        sessionStorage.setItem("dressUrl", JSON.stringify(res.data.top.dress.result_img_link_top))
+                                        sessionStorage.setItem("dressLink", JSON.stringify(res.data.top.dress.result_img_path_top))
+                                        sessionStorage.setItem("dressScore", JSON.stringify(res.data.top.dress.result_img_score_top))
+                                        category.push("드레스")
+                                    }
+                                    if(res.data.top.top != null){
+                                        sessionStorage.setItem("topUrl", JSON.stringify(res.data.top.top.result_img_link_top))
+                                        sessionStorage.setItem("topLink", JSON.stringify(res.data.top.top.result_img_path_top))
+                                        sessionStorage.setItem("topScore", JSON.stringify(res.data.top.top.result_img_score_top))
+                                        category.push("셔츠류")
+                                    }
+                                    if(res.data.top.shorts != null){
+                                        sessionStorage.setItem("shortsUrl", JSON.stringify(res.data.top.shorts.result_img_link_top))
+                                        sessionStorage.setItem("shortsLink", JSON.stringify(res.data.top.shorts.result_img_path_top))
+                                        sessionStorage.setItem("shortsScore", JSON.stringify(res.data.top.shorts.result_img_score_top))
+                                        category.push("반팔")
+                                    }
+                                    if(res.data.top.pants != null){
+                                        sessionStorage.setItem("pantsUrl", JSON.stringify(res.data.bottom.pants.result_img_link_top))
+                                        sessionStorage.setItem("pantsLink", JSON.stringify(res.data.bottom.pants.result_img_path_top))
+                                        sessionStorage.setItem("pantsScore", JSON.stringify(res.data.bottom.pants.result_img_score_top))
+                                        category.push("바지")
+                                    }
+                                    if(res.data.top.skirts != null){
+                                        sessionStorage.setItem("skirtsUrl", JSON.stringify(res.data.bottom.skirts.result_img_link_top))
+                                        sessionStorage.setItem("skirtsLink", JSON.stringify(res.data.bottom.skirts.result_img_path_top))
+                                        sessionStorage.setItem("skirtsScore", JSON.stringify(res.data.bottom.skirts.result_img_score_top))
+                                        category.push("치마")
+                                    }
+                                    sessionStorage.setItem("category", category)
+                                    goToResult();
                                 }).catch((e) => {
                                     console.error(e);
                                 })
