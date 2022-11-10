@@ -22,6 +22,7 @@ const Mobile = ({ children }) => {
     return isMobile ? children : null
 };
 
+
 // 토큰을 쿠키에 저장하는 함수/
 export function setRefreshTokenToCookie(refreshToken) {
     cookies.set('refreshToken', refreshToken);
@@ -32,16 +33,31 @@ export function logout() {
     console.log('localStorage set logout!');
     window.localStorage.setItem('logout', Date.now());
     cookies.remove('refreshToken');
+    localStorage.removeItem('userName');
+
+    return true;
 };
 
+// 로그인 여부
 export function isLogined() {
     let getCookie = cookies.get("refreshToken");
 
-    if(getCookie){
+    if (getCookie) {
         return true;
     }
     return false;
-}
+};
+
+// 이름을 로컬세션에 담아두는 함수
+export function setLoginUserNameToLS(userName) {
+    localStorage.setItem('userName', userName);
+};
+
+// 이름 가져오기
+export function getLoginUserName() {
+    let userName = localStorage.getItem('userName');
+    return userName;
+};
 
 // 로그인 컴포넌트
 function Login() {
@@ -69,6 +85,8 @@ function Login() {
         userId && password ? setDisable(false) : setDisable(true);
     };
 
+    let nevigate = useNavigate();
+
     return (
         <>
             <Desktop>
@@ -79,7 +97,6 @@ function Login() {
                             <Link to="/">
                                 <img src="/logos/title.png" width='60%' />
                             </Link>
-
                         </div>
                     </div>
                     <div className="login-rectangle">
@@ -108,8 +125,13 @@ function Login() {
                                 }).then(function (respons) {
                                     console.log(respons);
                                     console.log(respons.data.result);
+                                    console.log(respons.data.userName);
+
                                     const accessToken = respons.headers.get("AT_RT_Authorization");
                                     setRefreshTokenToCookie(respons.headers.get("RT_Authorization"));
+                                    setLoginUserNameToLS(respons.data.userName);
+
+                                    navigate(-1);
 
                                     // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
                                     axios.defaults.headers.common['Authorization'] = accessToken;
