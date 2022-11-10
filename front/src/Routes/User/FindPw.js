@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import { logout } from "./Login";
 
+
 const cookies = new Cookies();
 
 const Desktop = ({ children }) => {
@@ -513,6 +514,7 @@ function FindPw() {
 // 비밀번호 업데이트 컴포넌트
 function ResetPw() {
 
+    const cookies = new Cookies();
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [disable, setDisable] = useState(true);
@@ -613,8 +615,8 @@ function ResetPw() {
                                     axios.post('http://localhost:8080/updateuserpw', {
                                         userEmail: sessionStorage.getItem("userEmail"),
                                         userId: sessionStorage.getItem("userId"),
-                                        password: password
-                                    }).then(function (respons) {
+                                        password: password,
+                                    }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
 
@@ -698,9 +700,10 @@ function ResetPw() {
                                         userEmail: sessionStorage.getItem("userEmail"),
                                         userId: sessionStorage.getItem("userId"),
                                         password: password
-                                    }).then(function (respons) {
+                                    }).then(function (response) {
                                         sessionStorage.removeItem("userId")
                                         sessionStorage.removeItem("userEmail")
+
                                     }).catch(function (error) {
                                         console.error(error);
                                         console.log('에러가 발생되었습니다.')

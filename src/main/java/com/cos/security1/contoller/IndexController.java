@@ -294,17 +294,19 @@ public class IndexController {
     }
 
     // JSON 타입으로 변환 후 return. 로그인 후 session에 권한이 저장되어 있어야지만 수정할 수 있도록 해놓을 예정.
-    @PostMapping("/user/updateuserpw")
+    @PostMapping("/updateuserpwla")
     public @ResponseBody Map<String, String> updateLoginedUserPassword(@RequestBody User user,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         Map<String, String> result = new HashMap<>();
-
+        System.out.println(principalDetails);
+        System.out.println(user);
         if (principalDetails != null) {
 
             String updateUserPassword = principalDetailService.updateLoginedUserPassword(user, principalDetails);
 
             result.put("result", updateUserPassword);
+            result.put("test", "변경성공");
 
         } else {
             result.put("result", "로그인이 되어있는지 확인하세요"); // SecurityConfig에서 user/**에 대해 권한이 없으면 loginForm으로 바로 가도록 설정해놓음.
