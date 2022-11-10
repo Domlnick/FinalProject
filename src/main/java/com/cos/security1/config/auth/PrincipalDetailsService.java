@@ -156,16 +156,16 @@ public class PrincipalDetailsService implements UserDetailsService{
         Pattern pattern = Pattern.compile("[ !@#$%^&*(),.?\":{}|<>]");
         
         if (newPassword != null && newPassword.length() >= 8 && pattern.matcher(newPassword).find() == true) {
-            User getUser = userRepository.findByUserId(userId);
+            Optional<User> getUser = Optional.of(userRepository.findByUserId(userId));
             String encPassword = bCryptPasswordEncoder.encode(newPassword);
             
-            getUser.setPassword(encPassword);
-            userRepository.save(getUser);
-            
+            getUser.ifPresent(thisUser -> {
+                thisUser.setPassword(encPassword);
+                userRepository.save(thisUser);
+            });
             result = "true";
         }
-        
-        return result;
+            return result;
     }
     
     // 로그인시 비밀번호 모를 때 비밀번호 update method
@@ -182,8 +182,6 @@ public class PrincipalDetailsService implements UserDetailsService{
         if (userId != null && userName != null && userEmail != null && newPassword != null) {
             
             if (newPassword != null && newPassword.length() >= 8 && pattern.matcher(newPassword).find() == true) {
-//                User getUser = userRepository.findByUserIdAndUserNameAndUserEmail(userId, userName, userEmail);
-                //Optional<NotSignedUser> noUser = notSignedUserRepository.findByVisitUserIp(notSignedUser.getVisitUserIp());
                 Optional<User> getUser = userRepository.findByUserIdAndUserEmailAndUserName(userId, userEmail, userName);
                 
                 if (getUser != null) {
@@ -203,7 +201,7 @@ public class PrincipalDetailsService implements UserDetailsService{
                 result = "비밀번호 설정 조건을 확인해 주세요";
             }
         }else {
-            result = "누락된 정보가 없는지 확인해주세요!!!!!";
+            result = "누락된 정보가 없는지 확인해주세요!";
         }
         
         return result;

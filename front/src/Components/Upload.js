@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { isLogined } from '../Routes/User/Login';
+import Cookies from 'universal-cookie';
 
 const dragActiveStyle ={
     color:"white",
@@ -37,6 +38,7 @@ function DragAndDrop() {
     const imageToAI = () => {
         navigate("/result");
     }
+    const cookies = new Cookies();
     
     //Dropzone
     const [imgBase64, setImgBase64] = useState();
@@ -70,6 +72,7 @@ function DragAndDrop() {
                             alert("비로그인으로 이용할 경우 사용 횟수 3회로 제한됩니다. \n");
                         }else if (res.data.result === 999){
                             alert("오늘 사용가능한 횟수를 모두 소진하셨습니다.");
+                            setImgBase64(null)
                         }
                     }).catch((e) => {
                         console.error(e)
@@ -79,18 +82,40 @@ function DragAndDrop() {
     }, []);
     
     useEffect(() => {
-        if(imgBase64 != null){
+        console.log("사진 업로드")
+        if(imgBase64 === null){
+
+        }else if(imgBase64 != null){
             sessionStorage.setItem("uploadedImg", imgBase64);
             // 이미지 Base64 String 비동기 전송
-            axios.post('http://localhost:80/test', {
+            axios.post('http://localhost:5000/upload', {
                 file : imgBase64
             })
             .then((res) => {
-                imageToAI();
                 // res.data.result - url(이미지), 하이퍼링크url, 유사도점수
-                console.log(res.data.result_img_path)
-                console.log(res.data.result_img_link)
-                console.log(res.data.result_img_score)
+                // console.log(res.data.result);
+                let data =  res.data.top
+                // console.log(data);
+                console.log(typeof(data));
+                console.log(data)
+                
+                console.log(data.test)
+                
+                // JSON.parse(res.data.top)
+                // console.log(res.data.top.test)
+                // console.log(JSON.parse(res.data.top).length)
+                // console.log(res.data.top.size)
+                
+                // cookies.set("pred_img", res.data.top  result_img_pat_top);
+                // cookies.set("pred_img_url", res.data.result_img_link_top);
+                // cookies.set("pred_img_score", res.data.result_img_score_top);
+
+                console.log(cookies.get("pred_img"))
+                console.log(cookies.get("pred_img_url"))
+                console.log(cookies.get("pred_img_score"))
+
+
+                imageToAI();
             })
             .catch((e) => {
                 console.error(e);
@@ -115,9 +140,6 @@ function DragAndDrop() {
 
     const style = useMemo(() => ({
         ...baseStyle,
-        // ...(isDragActive ? activeStyle : baseStyle),
-        // ...(isDragAccept ? acceptStyle : baseStyle),
-        // ...(isDragReject ? rejectStyle : baseStyle)
     }), [
         isDragActive, isDragAccept, isDragReject
     ]);
