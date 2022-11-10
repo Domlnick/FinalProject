@@ -23,15 +23,15 @@ def test():
         req = requests.post("http://127.0.0.1:5000/upload", json={"file" : file}).json()
         
         result = req["result"]
-        number_of_top = req["number_of_top"]
+        number_of_top_category = req["number_of_top_category"]
         top = req["top"]
-        number_of_bottom = req["number_of_bottom"]
+        number_of_bottom_category = req["number_of_bottom_category"]
         bottom = req["bottom"]
         
         return flask.jsonify({"result" : result,
-                              "number_of_top" : number_of_top,
+                              "number_of_top_category" : number_of_top_category,
                               "top" : top,
-                              "number_of_bottom" : number_of_bottom,
+                              "number_of_bottom_category" : number_of_bottom_category,
                               "bottom" : bottom})
 
 
