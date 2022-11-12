@@ -38,7 +38,7 @@ public class EmailService {
         
         if(authType == "register") { 
             message.addRecipients(Message.RecipientType.TO, user.getUserEmail());
-            message.setFrom(new InternetAddress("team3encore@naver.com"));
+            message.setFrom(new InternetAddress("your email address"));
             message.setSubject("[LYKYL] "+ user.getUserName() + "님 가입을 환영합니다.");
             
             registerText += "<h2>안녕하세요. " +user.getUserName() + "님!</h2>";
@@ -47,8 +47,8 @@ public class EmailService {
             registerText += "<h3>LYKYL Shop 회원 가입이 완료되었습니다.</h3>";
             registerText += "<h3>지금 바로 LYKYL Shop에 들려 확인하세요!</h3>";
             registerText += "<a href= \"http://localhost:3000/\">"
-                    + "<input type= \"button\" value=\"LYKYL Shop 이동하기\""
-//            registerText += "<button type=\"button\" onclick=\"window.open(\'http://localhost:3000\')\" "
+                    + "<input type= \"button\" value=\"LYKYL Shop 이동하기\"";
+            registerText += "<button type=\"button\" onclick=\"window.open(\'http://localhost:3000\')\" "
                     + "style=\"width:200px; height:50px; border-radius:12px; background:black; border:none; "
                     + "color:white; font-size:18px; font-weight:bold;\"></input> </a>";
             registerText += "<br/><br/><hr/>";
@@ -61,7 +61,7 @@ public class EmailService {
         }else if (authType == "findid" || authType == "findpw") {
             message.addRecipients(Message.RecipientType.TO, user.getUserEmail());
             message.setSubject("LYKYL 인증번호 전송 메일");
-            message.setFrom(new InternetAddress("team3encore@naver.com"));
+            message.setFrom(new InternetAddress("your email address"));
             
             // 인증코드 이메일 양식 작성안함
             registerText += "<h3>" + user.getUserName() + "님 인증번호를 확인해주세요. <h3/>";
