@@ -3,7 +3,7 @@
 
 <p align="center">
   <br>
-  <img src="./images/common/logo-sample.jpeg">
+  <img src="https://github.com/Domlnick/FinalProject/blob/main/front/public/logos/title.png">
   <br>
 </p>
 
